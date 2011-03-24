@@ -1,0 +1,4 @@
+Edit the migration to add in any extra columns you want to expose.
+Edit the model file and add in the mappings to the internal structure.
+Edit the tests.
+

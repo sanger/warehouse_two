@@ -1,0 +1,17 @@
+!/.gitignore
+*.log
+log/*.log
+tmp/*
+.DS_Store
+public/doc/*
+db/*.sql
+repository
+lib/tasks/*.local.rake
+public/documents
+public/system
+metrics_directory/*
+*.swp
+*~
+*.orig
+db/*test.sqlite3
+.bundle
