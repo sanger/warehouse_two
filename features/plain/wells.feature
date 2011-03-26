@@ -24,6 +24,10 @@ Feature: Update Wells
             "plate_barcode_prefix": "DN",
             "sample_uuid": "11111111-1111-1111-1111-111111111222",
             "plate_uuid": "11111111-1111-1111-1111-111111111333",
+            "measured_volume": 3.2,
+            "sequenom_count": 30, 
+            "gender_markers": "MFF",
+            
             "internal_id": 1
           }
       }]
@@ -45,6 +49,9 @@ Feature: Update Wells
       | buffer_volume        |                                      |
       | plate_barcode        | 22409                                |
       | map                  | F2                                   |
+      | measured_volume      | 3.2                                  |
+      | sequenom_count       | 30                                   |
+      | gender_markers       | MFF                                  |
       | plate_barcode_prefix | DN                                   |
       | sample_uuid          | 11111111-1111-1111-1111-111111111222 |
       | plate_uuid           | 11111111-1111-1111-1111-111111111333 |
@@ -73,6 +80,9 @@ Feature: Update Wells
             "plate_barcode_prefix": "DN",
             "sample_uuid": "11111111-1111-1111-1111-111111111222",
             "plate_uuid": "11111111-1111-1111-1111-111111111333",
+            "measured_volume": 3.2,
+            "sequenom_count": 30, 
+            "gender_markers": "MFF",
             "internal_id": 1
           }
       }]
@@ -94,6 +104,9 @@ Feature: Update Wells
       | buffer_volume        |                                      |
       | plate_barcode        | 22409                                |
       | map                  | F2                                   |
+      | measured_volume      | 3.2                                  |
+      | sequenom_count       | 30                                   |
+      | gender_markers       | MFF                                  |
       | plate_barcode_prefix | DN                                   |
       | sample_uuid          | 11111111-1111-1111-1111-111111111222 |
       | plate_uuid           | 11111111-1111-1111-1111-111111111333 |

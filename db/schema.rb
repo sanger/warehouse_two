@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110323161223) do
+ActiveRecord::Schema.define(:version => 20110326224341) do
 
   create_table "asset_audits", :primary_key => "dont_use_id", :force => true do |t|
     t.string   "uuid",                 :limit => 36, :null => false
@@ -24,6 +24,7 @@ ActiveRecord::Schema.define(:version => 20110323161223) do
     t.string   "asset_barcode"
     t.string   "asset_barcode_prefix"
     t.string   "asset_uuid",           :limit => 36
+    t.string   "witnessed_by"
   end
 
   add_index "asset_audits", ["asset_barcode"], :name => "index_asset_audits_on_asset_barcode"
@@ -958,6 +959,7 @@ ActiveRecord::Schema.define(:version => 20110323161223) do
     t.integer  "plate_purpose_internal_id"
     t.string   "plate_purpose_uuid",        :limit => 36
     t.string   "infinium_barcode"
+    t.string   "location"
   end
 
   add_index "plates", ["barcode"], :name => "index_plates_on_barcode"
@@ -1216,6 +1218,10 @@ ActiveRecord::Schema.define(:version => 20110323161223) do
     t.boolean  "control"
     t.boolean  "empty_supplier_sample_name"
     t.string   "supplier_name"
+    t.string   "public_name"
+    t.string   "sample_visibility"
+    t.string   "strain"
+    t.boolean  "updated_by_manifest"
   end
 
   add_index "samples", ["accession_number"], :name => "index_samples_on_accession_number"
@@ -1393,7 +1399,7 @@ ActiveRecord::Schema.define(:version => 20110323161223) do
   add_index "uuid_objects", ["uuid"], :name => "index_uuid_objects_on_uuid", :unique => true
 
   create_table "wells", :primary_key => "dont_use_id", :force => true do |t|
-    t.string   "uuid",                 :limit => 36, :null => false
+    t.string   "uuid",                 :limit => 36,                               :null => false
     t.integer  "internal_id"
     t.string   "name"
     t.string   "map",                  :limit => 5
@@ -1414,6 +1420,9 @@ ActiveRecord::Schema.define(:version => 20110323161223) do
     t.datetime "last_updated"
     t.datetime "created"
     t.string   "plate_uuid",           :limit => 36
+    t.decimal  "measured_volume",                    :precision => 5, :scale => 2
+    t.integer  "sequenom_count"
+    t.string   "gender_markers",       :limit => 8
   end
 
   add_index "wells", ["buffer_volume"], :name => "index_wells_on_buffer_volume"
