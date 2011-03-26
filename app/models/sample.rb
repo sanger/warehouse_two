@@ -26,7 +26,9 @@ class Sample < ActiveRecord::Base
       :cohort              => :cohort,
       :country_of_origin   => :country_of_origin,
       :geographical_region => :geographical_region,
-      :supplier_name       => :supplier_name,
+      :public_name         => :sample_public_name,
+      :sample_visibility   => :sample_sra_hold,
+      :strain              => :sample_strain_att,
       :supplier_name       => :supplier_name,
       :last_updated        => :updated_at,
       :created             => :created_at

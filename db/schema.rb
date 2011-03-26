@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110323161223) do
+ActiveRecord::Schema.define(:version => 20110326203647) do
 
   create_table "asset_audits", :primary_key => "dont_use_id", :force => true do |t|
     t.string   "uuid",                 :limit => 36, :null => false
@@ -24,6 +24,7 @@ ActiveRecord::Schema.define(:version => 20110323161223) do
     t.string   "asset_barcode"
     t.string   "asset_barcode_prefix"
     t.string   "asset_uuid",           :limit => 36
+    t.string   "witnessed_by"
   end
 
   add_index "asset_audits", ["asset_barcode"], :name => "index_asset_audits_on_asset_barcode"
@@ -1216,6 +1217,9 @@ ActiveRecord::Schema.define(:version => 20110323161223) do
     t.boolean  "control"
     t.boolean  "empty_supplier_sample_name"
     t.string   "supplier_name"
+    t.string   "public_name"
+    t.string   "sample_visibility"
+    t.string   "strain"
   end
 
   add_index "samples", ["accession_number"], :name => "index_samples_on_accession_number"
