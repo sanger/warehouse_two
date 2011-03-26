@@ -14,6 +14,7 @@ Feature: Update asset_audits
 							"plate_barcode_prefix": "DN",
 							"plate_uuid": "22222222-2222-2222-2222-222222222222",
               "created_by": "abc",
+              "witnessed_by": "efg",
               "message": "my message",
               "internal_id": 6511
           }
@@ -25,6 +26,7 @@ Feature: Update asset_audits
       | key                  | some_key                             |
       | created_by           | abc                                  |
       | message              | my message                           |
+      | witnessed_by         | efg                                  |
       | asset_barcode        | 172337                               |
       | asset_barcode_prefix | DN                                   |
       | asset_uuid           | 22222222-2222-2222-2222-222222222222 |
@@ -42,6 +44,7 @@ Feature: Update asset_audits
 							"plate_barcode": "123456",
 							"plate_barcode_prefix": "DN",
 							"plate_uuid": "22222222-2222-2222-2222-222222222222",
+							"witnessed_by": "efg",
               "created_by": "efg",
               "message": "another message",
               "internal_id": 6511
@@ -53,6 +56,7 @@ Feature: Update asset_audits
       | internal_id          | 6511                                 |
       | key                  | some_key                             |
       | created_by           | efg                                  |
+      | witnessed_by         | efg                                  |
       | message              | another message                      |
       | asset_barcode        | 123456                               |
       | asset_barcode_prefix | DN                                   |
