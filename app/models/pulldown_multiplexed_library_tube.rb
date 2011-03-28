@@ -18,6 +18,7 @@ class PulldownMultiplexedLibraryTube < ActiveRecord::Base
       :volume                  => :volume,
       :two_dimensional_barcode => :two_dimensional_barcode,
       :scanned_in_date         => :scanned_in_date,
+      :public_name             => :public_name,
       :last_updated            => :updated_at,
       :created                 => :created_at
     }

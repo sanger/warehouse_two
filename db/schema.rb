@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110326131829) do
+ActiveRecord::Schema.define(:version => 20110328100727) do
 
   create_table "asset_audits", :primary_key => "dont_use_id", :force => true do |t|
     t.string   "uuid",                 :limit => 36, :null => false
@@ -1402,7 +1402,7 @@ ActiveRecord::Schema.define(:version => 20110326131829) do
   add_index "uuid_objects", ["uuid"], :name => "index_uuid_objects_on_uuid", :unique => true
 
   create_table "wells", :primary_key => "dont_use_id", :force => true do |t|
-    t.string   "uuid",                    :limit => 36,                               :null => false
+    t.string   "uuid",                 :limit => 36,                               :null => false
     t.integer  "internal_id"
     t.string   "name"
     t.string   "map",                     :limit => 5
@@ -1422,12 +1422,10 @@ ActiveRecord::Schema.define(:version => 20110326131829) do
     t.datetime "checked_at"
     t.datetime "last_updated"
     t.datetime "created"
-    t.string   "plate_uuid",              :limit => 36
-    t.decimal  "measured_volume",                       :precision => 5, :scale => 2
+    t.string   "plate_uuid",           :limit => 36
+    t.decimal  "measured_volume",                    :precision => 5, :scale => 2
     t.integer  "sequenom_count"
-    t.string   "gender_markers",          :limit => 8
-    t.string   "genotyping_status"
-    t.string   "genotyping_snp_plate_id"
+    t.string   "gender_markers",       :limit => 8
   end
 
   add_index "wells", ["buffer_volume"], :name => "index_wells_on_buffer_volume"
