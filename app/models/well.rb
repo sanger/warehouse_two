@@ -39,6 +39,8 @@ class Well < ActiveRecord::Base
       :measured_volume         => :measured_volume,
       :sequenom_count          => :sequenom_count,
       :gender_markers          => :gender_markers,
+      :genotyping_status       => :genotyping_status,
+      :genotyping_snp_plate_id => :genotyping_snp_plate_id,
       :last_updated            => :updated_at,
       :created                 => :created_at
     }
