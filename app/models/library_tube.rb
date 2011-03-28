@@ -33,6 +33,7 @@ class LibraryTube < ActiveRecord::Base
       :fragment_size_required_from => :fragment_size_required_from,
       :fragment_size_required_to   => :fragment_size_required_to,
       :scanned_in_date             => :scanned_in_date,
+      :public_name                 => :public_name,
       :last_updated                => :updated_at,
       :created                     => :created_at
     }
