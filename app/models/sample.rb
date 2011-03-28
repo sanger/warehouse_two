@@ -28,6 +28,7 @@ class Sample < ActiveRecord::Base
       :geographical_region => :geographical_region,
       :supplier_name       => :supplier_name,
       :supplier_name       => :supplier_name,
+      :updated_by_manifest => :updated_by_manifest,
       :last_updated        => :updated_at,
       :created             => :created_at
     }
