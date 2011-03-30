@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110323161223) do
+ActiveRecord::Schema.define(:version => 20110329112725) do
 
   create_table "asset_audits", :primary_key => "dont_use_id", :force => true do |t|
     t.string   "uuid",                 :limit => 36, :null => false
@@ -24,6 +24,7 @@ ActiveRecord::Schema.define(:version => 20110323161223) do
     t.string   "asset_barcode"
     t.string   "asset_barcode_prefix"
     t.string   "asset_uuid",           :limit => 36
+    t.string   "witnessed_by"
   end
 
   add_index "asset_audits", ["asset_barcode"], :name => "index_asset_audits_on_asset_barcode"
@@ -208,6 +209,23 @@ ActiveRecord::Schema.define(:version => 20110323161223) do
   add_index "billing_events", ["request_uuid"], :name => "index_billing_events_on_request_uuid"
   add_index "billing_events", ["uuid"], :name => "index_billing_events_on_uuid"
 
+  create_table "current_asset_audits", :id => false, :force => true do |t|
+    t.integer  "dont_use_id",                        :default => 0, :null => false
+    t.string   "uuid",                 :limit => 36,                :null => false
+    t.integer  "internal_id"
+    t.string   "key"
+    t.string   "message"
+    t.string   "created_by"
+    t.boolean  "is_current"
+    t.datetime "checked_at"
+    t.datetime "last_updated"
+    t.datetime "created"
+    t.string   "asset_barcode"
+    t.string   "asset_barcode_prefix"
+    t.string   "asset_uuid",           :limit => 36
+    t.string   "witnessed_by"
+  end
+
   create_table "current_asset_freezers", :id => false, :force => true do |t|
     t.integer  "dont_use_id",                  :default => 0, :null => false
     t.string   "uuid",           :limit => 36,                :null => false
@@ -363,6 +381,7 @@ ActiveRecord::Schema.define(:version => 20110323161223) do
     t.datetime "checked_at"
     t.datetime "last_updated"
     t.datetime "created"
+    t.string   "public_name"
   end
 
   create_table "current_multiplexed_library_tubes", :id => false, :force => true do |t|
@@ -382,6 +401,7 @@ ActiveRecord::Schema.define(:version => 20110323161223) do
     t.datetime "checked_at"
     t.datetime "last_updated"
     t.datetime "created"
+    t.string   "public_name"
   end
 
   create_table "current_plate_purposes", :id => false, :force => true do |t|
@@ -410,6 +430,8 @@ ActiveRecord::Schema.define(:version => 20110323161223) do
     t.string   "plate_purpose_name"
     t.integer  "plate_purpose_internal_id"
     t.string   "plate_purpose_uuid",        :limit => 36
+    t.string   "infinium_barcode"
+    t.string   "location"
   end
 
   create_table "current_projects", :id => false, :force => true do |t|
@@ -431,6 +453,26 @@ ActiveRecord::Schema.define(:version => 20110323161223) do
     t.datetime "checked_at"
     t.datetime "last_updated"
     t.datetime "created"
+  end
+
+  create_table "current_pulldown_multiplexed_library_tubes", :id => false, :force => true do |t|
+    t.integer  "dont_use_id",                                                         :default => 0, :null => false
+    t.string   "uuid",                    :limit => 36,                                              :null => false
+    t.integer  "internal_id"
+    t.string   "name"
+    t.string   "barcode"
+    t.string   "barcode_prefix",          :limit => 2
+    t.string   "state",                   :limit => 50
+    t.boolean  "closed"
+    t.decimal  "concentration",                         :precision => 5, :scale => 2
+    t.decimal  "volume",                                :precision => 5, :scale => 2
+    t.string   "two_dimensional_barcode"
+    t.datetime "scanned_in_date"
+    t.boolean  "is_current"
+    t.datetime "checked_at"
+    t.datetime "last_updated"
+    t.datetime "created"
+    t.string   "public_name"
   end
 
   create_table "current_quotas", :id => false, :force => true do |t|
@@ -489,6 +531,9 @@ ActiveRecord::Schema.define(:version => 20110323161223) do
     t.datetime "checked_at"
     t.datetime "last_updated"
     t.datetime "created"
+    t.string   "state",                                :limit => 40
+    t.integer  "priority"
+    t.string   "user"
   end
 
   create_table "current_sample_tubes", :id => false, :force => true do |t|
@@ -510,16 +555,17 @@ ActiveRecord::Schema.define(:version => 20110323161223) do
     t.datetime "checked_at"
     t.datetime "last_updated"
     t.datetime "created"
+    t.string   "barcode_prefix",          :limit => 2
   end
 
   create_table "current_samples", :id => false, :force => true do |t|
-    t.integer  "dont_use_id",                       :default => 0, :null => false
-    t.string   "uuid",                :limit => 36,                :null => false
+    t.integer  "dont_use_id",                              :default => 0, :null => false
+    t.string   "uuid",                       :limit => 36,                :null => false
     t.integer  "internal_id"
     t.string   "name"
     t.string   "reference_genome"
     t.string   "organism"
-    t.string   "accession_number",    :limit => 50
+    t.string   "accession_number",           :limit => 50
     t.string   "common_name"
     t.text     "description"
     t.string   "taxon_id"
@@ -527,7 +573,7 @@ ActiveRecord::Schema.define(:version => 20110323161223) do
     t.string   "mother"
     t.string   "replicate"
     t.string   "ethnicity"
-    t.string   "gender",              :limit => 20
+    t.string   "gender",                     :limit => 20
     t.string   "cohort"
     t.string   "country_of_origin"
     t.string   "geographical_region"
@@ -537,26 +583,39 @@ ActiveRecord::Schema.define(:version => 20110323161223) do
     t.datetime "created"
     t.string   "sanger_sample_id"
     t.boolean  "control"
+    t.boolean  "empty_supplier_sample_name"
+    t.string   "supplier_name"
+    t.string   "public_name"
+    t.string   "sample_visibility"
+    t.string   "strain"
+    t.boolean  "updated_by_manifest"
   end
 
   create_table "current_studies", :id => false, :force => true do |t|
-    t.integer  "dont_use_id",                      :default => 0, :null => false
-    t.string   "uuid",               :limit => 36,                :null => false
+    t.integer  "dont_use_id",                              :default => 0, :null => false
+    t.string   "uuid",                       :limit => 36,                :null => false
     t.integer  "internal_id"
     t.string   "name"
     t.string   "reference_genome"
     t.boolean  "ethically_approved"
     t.string   "faculty_sponsor"
-    t.string   "state",              :limit => 50
-    t.string   "study_type",         :limit => 50
+    t.string   "state",                      :limit => 50
+    t.string   "study_type",                 :limit => 50
     t.text     "abstract"
     t.string   "abbreviation"
-    t.string   "accession_number",   :limit => 50
+    t.string   "accession_number",           :limit => 50
     t.text     "description"
     t.boolean  "is_current"
     t.datetime "checked_at"
     t.datetime "last_updated"
     t.datetime "created"
+    t.string   "contains_human_dna"
+    t.string   "contaminated_human_dna"
+    t.string   "data_release_strategy"
+    t.string   "data_release_sort_of_study"
+    t.string   "ena_project_id"
+    t.string   "study_title"
+    t.string   "study_visibility"
   end
 
   create_table "current_study_samples", :id => false, :force => true do |t|
@@ -610,14 +669,14 @@ ActiveRecord::Schema.define(:version => 20110323161223) do
   end
 
   create_table "current_wells", :id => false, :force => true do |t|
-    t.integer  "dont_use_id",                        :default => 0, :null => false
-    t.string   "uuid",                 :limit => 36,                :null => false
+    t.integer  "dont_use_id",                                                         :default => 0, :null => false
+    t.string   "uuid",                    :limit => 36,                                              :null => false
     t.integer  "internal_id"
     t.string   "name"
-    t.string   "map",                  :limit => 5
+    t.string   "map",                     :limit => 5
     t.string   "plate_barcode"
-    t.string   "plate_barcode_prefix", :limit => 2
-    t.string   "sample_uuid",          :limit => 36
+    t.string   "plate_barcode_prefix",    :limit => 2
+    t.string   "sample_uuid",             :limit => 36
     t.integer  "sample_internal_id"
     t.string   "sample_name"
     t.string   "gel_pass"
@@ -631,6 +690,12 @@ ActiveRecord::Schema.define(:version => 20110323161223) do
     t.datetime "checked_at"
     t.datetime "last_updated"
     t.datetime "created"
+    t.string   "plate_uuid",              :limit => 36
+    t.decimal  "measured_volume",                       :precision => 5, :scale => 2
+    t.integer  "sequenom_count"
+    t.string   "gender_markers",          :limit => 8
+    t.string   "genotyping_status"
+    t.string   "genotyping_snp_plate_id"
   end
 
   create_table "events", :primary_key => "dont_use_id", :force => true do |t|
@@ -748,6 +813,7 @@ ActiveRecord::Schema.define(:version => 20110323161223) do
     t.datetime "checked_at"
     t.datetime "last_updated"
     t.datetime "created"
+    t.string   "public_name"
   end
 
   add_index "library_tubes", ["barcode"], :name => "index_library_tubes_on_barcode"
@@ -797,6 +863,7 @@ ActiveRecord::Schema.define(:version => 20110323161223) do
     t.datetime "checked_at"
     t.datetime "last_updated"
     t.datetime "created"
+    t.string   "public_name"
   end
 
   add_index "multiplexed_library_tubes", ["barcode"], :name => "index_multiplexed_library_tubes_on_barcode"
@@ -958,6 +1025,7 @@ ActiveRecord::Schema.define(:version => 20110323161223) do
     t.integer  "plate_purpose_internal_id"
     t.string   "plate_purpose_uuid",        :limit => 36
     t.string   "infinium_barcode"
+    t.string   "location"
   end
 
   add_index "plates", ["barcode"], :name => "index_plates_on_barcode"
@@ -1028,6 +1096,7 @@ ActiveRecord::Schema.define(:version => 20110323161223) do
     t.datetime "checked_at"
     t.datetime "last_updated"
     t.datetime "created"
+    t.string   "public_name"
   end
 
   add_index "pulldown_multiplexed_library_tubes", ["created"], :name => "index_pulldown_multiplexed_library_tubes_on_created"
@@ -1216,6 +1285,10 @@ ActiveRecord::Schema.define(:version => 20110323161223) do
     t.boolean  "control"
     t.boolean  "empty_supplier_sample_name"
     t.string   "supplier_name"
+    t.string   "public_name"
+    t.string   "sample_visibility"
+    t.string   "strain"
+    t.boolean  "updated_by_manifest"
   end
 
   add_index "samples", ["accession_number"], :name => "index_samples_on_accession_number"
@@ -1393,13 +1466,13 @@ ActiveRecord::Schema.define(:version => 20110323161223) do
   add_index "uuid_objects", ["uuid"], :name => "index_uuid_objects_on_uuid", :unique => true
 
   create_table "wells", :primary_key => "dont_use_id", :force => true do |t|
-    t.string   "uuid",                 :limit => 36, :null => false
+    t.string   "uuid",                    :limit => 36,                               :null => false
     t.integer  "internal_id"
     t.string   "name"
-    t.string   "map",                  :limit => 5
+    t.string   "map",                     :limit => 5
     t.string   "plate_barcode"
-    t.string   "plate_barcode_prefix", :limit => 2
-    t.string   "sample_uuid",          :limit => 36
+    t.string   "plate_barcode_prefix",    :limit => 2
+    t.string   "sample_uuid",             :limit => 36
     t.integer  "sample_internal_id"
     t.string   "sample_name"
     t.string   "gel_pass"
@@ -1413,7 +1486,12 @@ ActiveRecord::Schema.define(:version => 20110323161223) do
     t.datetime "checked_at"
     t.datetime "last_updated"
     t.datetime "created"
-    t.string   "plate_uuid",           :limit => 36
+    t.string   "plate_uuid",              :limit => 36
+    t.decimal  "measured_volume",                       :precision => 5, :scale => 2
+    t.integer  "sequenom_count"
+    t.string   "gender_markers",          :limit => 8
+    t.string   "genotyping_status"
+    t.string   "genotyping_snp_plate_id"
   end
 
   add_index "wells", ["buffer_volume"], :name => "index_wells_on_buffer_volume"

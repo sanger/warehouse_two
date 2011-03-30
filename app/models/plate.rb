@@ -17,6 +17,7 @@ class Plate < ActiveRecord::Base
       :plate_purpose_internal_id   => :plate_purpose_internal_id,
       :plate_purpose_uuid          => :plate_purpose_uuid,
       :infinium_barcode            => :infinium_barcode,
+      :location                    => :location,
       :last_updated                => :updated_at,
       :created                     => :created_at
     }
