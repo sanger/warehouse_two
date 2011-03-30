@@ -121,11 +121,11 @@ Feature: Update Wells
       | internal_id             | 1                                    |
     
     Then UuidObject "11111111-1111-1111-1111-111111111111" in the warehouse should contain:
-      | name         | Test well                                                              |
-      | object_name  | wells                                                                  |
-      | url          | http://localhost:3000/0_5/wells/11111111-1111-1111-1111-111111111111   |
-      | last_updated | 2011-03-06 19:40:47 UTC                                                |
-      | created      | 2011-03-06 19:40:47 UTC                                                |
+      | name         | Test well               |
+      | object_name  | wells                   |
+      | last_updated | 2011-03-06 19:40:47 UTC |
+      | created      | 2011-03-06 19:40:47 UTC |
+
 
 
     @plate @asset_link

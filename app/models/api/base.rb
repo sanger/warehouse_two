@@ -33,14 +33,12 @@ class Api::Base < ActiveResource::Base
             internal_id = local_resource_object.internal_id
           end
 
-          url = "#{configatron.api_url}/#{configatron.api_version}/#{object_name}/#{uuid}"
           if uuid_object = ::UuidObject.find_by_uuid(uuid)
-            uuid_object.update_attributes(:url => url, :name => name, :last_updated => local_resource_object.try(:last_updated), :checked_at => current_time)
+            uuid_object.update_attributes( :name => name, :last_updated => local_resource_object.try(:last_updated), :checked_at => current_time)
             uuid_object.save!
           else
             uuid_data << UuidObject.new(:uuid => uuid, 
                                         :object_name => object_name, 
-                                        :url => url, 
                                         :internal_id => internal_id, 
                                         :name => name, 
                                         :created => local_resource_object.try(:created), 

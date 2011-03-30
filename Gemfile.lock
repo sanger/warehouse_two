@@ -74,6 +74,7 @@ GEM
     shoulda (2.10.3)
     term-ansicolor (1.0.5)
     test-unit (2.2.0)
+    timecop (0.3.5)
     treetop (1.2.6)
       polyglot (>= 0.2.5)
     webrat (0.7.3)
@@ -106,6 +107,7 @@ DEPENDENCIES
   ruby-debug
   shoulda (~> 2.10.0)
   test-unit
+  timecop
   treetop (~> 1.2.5)
   webrat
   webrat-rspec-rails

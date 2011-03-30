@@ -15,6 +15,7 @@ require 'cucumber/web/tableish'
 require 'webrat'
 require 'webrat/core/matchers'
 require 'active_resource/http_mock'
+require 'timecop'
 
 Webrat.configure do |config|
   config.mode = :rails
@@ -54,4 +55,9 @@ if defined?(ActiveRecord::Base)
     DatabaseCleaner.strategy = :truncation
   rescue LoadError => ignore_if_database_cleaner_not_present
   end
+end
+
+After do |s|
+  # If we're lost in time then we need to return to the present...
+  Timecop.return
 end
