@@ -196,7 +196,6 @@ Feature: Update requests
       | internal_id  | 1234                                                                    |
       | name         |                                                                         |
       | object_name  | requests                                                                |
-      | url          | http://localhost:3000/0_5/requests/11111111-1111-1111-1111-111111111111 |
       | last_updated | 2009-11-05 17:40:40 UTC                                                 |
       | created      | 2008-04-02 17:07:04 UTC                                                 |
 

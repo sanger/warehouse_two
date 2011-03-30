@@ -14,6 +14,7 @@ group :test do
   #gem "rcov_rails" # gem only for Rails 3, plugin for Rails 2.3 :-/
   # ./script/plugin install http://svn.codahale.com/rails_rcov
 
+  gem "timecop"
   gem "flog"
   gem "flay"
   gem "roodi"

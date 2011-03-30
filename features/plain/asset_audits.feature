@@ -68,7 +68,6 @@ Feature: Update asset_audits
       | internal_id  | 6511                                                                        |
       | name         |                                                                             |
       | object_name  | asset_audits                                                                |
-      | url          | http://localhost:3000/0_5/asset_audits/11111111-1111-1111-1111-111111111111 |
       | last_updated | 2010-05-27 17:02:11 UTC                                                     |
       | created      | 2010-05-10 09:36:43 UTC                                                     |
 

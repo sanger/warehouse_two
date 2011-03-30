@@ -106,7 +106,6 @@ Feature: Update billing events
       | internal_id  | 1                                                                             |
       | name         |                                                                               |
       | object_name  | billing_events                                                                |
-      | url          | http://localhost:3000/0_5/billing_events/11111111-1111-1111-1111-111111111111 |
       | last_updated | 2010-08-11 11:02:51 UTC                                                       |
       | created      | 2010-08-11 11:02:51 UTC                                                       |
 

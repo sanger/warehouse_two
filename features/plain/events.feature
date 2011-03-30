@@ -46,7 +46,6 @@ Feature: Update events
       | internal_id  | 2                                                                     |
       | name         |                                                                       |
       | object_name  | events                                                                |
-      | url          | http://localhost:3000/0_5/events/11111111-1111-1111-1111-111111111111 |
       | last_updated | 2007-10-31 17:53:02 UTC                                               |
       | created      | 2007-10-31 17:53:02 UTC                                               |
 

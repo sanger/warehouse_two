@@ -76,9 +76,9 @@ Feature: Update library_tubes
       | last_updated            | 2010-05-27 17:02:11 UTC |
       | created                 | 2010-05-27 17:02:11 UTC |
     Then UuidObject "11111111-1111-1111-1111-111111111111" in the warehouse should contain:
-      | internal_id  | 10                                                                                                |
-      | name         | Tube 1234                                                                                         |
-      | object_name  | library_tubes                                                                |
-      | url          | http://localhost:3000/0_5/library_tubes/11111111-1111-1111-1111-111111111111 |
-      | last_updated | 2010-05-27 17:02:11 UTC                                                                           |
-      | created      | 2010-05-27 17:02:11 UTC                                                                           |
+      | internal_id  | 10                      |
+      | name         | Tube 1234               |
+      | object_name  | library_tubes           |
+      | last_updated | 2010-05-27 17:02:11 UTC |
+      | created      | 2010-05-27 17:02:11 UTC |
+

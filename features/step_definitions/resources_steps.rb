@@ -45,3 +45,28 @@ Then /^([^"]*) "([^"]*)" in the warehouse should contain:$/ do |object_name, uui
     assert_equal attribute_value, object.send(attribute_name).to_s
   end
 end
+
+Then /^([^"]*) "([^"]*)" in the warehouse with history should contain:$/ do |object_name, uuid, table|
+  object = eval(object_name).find_by_uuid(uuid)
+
+  table.rows_hash.each do |attribute_name, attribute_value|
+    assert_equal attribute_value, object.send(attribute_name).to_s
+  end
+end
+
+
+Given /^the remote "([^"]*)" with UUID "([^"]*)" has been deleted$/ do |resource_name, uuid|
+  ActiveResource::HttpMock.respond_to do |mock|
+    mock.get "/#{configatron.api_version}/#{resource_name.methodize.pluralize}/#{uuid}.json", {}, nil, 404
+  end
+end
+
+When /^I sync the remote object with UUID "([^"]*)"$/ do |uuid|
+  UuidObject.find_by_uuid(uuid).update_or_delete(Time.now.utc)
+end
+
+Given /^the remote "([^"]*)" with UUID "([^"]*)" returns this JSON:$/ do |resource_name, uuid, resource_json|
+  ActiveResource::HttpMock.respond_to do |mock|
+    mock.get "/#{configatron.api_version}/#{resource_name.methodize.pluralize}/#{uuid}.json", {}, resource_json
+  end
+end

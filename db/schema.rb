@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110329112725) do
+ActiveRecord::Schema.define(:version => 20110330084608) do
 
   create_table "asset_audits", :primary_key => "dont_use_id", :force => true do |t|
     t.string   "uuid",                 :limit => 36, :null => false
@@ -1450,10 +1450,10 @@ ActiveRecord::Schema.define(:version => 20110329112725) do
     t.integer  "internal_id"
     t.string   "name"
     t.string   "object_name"
-    t.string   "url"
     t.datetime "checked_at"
     t.datetime "last_updated"
     t.datetime "created"
+    t.boolean  "deleted"
   end
 
   add_index "uuid_objects", ["checked_at"], :name => "index_uuid_objects_on_checked_at"
@@ -1462,7 +1462,6 @@ ActiveRecord::Schema.define(:version => 20110329112725) do
   add_index "uuid_objects", ["last_updated"], :name => "index_uuid_objects_on_last_updated"
   add_index "uuid_objects", ["name"], :name => "index_uuid_objects_on_name"
   add_index "uuid_objects", ["object_name"], :name => "index_uuid_objects_on_object_name"
-  add_index "uuid_objects", ["url"], :name => "index_uuid_objects_on_url"
   add_index "uuid_objects", ["uuid"], :name => "index_uuid_objects_on_uuid", :unique => true
 
   create_table "wells", :primary_key => "dont_use_id", :force => true do |t|

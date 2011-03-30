@@ -31,7 +31,6 @@ Feature: Update lanes
       | internal_id  | 1                                                                    |
       | name         | ABC                                                                  |
       | object_name  | lanes                                                                |
-      | url          | http://localhost:3000/0_5/lanes/11111111-1111-1111-1111-111111111111 |
       | last_updated | 2010-05-12 16:34:41 UTC                                              |
       | created      | 2009-11-05 17:46:36 UTC                                              |
 
