@@ -19,6 +19,13 @@ Then /^I should be able to find UUID "([^"]*)" in "([^"]*)" the warehouse$/ do |
   assert_not_nil UuidObject.find_by_uuid(uuid)
 end
 
+
+Then /^UUID "([^"]*)" in "([^"]*)" should have an inserted at time of "([^"]*)"$/ do |uuid, resource_name, time|
+   obj = eval("#{resource_name}").find_by_uuid(uuid)
+   assert_equal Time.parse(time.to_s), Time.parse(obj.inserted_at.to_s)
+end
+
+
 Given /^the "([^"]*)" resource returns the JSON:$/ do |resource_name, resource_json|
   name = resource_name.methodize
   resource_page_1 =  resource_json

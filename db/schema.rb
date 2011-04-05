@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110330084608) do
+ActiveRecord::Schema.define(:version => 20110405105142) do
 
   create_table "asset_audits", :primary_key => "dont_use_id", :force => true do |t|
     t.string   "uuid",                 :limit => 36, :null => false
@@ -25,6 +25,7 @@ ActiveRecord::Schema.define(:version => 20110330084608) do
     t.string   "asset_barcode_prefix"
     t.string   "asset_uuid",           :limit => 36
     t.string   "witnessed_by"
+    t.datetime "inserted_at"
   end
 
   add_index "asset_audits", ["asset_barcode"], :name => "index_asset_audits_on_asset_barcode"
@@ -51,6 +52,7 @@ ActiveRecord::Schema.define(:version => 20110330084608) do
     t.datetime "checked_at"
     t.datetime "last_updated"
     t.datetime "created"
+    t.datetime "inserted_at"
   end
 
   add_index "asset_freezers", ["asset_type"], :name => "index_asset_freezers_on_asset_type"
@@ -80,6 +82,7 @@ ActiveRecord::Schema.define(:version => 20110330084608) do
     t.datetime "checked_at"
     t.datetime "last_updated"
     t.datetime "created"
+    t.datetime "inserted_at"
   end
 
   add_index "asset_links", ["ancestor_internal_id"], :name => "index_asset_links_on_ancestor_internal_id"
@@ -109,6 +112,7 @@ ActiveRecord::Schema.define(:version => 20110330084608) do
     t.datetime "checked_at"
     t.datetime "last_updated"
     t.datetime "created"
+    t.datetime "inserted_at"
   end
 
   add_index "batch_requests", ["batch_internal_id"], :name => "index_batch_requests_on_batch_internal_id"
@@ -144,6 +148,7 @@ ActiveRecord::Schema.define(:version => 20110330084608) do
     t.datetime "checked_at"
     t.datetime "last_updated"
     t.datetime "created"
+    t.datetime "inserted_at"
   end
 
   add_index "batches", ["assigned_to"], :name => "index_batches_on_assigned_to"
@@ -184,6 +189,7 @@ ActiveRecord::Schema.define(:version => 20110330084608) do
     t.datetime "checked_at"
     t.datetime "last_updated"
     t.datetime "created"
+    t.datetime "inserted_at"
   end
 
   add_index "billing_events", ["checked_at"], :name => "index_billing_events_on_checked_at"
@@ -224,6 +230,7 @@ ActiveRecord::Schema.define(:version => 20110330084608) do
     t.string   "asset_barcode_prefix"
     t.string   "asset_uuid",           :limit => 36
     t.string   "witnessed_by"
+    t.datetime "inserted_at"
   end
 
   create_table "current_asset_freezers", :id => false, :force => true do |t|
@@ -242,6 +249,7 @@ ActiveRecord::Schema.define(:version => 20110330084608) do
     t.datetime "checked_at"
     t.datetime "last_updated"
     t.datetime "created"
+    t.datetime "inserted_at"
   end
 
   create_table "current_batch_requests", :id => false, :force => true do |t|
@@ -263,6 +271,7 @@ ActiveRecord::Schema.define(:version => 20110330084608) do
     t.datetime "checked_at"
     t.datetime "last_updated"
     t.datetime "created"
+    t.datetime "inserted_at"
   end
 
   create_table "current_batches", :id => false, :force => true do |t|
@@ -281,6 +290,7 @@ ActiveRecord::Schema.define(:version => 20110330084608) do
     t.datetime "checked_at"
     t.datetime "last_updated"
     t.datetime "created"
+    t.datetime "inserted_at"
   end
 
   create_table "current_billing_events", :id => false, :force => true do |t|
@@ -307,6 +317,7 @@ ActiveRecord::Schema.define(:version => 20110330084608) do
     t.datetime "checked_at"
     t.datetime "last_updated"
     t.datetime "created"
+    t.datetime "inserted_at"
   end
 
   create_table "current_events", :id => false, :force => true do |t|
@@ -329,6 +340,7 @@ ActiveRecord::Schema.define(:version => 20110330084608) do
     t.datetime "checked_at"
     t.datetime "last_updated"
     t.datetime "created"
+    t.datetime "inserted_at"
   end
 
   create_table "current_lanes", :id => false, :force => true do |t|
@@ -347,6 +359,7 @@ ActiveRecord::Schema.define(:version => 20110330084608) do
     t.datetime "checked_at"
     t.datetime "last_updated"
     t.datetime "created"
+    t.datetime "inserted_at"
   end
 
   create_table "current_library_tubes", :id => false, :force => true do |t|
@@ -382,6 +395,7 @@ ActiveRecord::Schema.define(:version => 20110330084608) do
     t.datetime "last_updated"
     t.datetime "created"
     t.string   "public_name"
+    t.datetime "inserted_at"
   end
 
   create_table "current_multiplexed_library_tubes", :id => false, :force => true do |t|
@@ -402,6 +416,7 @@ ActiveRecord::Schema.define(:version => 20110330084608) do
     t.datetime "last_updated"
     t.datetime "created"
     t.string   "public_name"
+    t.datetime "inserted_at"
   end
 
   create_table "current_plate_purposes", :id => false, :force => true do |t|
@@ -413,6 +428,7 @@ ActiveRecord::Schema.define(:version => 20110330084608) do
     t.datetime "checked_at"
     t.datetime "last_updated"
     t.datetime "created"
+    t.datetime "inserted_at"
   end
 
   create_table "current_plates", :id => false, :force => true do |t|
@@ -432,6 +448,7 @@ ActiveRecord::Schema.define(:version => 20110330084608) do
     t.string   "plate_purpose_uuid",        :limit => 36
     t.string   "infinium_barcode"
     t.string   "location"
+    t.datetime "inserted_at"
   end
 
   create_table "current_projects", :id => false, :force => true do |t|
@@ -453,6 +470,7 @@ ActiveRecord::Schema.define(:version => 20110330084608) do
     t.datetime "checked_at"
     t.datetime "last_updated"
     t.datetime "created"
+    t.datetime "inserted_at"
   end
 
   create_table "current_pulldown_multiplexed_library_tubes", :id => false, :force => true do |t|
@@ -473,6 +491,7 @@ ActiveRecord::Schema.define(:version => 20110330084608) do
     t.datetime "last_updated"
     t.datetime "created"
     t.string   "public_name"
+    t.datetime "inserted_at"
   end
 
   create_table "current_quotas", :id => false, :force => true do |t|
@@ -488,6 +507,7 @@ ActiveRecord::Schema.define(:version => 20110330084608) do
     t.datetime "checked_at"
     t.datetime "last_updated"
     t.datetime "created"
+    t.datetime "inserted_at"
   end
 
   create_table "current_requests", :id => false, :force => true do |t|
@@ -534,6 +554,7 @@ ActiveRecord::Schema.define(:version => 20110330084608) do
     t.string   "state",                                :limit => 40
     t.integer  "priority"
     t.string   "user"
+    t.datetime "inserted_at"
   end
 
   create_table "current_sample_tubes", :id => false, :force => true do |t|
@@ -556,6 +577,7 @@ ActiveRecord::Schema.define(:version => 20110330084608) do
     t.datetime "last_updated"
     t.datetime "created"
     t.string   "barcode_prefix",          :limit => 2
+    t.datetime "inserted_at"
   end
 
   create_table "current_samples", :id => false, :force => true do |t|
@@ -589,21 +611,22 @@ ActiveRecord::Schema.define(:version => 20110330084608) do
     t.string   "sample_visibility"
     t.string   "strain"
     t.boolean  "updated_by_manifest"
+    t.datetime "inserted_at"
   end
 
   create_table "current_studies", :id => false, :force => true do |t|
-    t.integer  "dont_use_id",                              :default => 0, :null => false
-    t.string   "uuid",                       :limit => 36,                :null => false
+    t.integer  "dont_use_id",                                  :default => 0, :null => false
+    t.string   "uuid",                           :limit => 36,                :null => false
     t.integer  "internal_id"
     t.string   "name"
     t.string   "reference_genome"
     t.boolean  "ethically_approved"
     t.string   "faculty_sponsor"
-    t.string   "state",                      :limit => 50
-    t.string   "study_type",                 :limit => 50
+    t.string   "state",                          :limit => 50
+    t.string   "study_type",                     :limit => 50
     t.text     "abstract"
     t.string   "abbreviation"
-    t.string   "accession_number",           :limit => 50
+    t.string   "accession_number",               :limit => 50
     t.text     "description"
     t.boolean  "is_current"
     t.datetime "checked_at"
@@ -616,6 +639,10 @@ ActiveRecord::Schema.define(:version => 20110330084608) do
     t.string   "ena_project_id"
     t.string   "study_title"
     t.string   "study_visibility"
+    t.string   "ega_dac_accession_number"
+    t.string   "array_express_accession_number"
+    t.string   "ega_policy_accession_number"
+    t.datetime "inserted_at"
   end
 
   create_table "current_study_samples", :id => false, :force => true do |t|
@@ -630,6 +657,7 @@ ActiveRecord::Schema.define(:version => 20110330084608) do
     t.datetime "checked_at"
     t.datetime "last_updated"
     t.datetime "created"
+    t.datetime "inserted_at"
   end
 
   create_table "current_tag_instances", :id => false, :force => true do |t|
@@ -651,6 +679,7 @@ ActiveRecord::Schema.define(:version => 20110330084608) do
     t.datetime "checked_at"
     t.datetime "last_updated"
     t.datetime "created"
+    t.datetime "inserted_at"
   end
 
   create_table "current_tags", :id => false, :force => true do |t|
@@ -666,6 +695,7 @@ ActiveRecord::Schema.define(:version => 20110330084608) do
     t.datetime "checked_at"
     t.datetime "last_updated"
     t.datetime "created"
+    t.datetime "inserted_at"
   end
 
   create_table "current_wells", :id => false, :force => true do |t|
@@ -696,6 +726,7 @@ ActiveRecord::Schema.define(:version => 20110330084608) do
     t.string   "gender_markers",          :limit => 8
     t.string   "genotyping_status"
     t.string   "genotyping_snp_plate_id"
+    t.datetime "inserted_at"
   end
 
   create_table "events", :primary_key => "dont_use_id", :force => true do |t|
@@ -717,6 +748,7 @@ ActiveRecord::Schema.define(:version => 20110330084608) do
     t.datetime "checked_at"
     t.datetime "last_updated"
     t.datetime "created"
+    t.datetime "inserted_at"
   end
 
   add_index "events", ["actioned"], :name => "index_events_on_actioned"
@@ -748,6 +780,7 @@ ActiveRecord::Schema.define(:version => 20110330084608) do
     t.integer  "108",                       :limit => 2
     t.datetime "valid_from",                             :null => false
     t.datetime "valid_to",                               :null => false
+    t.datetime "inserted_at"
   end
 
   create_table "lanes", :primary_key => "dont_use_id", :force => true do |t|
@@ -765,6 +798,7 @@ ActiveRecord::Schema.define(:version => 20110330084608) do
     t.datetime "checked_at"
     t.datetime "last_updated"
     t.datetime "created"
+    t.datetime "inserted_at"
   end
 
   add_index "lanes", ["barcode"], :name => "index_lanes_on_barcode"
@@ -814,6 +848,7 @@ ActiveRecord::Schema.define(:version => 20110330084608) do
     t.datetime "last_updated"
     t.datetime "created"
     t.string   "public_name"
+    t.datetime "inserted_at"
   end
 
   add_index "library_tubes", ["barcode"], :name => "index_library_tubes_on_barcode"
@@ -864,6 +899,7 @@ ActiveRecord::Schema.define(:version => 20110330084608) do
     t.datetime "last_updated"
     t.datetime "created"
     t.string   "public_name"
+    t.datetime "inserted_at"
   end
 
   add_index "multiplexed_library_tubes", ["barcode"], :name => "index_multiplexed_library_tubes_on_barcode"
@@ -1000,10 +1036,12 @@ ActiveRecord::Schema.define(:version => 20110330084608) do
     t.datetime "checked_at"
     t.datetime "last_updated"
     t.datetime "created"
+    t.datetime "inserted_at"
   end
 
   add_index "plate_purposes", ["checked_at"], :name => "index_plate_purposes_on_checked_at"
   add_index "plate_purposes", ["created"], :name => "index_plate_purposes_on_created"
+  add_index "plate_purposes", ["inserted_at"], :name => "index_plate_purposes_on_inserted_at"
   add_index "plate_purposes", ["internal_id"], :name => "index_plate_purposes_on_internal_id"
   add_index "plate_purposes", ["is_current"], :name => "index_plate_purposes_on_is_current"
   add_index "plate_purposes", ["last_updated"], :name => "index_plate_purposes_on_last_updated"
@@ -1026,6 +1064,7 @@ ActiveRecord::Schema.define(:version => 20110330084608) do
     t.string   "plate_purpose_uuid",        :limit => 36
     t.string   "infinium_barcode"
     t.string   "location"
+    t.datetime "inserted_at"
   end
 
   add_index "plates", ["barcode"], :name => "index_plates_on_barcode"
@@ -1033,6 +1072,7 @@ ActiveRecord::Schema.define(:version => 20110330084608) do
   add_index "plates", ["checked_at"], :name => "index_plates_on_checked_at"
   add_index "plates", ["created"], :name => "index_plates_on_created"
   add_index "plates", ["infinium_barcode"], :name => "index_plates_on_infinium_barcode"
+  add_index "plates", ["inserted_at"], :name => "index_plates_on_inserted_at"
   add_index "plates", ["internal_id"], :name => "index_plates_on_internal_id"
   add_index "plates", ["is_current"], :name => "index_plates_on_is_current"
   add_index "plates", ["last_updated"], :name => "index_plates_on_last_updated"
@@ -1061,6 +1101,7 @@ ActiveRecord::Schema.define(:version => 20110330084608) do
     t.datetime "checked_at"
     t.datetime "last_updated"
     t.datetime "created"
+    t.datetime "inserted_at"
   end
 
   add_index "projects", ["approved"], :name => "index_projects_on_approved"
@@ -1097,6 +1138,7 @@ ActiveRecord::Schema.define(:version => 20110330084608) do
     t.datetime "last_updated"
     t.datetime "created"
     t.string   "public_name"
+    t.datetime "inserted_at"
   end
 
   add_index "pulldown_multiplexed_library_tubes", ["created"], :name => "index_pulldown_multiplexed_library_tubes_on_created"
@@ -1116,6 +1158,7 @@ ActiveRecord::Schema.define(:version => 20110330084608) do
     t.datetime "checked_at"
     t.datetime "last_updated"
     t.datetime "created"
+    t.datetime "inserted_at"
   end
 
   add_index "quotas", ["checked_at"], :name => "index_quotas_on_checked_at"
@@ -1173,12 +1216,14 @@ ActiveRecord::Schema.define(:version => 20110330084608) do
     t.string   "state",                                :limit => 40
     t.integer  "priority"
     t.string   "user"
+    t.datetime "inserted_at"
   end
 
   add_index "requests", ["checked_at"], :name => "index_requests_on_checked_at"
   add_index "requests", ["created"], :name => "index_requests_on_created"
   add_index "requests", ["fragment_size_from"], :name => "index_requests_on_fragment_size_from"
   add_index "requests", ["fragment_size_to"], :name => "index_requests_on_fragment_size_to"
+  add_index "requests", ["inserted_at"], :name => "index_requests_on_inserted_at"
   add_index "requests", ["internal_id"], :name => "index_requests_on_internal_id"
   add_index "requests", ["is_current"], :name => "index_requests_on_is_current"
   add_index "requests", ["is_current"], :name => "study_id_is_current"
@@ -1238,6 +1283,7 @@ ActiveRecord::Schema.define(:version => 20110330084608) do
     t.datetime "last_updated"
     t.datetime "created"
     t.string   "barcode_prefix",          :limit => 2
+    t.datetime "inserted_at"
   end
 
   add_index "sample_tubes", ["barcode"], :name => "index_sample_tubes_on_barcode"
@@ -1289,6 +1335,7 @@ ActiveRecord::Schema.define(:version => 20110330084608) do
     t.string   "sample_visibility"
     t.string   "strain"
     t.boolean  "updated_by_manifest"
+    t.datetime "inserted_at"
   end
 
   add_index "samples", ["accession_number"], :name => "index_samples_on_accession_number"
@@ -1303,6 +1350,7 @@ ActiveRecord::Schema.define(:version => 20110330084608) do
   add_index "samples", ["father"], :name => "index_samples_on_father"
   add_index "samples", ["gender"], :name => "index_samples_on_gender"
   add_index "samples", ["geographical_region"], :name => "index_samples_on_geographical_region"
+  add_index "samples", ["inserted_at"], :name => "index_samples_on_inserted_at"
   add_index "samples", ["internal_id"], :name => "index_samples_on_internal_id"
   add_index "samples", ["is_current"], :name => "index_samples_on_is_current"
   add_index "samples", ["last_updated"], :name => "index_samples_on_last_updated"
@@ -1317,17 +1365,17 @@ ActiveRecord::Schema.define(:version => 20110330084608) do
   add_index "samples", ["uuid"], :name => "index_samples_on_uuid"
 
   create_table "studies", :primary_key => "dont_use_id", :force => true do |t|
-    t.string   "uuid",                       :limit => 36, :null => false
+    t.string   "uuid",                           :limit => 36, :null => false
     t.integer  "internal_id"
     t.string   "name"
     t.string   "reference_genome"
     t.boolean  "ethically_approved"
     t.string   "faculty_sponsor"
-    t.string   "state",                      :limit => 50
-    t.string   "study_type",                 :limit => 50
+    t.string   "state",                          :limit => 50
+    t.string   "study_type",                     :limit => 50
     t.text     "abstract"
     t.string   "abbreviation"
-    t.string   "accession_number",           :limit => 50
+    t.string   "accession_number",               :limit => 50
     t.text     "description"
     t.boolean  "is_current"
     t.datetime "checked_at"
@@ -1340,6 +1388,10 @@ ActiveRecord::Schema.define(:version => 20110330084608) do
     t.string   "ena_project_id"
     t.string   "study_title"
     t.string   "study_visibility"
+    t.string   "ega_dac_accession_number"
+    t.string   "array_express_accession_number"
+    t.string   "ega_policy_accession_number"
+    t.datetime "inserted_at"
   end
 
   add_index "studies", ["abbreviation"], :name => "index_studies_on_abbreviation"
@@ -1368,6 +1420,7 @@ ActiveRecord::Schema.define(:version => 20110330084608) do
     t.datetime "checked_at"
     t.datetime "last_updated"
     t.datetime "created"
+    t.datetime "inserted_at"
   end
 
   add_index "study_samples", ["checked_at"], :name => "index_study_samples_on_checked_at"
@@ -1399,6 +1452,7 @@ ActiveRecord::Schema.define(:version => 20110330084608) do
     t.datetime "checked_at"
     t.datetime "last_updated"
     t.datetime "created"
+    t.datetime "inserted_at"
   end
 
   add_index "tag_instances", ["barcode"], :name => "index_tag_instances_on_barcode"
@@ -1431,6 +1485,7 @@ ActiveRecord::Schema.define(:version => 20110330084608) do
     t.datetime "checked_at"
     t.datetime "last_updated"
     t.datetime "created"
+    t.datetime "inserted_at"
   end
 
   add_index "tags", ["checked_at"], :name => "index_tags_on_checked_at"
@@ -1491,6 +1546,7 @@ ActiveRecord::Schema.define(:version => 20110330084608) do
     t.string   "gender_markers",          :limit => 8
     t.string   "genotyping_status"
     t.string   "genotyping_snp_plate_id"
+    t.datetime "inserted_at"
   end
 
   add_index "wells", ["buffer_volume"], :name => "index_wells_on_buffer_volume"
@@ -1499,6 +1555,7 @@ ActiveRecord::Schema.define(:version => 20110330084608) do
   add_index "wells", ["created"], :name => "index_wells_on_created"
   add_index "wells", ["current_volume"], :name => "index_wells_on_current_volume"
   add_index "wells", ["gel_pass"], :name => "index_wells_on_gel_pass"
+  add_index "wells", ["inserted_at"], :name => "index_wells_on_inserted_at"
   add_index "wells", ["internal_id"], :name => "index_wells_on_internal_id"
   add_index "wells", ["is_current"], :name => "index_wells_on_is_current"
   add_index "wells", ["last_updated"], :name => "index_wells_on_last_updated"
