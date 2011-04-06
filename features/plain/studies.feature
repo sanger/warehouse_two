@@ -97,10 +97,10 @@ Feature: Update Studies
 
 
     Then UuidObject "11111111-1111-1111-1111-111111111111" in the warehouse should contain:
-      | name         | ABC                    |
-      | object_name  | studies                                                                |
-      | url          | http://localhost:3000/0_5/studies/11111111-1111-1111-1111-111111111111 |
-      | last_updated | 2011-02-16 10:10:55 UTC                                                |
-      | created      | 2011-01-20 15:39:11 UTC                                                |
+      | name         | ABC                     |
+      | object_name  | studies                 |
+      | last_updated | 2011-02-16 10:10:55 UTC |
+      | created      | 2011-01-20 15:39:11 UTC |
+
 
 

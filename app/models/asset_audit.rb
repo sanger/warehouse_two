@@ -14,6 +14,7 @@ class AssetAudit < ActiveRecord::Base
       :asset_uuid              => :plate_uuid,
       :key                     => :key ,
       :created_by              => :created_by ,
+      :witnessed_by            => :witnessed_by,
       :message                 => :message,
       :last_updated            => :updated_at,
       :created                 => :created_at
