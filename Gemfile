@@ -5,6 +5,7 @@ gem "ar-extensions"
 gem "configatron"
 gem "mysql"
 gem "cbrunnkvist-psd_logger"
+gem "alter_table", :git => "https://github.com/sanger/alter_table.git"
 
 group :test do
   # bundler requires these gems while running tests
