@@ -1,3 +1,10 @@
+GIT
+  remote: http://github.com/sanger/alter_table.git
+  revision: 109850bb109a3a4deb97f6d39174f8d6c8e8263f
+  specs:
+    alter_table (0.0.1)
+      rails (~> 2.3.11)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -88,6 +95,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  alter_table!
   ar-extensions
   cbrunnkvist-psd_logger
   ci_reporter
