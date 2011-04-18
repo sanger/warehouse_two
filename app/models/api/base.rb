@@ -15,8 +15,8 @@ class Api::Base < ActiveResource::Base
     end
   end
   
-  def self.parse_index_with_full_objects(max_number_of_pages = nil)
-    current_page = 1
+  def self.parse_index_with_full_objects(current_page = 1, number_of_pages = nil)
+    starting_page = current_page
     each_page do |results_from_page|
       current_time = Time.now.utc
       uuid_data = []
@@ -54,7 +54,7 @@ class Api::Base < ActiveResource::Base
         UuidObject.import uuid_data
       end
 
-      if max_number_of_pages && current_page >= max_number_of_pages
+      if number_of_pages && current_page >= (number_of_pages + starting_page)
         return
       end
       current_page += 1

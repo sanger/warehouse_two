@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110412104421) do
+ActiveRecord::Schema.define(:version => 20110418100908) do
 
   create_table "asset_audits", :primary_key => "dont_use_id", :force => true do |t|
     t.string   "uuid",                 :limit => 36, :null => false
@@ -25,6 +25,7 @@ ActiveRecord::Schema.define(:version => 20110412104421) do
     t.string   "asset_barcode_prefix"
     t.string   "asset_uuid",           :limit => 36
     t.string   "witnessed_by"
+    t.datetime "inserted_at"
   end
 
   add_index "asset_audits", ["asset_barcode"], :name => "index_asset_audits_on_asset_barcode"
@@ -51,6 +52,7 @@ ActiveRecord::Schema.define(:version => 20110412104421) do
     t.datetime "checked_at"
     t.datetime "last_updated"
     t.datetime "created"
+    t.datetime "inserted_at"
   end
 
   add_index "asset_freezers", ["asset_type"], :name => "index_asset_freezers_on_asset_type"
@@ -80,13 +82,16 @@ ActiveRecord::Schema.define(:version => 20110412104421) do
     t.datetime "checked_at"
     t.datetime "last_updated"
     t.datetime "created"
+    t.datetime "inserted_at"
   end
 
   add_index "asset_links", ["ancestor_internal_id"], :name => "index_asset_links_on_ancestor_internal_id"
   add_index "asset_links", ["ancestor_uuid"], :name => "index_asset_links_on_ancestor_uuid"
   add_index "asset_links", ["checked_at"], :name => "index_asset_links_on_checked_at"
+  add_index "asset_links", ["created"], :name => "index_asset_links_on_created"
   add_index "asset_links", ["descendant_internal_id"], :name => "index_asset_links_on_descendant_internal_id"
   add_index "asset_links", ["descendant_uuid"], :name => "index_asset_links_on_descendant_uuid"
+  add_index "asset_links", ["last_updated"], :name => "index_asset_links_on_last_updated"
   add_index "asset_links", ["uuid"], :name => "index_asset_links_on_uuid"
 
   create_table "batch_requests", :primary_key => "dont_use_id", :force => true do |t|
@@ -107,6 +112,7 @@ ActiveRecord::Schema.define(:version => 20110412104421) do
     t.datetime "checked_at"
     t.datetime "last_updated"
     t.datetime "created"
+    t.datetime "inserted_at"
   end
 
   add_index "batch_requests", ["batch_internal_id"], :name => "index_batch_requests_on_batch_internal_id"
@@ -117,6 +123,7 @@ ActiveRecord::Schema.define(:version => 20110412104421) do
   add_index "batch_requests", ["is_current"], :name => "index_batch_requests_on_is_current"
   add_index "batch_requests", ["last_updated"], :name => "index_batch_requests_on_last_updated"
   add_index "batch_requests", ["request_internal_id"], :name => "index_batch_requests_on_request_internal_id"
+  add_index "batch_requests", ["request_type"], :name => "index_batch_requests_on_request_type"
   add_index "batch_requests", ["request_uuid"], :name => "index_batch_requests_on_request_uuid"
   add_index "batch_requests", ["source_asset_internal_id"], :name => "index_batch_requests_on_source_asset_internal_id"
   add_index "batch_requests", ["source_asset_name"], :name => "index_batch_requests_on_source_asset_name"
@@ -141,8 +148,10 @@ ActiveRecord::Schema.define(:version => 20110412104421) do
     t.datetime "checked_at"
     t.datetime "last_updated"
     t.datetime "created"
+    t.datetime "inserted_at"
   end
 
+  add_index "batches", ["assigned_to"], :name => "index_batches_on_assigned_to"
   add_index "batches", ["checked_at"], :name => "index_batches_on_checked_at"
   add_index "batches", ["created"], :name => "index_batches_on_created"
   add_index "batches", ["created_by"], :name => "index_batches_on_created_by"
@@ -150,7 +159,9 @@ ActiveRecord::Schema.define(:version => 20110412104421) do
   add_index "batches", ["is_current"], :name => "index_batches_on_is_current"
   add_index "batches", ["last_updated"], :name => "index_batches_on_last_updated"
   add_index "batches", ["pipeline_internal_id"], :name => "index_batches_on_pipeline_internal_id"
+  add_index "batches", ["pipeline_name"], :name => "index_batches_on_pipeline_name"
   add_index "batches", ["pipeline_uuid"], :name => "index_batches_on_pipeline_uuid"
+  add_index "batches", ["production_state"], :name => "index_batches_on_production_state"
   add_index "batches", ["qc_state"], :name => "index_batches_on_qc_state"
   add_index "batches", ["state"], :name => "index_batches_on_state"
   add_index "batches", ["uuid"], :name => "index_batches_on_uuid"
@@ -178,6 +189,7 @@ ActiveRecord::Schema.define(:version => 20110412104421) do
     t.datetime "checked_at"
     t.datetime "last_updated"
     t.datetime "created"
+    t.datetime "inserted_at"
   end
 
   add_index "billing_events", ["checked_at"], :name => "index_billing_events_on_checked_at"
@@ -218,6 +230,7 @@ ActiveRecord::Schema.define(:version => 20110412104421) do
     t.string   "asset_barcode_prefix"
     t.string   "asset_uuid",           :limit => 36
     t.string   "witnessed_by"
+    t.datetime "inserted_at"
   end
 
   create_table "current_asset_freezers", :id => false, :force => true do |t|
@@ -236,6 +249,7 @@ ActiveRecord::Schema.define(:version => 20110412104421) do
     t.datetime "checked_at"
     t.datetime "last_updated"
     t.datetime "created"
+    t.datetime "inserted_at"
   end
 
   create_table "current_batch_requests", :id => false, :force => true do |t|
@@ -257,6 +271,7 @@ ActiveRecord::Schema.define(:version => 20110412104421) do
     t.datetime "checked_at"
     t.datetime "last_updated"
     t.datetime "created"
+    t.datetime "inserted_at"
   end
 
   create_table "current_batches", :id => false, :force => true do |t|
@@ -275,6 +290,7 @@ ActiveRecord::Schema.define(:version => 20110412104421) do
     t.datetime "checked_at"
     t.datetime "last_updated"
     t.datetime "created"
+    t.datetime "inserted_at"
   end
 
   create_table "current_billing_events", :id => false, :force => true do |t|
@@ -301,6 +317,7 @@ ActiveRecord::Schema.define(:version => 20110412104421) do
     t.datetime "checked_at"
     t.datetime "last_updated"
     t.datetime "created"
+    t.datetime "inserted_at"
   end
 
   create_table "current_events", :id => false, :force => true do |t|
@@ -323,6 +340,7 @@ ActiveRecord::Schema.define(:version => 20110412104421) do
     t.datetime "checked_at"
     t.datetime "last_updated"
     t.datetime "created"
+    t.datetime "inserted_at"
   end
 
   create_table "current_lanes", :id => false, :force => true do |t|
@@ -341,6 +359,7 @@ ActiveRecord::Schema.define(:version => 20110412104421) do
     t.datetime "checked_at"
     t.datetime "last_updated"
     t.datetime "created"
+    t.datetime "inserted_at"
   end
 
   create_table "current_library_tubes", :id => false, :force => true do |t|
@@ -376,6 +395,7 @@ ActiveRecord::Schema.define(:version => 20110412104421) do
     t.datetime "last_updated"
     t.datetime "created"
     t.string   "public_name"
+    t.datetime "inserted_at"
   end
 
   create_table "current_multiplexed_library_tubes", :id => false, :force => true do |t|
@@ -396,6 +416,7 @@ ActiveRecord::Schema.define(:version => 20110412104421) do
     t.datetime "last_updated"
     t.datetime "created"
     t.string   "public_name"
+    t.datetime "inserted_at"
   end
 
   create_table "current_plate_purposes", :id => false, :force => true do |t|
@@ -407,6 +428,7 @@ ActiveRecord::Schema.define(:version => 20110412104421) do
     t.datetime "checked_at"
     t.datetime "last_updated"
     t.datetime "created"
+    t.datetime "inserted_at"
   end
 
   create_table "current_plates", :id => false, :force => true do |t|
@@ -426,6 +448,7 @@ ActiveRecord::Schema.define(:version => 20110412104421) do
     t.string   "plate_purpose_uuid",        :limit => 36
     t.string   "infinium_barcode"
     t.string   "location"
+    t.datetime "inserted_at"
   end
 
   create_table "current_projects", :id => false, :force => true do |t|
@@ -447,6 +470,7 @@ ActiveRecord::Schema.define(:version => 20110412104421) do
     t.datetime "checked_at"
     t.datetime "last_updated"
     t.datetime "created"
+    t.datetime "inserted_at"
   end
 
   create_table "current_pulldown_multiplexed_library_tubes", :id => false, :force => true do |t|
@@ -467,6 +491,7 @@ ActiveRecord::Schema.define(:version => 20110412104421) do
     t.datetime "last_updated"
     t.datetime "created"
     t.string   "public_name"
+    t.datetime "inserted_at"
   end
 
   create_table "current_quotas", :id => false, :force => true do |t|
@@ -482,6 +507,7 @@ ActiveRecord::Schema.define(:version => 20110412104421) do
     t.datetime "checked_at"
     t.datetime "last_updated"
     t.datetime "created"
+    t.datetime "inserted_at"
   end
 
   create_table "current_requests", :id => false, :force => true do |t|
@@ -528,6 +554,7 @@ ActiveRecord::Schema.define(:version => 20110412104421) do
     t.string   "state",                                :limit => 40
     t.integer  "priority"
     t.string   "user"
+    t.datetime "inserted_at"
   end
 
   create_table "current_sample_tubes", :id => false, :force => true do |t|
@@ -550,6 +577,7 @@ ActiveRecord::Schema.define(:version => 20110412104421) do
     t.datetime "last_updated"
     t.datetime "created"
     t.string   "barcode_prefix",          :limit => 2
+    t.datetime "inserted_at"
   end
 
   create_table "current_samples", :id => false, :force => true do |t|
@@ -583,21 +611,22 @@ ActiveRecord::Schema.define(:version => 20110412104421) do
     t.string   "sample_visibility"
     t.string   "strain"
     t.boolean  "updated_by_manifest"
+    t.datetime "inserted_at"
   end
 
   create_table "current_studies", :id => false, :force => true do |t|
-    t.integer  "dont_use_id",                              :default => 0, :null => false
-    t.string   "uuid",                       :limit => 36,                :null => false
+    t.integer  "dont_use_id",                                  :default => 0, :null => false
+    t.string   "uuid",                           :limit => 36,                :null => false
     t.integer  "internal_id"
     t.string   "name"
     t.string   "reference_genome"
     t.boolean  "ethically_approved"
     t.string   "faculty_sponsor"
-    t.string   "state",                      :limit => 50
-    t.string   "study_type",                 :limit => 50
+    t.string   "state",                          :limit => 50
+    t.string   "study_type",                     :limit => 50
     t.text     "abstract"
     t.string   "abbreviation"
-    t.string   "accession_number",           :limit => 50
+    t.string   "accession_number",               :limit => 50
     t.text     "description"
     t.boolean  "is_current"
     t.datetime "checked_at"
@@ -610,6 +639,9 @@ ActiveRecord::Schema.define(:version => 20110412104421) do
     t.string   "ena_project_id"
     t.string   "study_title"
     t.string   "study_visibility"
+    t.string   "ega_dac_accession_number"
+    t.string   "array_express_accession_number"
+    t.string   "ega_policy_accession_number"
     t.datetime "inserted_at"
   end
 
@@ -625,6 +657,7 @@ ActiveRecord::Schema.define(:version => 20110412104421) do
     t.datetime "checked_at"
     t.datetime "last_updated"
     t.datetime "created"
+    t.datetime "inserted_at"
   end
 
   create_table "current_tag_instances", :id => false, :force => true do |t|
@@ -646,6 +679,7 @@ ActiveRecord::Schema.define(:version => 20110412104421) do
     t.datetime "checked_at"
     t.datetime "last_updated"
     t.datetime "created"
+    t.datetime "inserted_at"
   end
 
   create_table "current_tags", :id => false, :force => true do |t|
@@ -661,6 +695,7 @@ ActiveRecord::Schema.define(:version => 20110412104421) do
     t.datetime "checked_at"
     t.datetime "last_updated"
     t.datetime "created"
+    t.datetime "inserted_at"
   end
 
   create_table "current_wells", :id => false, :force => true do |t|
@@ -691,7 +726,23 @@ ActiveRecord::Schema.define(:version => 20110412104421) do
     t.string   "gender_markers",          :limit => 8
     t.string   "genotyping_status"
     t.string   "genotyping_snp_plate_id"
+    t.datetime "inserted_at"
   end
+
+  create_table "delayed_jobs", :force => true do |t|
+    t.integer  "priority",   :default => 0
+    t.integer  "attempts",   :default => 0
+    t.text     "handler"
+    t.text     "last_error"
+    t.datetime "run_at"
+    t.datetime "locked_at"
+    t.datetime "failed_at"
+    t.string   "locked_by"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
 
   create_table "events", :primary_key => "dont_use_id", :force => true do |t|
     t.string   "uuid",               :limit => 36, :null => false
@@ -712,19 +763,40 @@ ActiveRecord::Schema.define(:version => 20110412104421) do
     t.datetime "checked_at"
     t.datetime "last_updated"
     t.datetime "created"
+    t.datetime "inserted_at"
   end
 
+  add_index "events", ["actioned"], :name => "index_events_on_actioned"
   add_index "events", ["checked_at"], :name => "index_events_on_checked_at"
   add_index "events", ["created"], :name => "index_events_on_created"
+  add_index "events", ["created_by"], :name => "index_events_on_created_by"
+  add_index "events", ["descriptor_key"], :name => "index_events_on_descriptor_key"
   add_index "events", ["identifier"], :name => "index_events_on_identifier"
   add_index "events", ["internal_id"], :name => "index_events_on_internal_id"
   add_index "events", ["is_current"], :name => "index_events_on_is_current"
   add_index "events", ["last_updated"], :name => "index_events_on_last_updated"
+  add_index "events", ["location"], :name => "index_events_on_location"
   add_index "events", ["message"], :name => "index_events_on_message"
+  add_index "events", ["of_interest_to"], :name => "index_events_on_of_interest_to"
   add_index "events", ["source_internal_id"], :name => "index_events_on_source_internal_id"
+  add_index "events", ["source_type"], :name => "index_events_on_source_type"
   add_index "events", ["source_uuid"], :name => "index_events_on_source_uuid"
   add_index "events", ["state"], :name => "index_events_on_state"
   add_index "events", ["uuid"], :name => "index_events_on_uuid"
+
+  create_table "lane_allocation", :id => false, :force => true do |t|
+    t.text     "cost_code",                              :null => false
+    t.text     "budget_division",                        :null => false
+    t.integer  "library_tubes",             :limit => 2
+    t.integer  "multiplexed_library_tubes", :limit => 2
+    t.integer  "37",                        :limit => 2
+    t.integer  "54",                        :limit => 2
+    t.integer  "76",                        :limit => 2
+    t.integer  "108",                       :limit => 2
+    t.datetime "valid_from",                             :null => false
+    t.datetime "valid_to",                               :null => false
+    t.datetime "inserted_at"
+  end
 
   create_table "lanes", :primary_key => "dont_use_id", :force => true do |t|
     t.string   "uuid",                    :limit => 36, :null => false
@@ -741,17 +813,22 @@ ActiveRecord::Schema.define(:version => 20110412104421) do
     t.datetime "checked_at"
     t.datetime "last_updated"
     t.datetime "created"
+    t.datetime "inserted_at"
   end
 
   add_index "lanes", ["barcode"], :name => "index_lanes_on_barcode"
+  add_index "lanes", ["barcode_prefix"], :name => "index_lanes_on_barcode_prefix"
   add_index "lanes", ["checked_at"], :name => "index_lanes_on_checked_at"
+  add_index "lanes", ["closed"], :name => "index_lanes_on_closed"
   add_index "lanes", ["created"], :name => "index_lanes_on_created"
   add_index "lanes", ["external_release"], :name => "index_lanes_on_external_release"
   add_index "lanes", ["internal_id"], :name => "index_lanes_on_internal_id"
   add_index "lanes", ["is_current"], :name => "index_lanes_on_is_current"
   add_index "lanes", ["last_updated"], :name => "index_lanes_on_last_updated"
   add_index "lanes", ["name"], :name => "index_lanes_on_name"
+  add_index "lanes", ["scanned_in_date"], :name => "index_lanes_on_scanned_in_date"
   add_index "lanes", ["state"], :name => "index_lanes_on_state"
+  add_index "lanes", ["two_dimensional_barcode"], :name => "index_lanes_on_two_dimensional_barcode"
   add_index "lanes", ["uuid"], :name => "index_lanes_on_uuid"
 
   create_table "library_tubes", :primary_key => "dont_use_id", :force => true do |t|
@@ -786,11 +863,16 @@ ActiveRecord::Schema.define(:version => 20110412104421) do
     t.datetime "last_updated"
     t.datetime "created"
     t.string   "public_name"
+    t.datetime "inserted_at"
   end
 
   add_index "library_tubes", ["barcode"], :name => "index_library_tubes_on_barcode"
+  add_index "library_tubes", ["barcode_prefix"], :name => "index_library_tubes_on_barcode_prefix"
   add_index "library_tubes", ["checked_at"], :name => "index_library_tubes_on_checked_at"
+  add_index "library_tubes", ["closed"], :name => "index_library_tubes_on_closed"
+  add_index "library_tubes", ["concentration"], :name => "index_library_tubes_on_concentration"
   add_index "library_tubes", ["created"], :name => "index_library_tubes_on_created"
+  add_index "library_tubes", ["expected_sequence"], :name => "index_library_tubes_on_expected_sequence"
   add_index "library_tubes", ["fragment_size_required_from"], :name => "index_library_tubes_on_fragment_size_required_from"
   add_index "library_tubes", ["fragment_size_required_to"], :name => "index_library_tubes_on_fragment_size_required_to"
   add_index "library_tubes", ["internal_id"], :name => "index_library_tubes_on_internal_id"
@@ -806,11 +888,14 @@ ActiveRecord::Schema.define(:version => 20110412104421) do
   add_index "library_tubes", ["source_request_uuid"], :name => "index_library_tubes_on_source_request_uuid"
   add_index "library_tubes", ["state"], :name => "index_library_tubes_on_state"
   add_index "library_tubes", ["tag_group_internal_id"], :name => "index_library_tubes_on_tag_group_internal_id"
+  add_index "library_tubes", ["tag_group_name"], :name => "index_library_tubes_on_tag_group_name"
   add_index "library_tubes", ["tag_group_uuid"], :name => "index_library_tubes_on_tag_group_uuid"
   add_index "library_tubes", ["tag_internal_id"], :name => "index_library_tubes_on_tag_internal_id"
   add_index "library_tubes", ["tag_map_id"], :name => "index_library_tubes_on_tag_map_id"
   add_index "library_tubes", ["tag_uuid"], :name => "index_library_tubes_on_tag_uuid"
+  add_index "library_tubes", ["two_dimensional_barcode"], :name => "index_library_tubes_on_two_dimensional_barcode"
   add_index "library_tubes", ["uuid"], :name => "index_library_tubes_on_uuid"
+  add_index "library_tubes", ["volume"], :name => "index_library_tubes_on_volume"
 
   create_table "multiplexed_library_tubes", :primary_key => "dont_use_id", :force => true do |t|
     t.string   "uuid",                    :limit => 36,                               :null => false
@@ -829,17 +914,134 @@ ActiveRecord::Schema.define(:version => 20110412104421) do
     t.datetime "last_updated"
     t.datetime "created"
     t.string   "public_name"
+    t.datetime "inserted_at"
   end
 
   add_index "multiplexed_library_tubes", ["barcode"], :name => "index_multiplexed_library_tubes_on_barcode"
+  add_index "multiplexed_library_tubes", ["barcode_prefix"], :name => "index_multiplexed_library_tubes_on_barcode_prefix"
   add_index "multiplexed_library_tubes", ["checked_at"], :name => "index_multiplexed_library_tubes_on_checked_at"
+  add_index "multiplexed_library_tubes", ["closed"], :name => "index_multiplexed_library_tubes_on_closed"
+  add_index "multiplexed_library_tubes", ["concentration"], :name => "index_multiplexed_library_tubes_on_concentration"
   add_index "multiplexed_library_tubes", ["created"], :name => "index_multiplexed_library_tubes_on_created"
   add_index "multiplexed_library_tubes", ["internal_id"], :name => "index_multiplexed_library_tubes_on_internal_id"
   add_index "multiplexed_library_tubes", ["is_current"], :name => "index_multiplexed_library_tubes_on_is_current"
   add_index "multiplexed_library_tubes", ["last_updated"], :name => "index_multiplexed_library_tubes_on_last_updated"
+  add_index "multiplexed_library_tubes", ["name"], :name => "index_multiplexed_library_tubes_on_name"
   add_index "multiplexed_library_tubes", ["scanned_in_date"], :name => "index_multiplexed_library_tubes_on_scanned_in_date"
   add_index "multiplexed_library_tubes", ["state"], :name => "index_multiplexed_library_tubes_on_state"
+  add_index "multiplexed_library_tubes", ["two_dimensional_barcode"], :name => "index_multiplexed_library_tubes_on_two_dimensional_barcode"
   add_index "multiplexed_library_tubes", ["uuid"], :name => "index_multiplexed_library_tubes_on_uuid"
+  add_index "multiplexed_library_tubes", ["volume"], :name => "index_multiplexed_library_tubes_on_volume"
+
+  create_table "npg_information", :primary_key => "id_npg_information", :force => true do |t|
+    t.integer  "batch_id",                               :limit => 8,                      :null => false
+    t.integer  "id_run",                                 :limit => 8,                      :null => false
+    t.integer  "position",                                                                 :null => false
+    t.integer  "id_run_pair",                            :limit => 8
+    t.datetime "run_complete"
+    t.integer  "cycles",                                                                   :null => false
+    t.integer  "cluster_count",                          :limit => 8
+    t.integer  "pf_bases",                               :limit => 8
+    t.boolean  "is_dev",                                                :default => false, :null => false
+    t.boolean  "has_two_runfolders",                                    :default => false, :null => false
+    t.boolean  "paired_read",                                           :default => false, :null => false
+    t.boolean  "cancelled",                                             :default => false, :null => false
+    t.string   "instrument_name",                        :limit => 32
+    t.string   "instrument_model",                       :limit => 64
+    t.boolean  "manual_qc"
+    t.integer  "clusters_raw",                           :limit => 8
+    t.float    "raw_cluster_density",                    :limit => 12
+    t.float    "pf_cluster_density",                     :limit => 12
+    t.integer  "insert_size_quartile1",                  :limit => 2
+    t.integer  "insert_size_quartile3",                  :limit => 2
+    t.integer  "insert_size_median",                     :limit => 2
+    t.float    "gc_percent_forward_read",                :limit => 4
+    t.float    "gc_percent_reverse_read",                :limit => 4
+    t.float    "sequence_mismatch_percent_forward_read", :limit => 4
+    t.float    "sequence_mismatch_percent_reverse_read", :limit => 4
+    t.float    "adapters_percent_forward_read",          :limit => 4
+    t.float    "adapters_percent_reverse_read",          :limit => 4
+    t.string   "contaminants_scan_hit1_name",            :limit => 50
+    t.float    "contaminants_scan_hit1_score",           :limit => 6
+    t.string   "contaminants_scan_hit2_name",            :limit => 50
+    t.float    "contaminants_scan_hit2_score",           :limit => 6
+    t.string   "ref_match1_name",                        :limit => 100
+    t.float    "ref_match1_percent",                     :limit => 5
+    t.string   "ref_match2_name",                        :limit => 100
+    t.float    "ref_match2_percent",                     :limit => 5
+    t.datetime "run_pending"
+    t.datetime "qc_complete"
+    t.float    "tags_decode_percent",                    :limit => 5
+    t.integer  "asset_id"
+    t.string   "asset_name"
+    t.string   "asset_type"
+    t.integer  "sample_id"
+    t.integer  "request_id"
+    t.string   "lane_type",                              :limit => 20
+    t.integer  "q20_yield_kb_forward_read"
+    t.integer  "q20_yield_kb_reverse_read"
+  end
+
+  add_index "npg_information", ["asset_id"], :name => "npg_asset_id_index"
+  add_index "npg_information", ["asset_name"], :name => "npg_asset_name_index"
+  add_index "npg_information", ["asset_type"], :name => "npg_asset_type_index"
+  add_index "npg_information", ["batch_id", "id_run", "position"], :name => "batch_run_pos", :unique => true
+  add_index "npg_information", ["id_run", "position"], :name => "id_run_position", :unique => true
+  add_index "npg_information", ["request_id"], :name => "npg_request_id_index"
+  add_index "npg_information", ["sample_id"], :name => "npg_sample_id_index"
+
+  create_table "npg_plex_information", :id => false, :force => true do |t|
+    t.integer "batch_id",                               :limit => 8,   :null => false
+    t.integer "id_run",                                 :limit => 8,   :null => false
+    t.integer "position",                                              :null => false
+    t.integer "tag_index",                              :limit => 2,   :null => false
+    t.integer "asset_id"
+    t.string  "asset_name"
+    t.integer "sample_id"
+    t.integer "insert_size_quartile1",                  :limit => 2
+    t.integer "insert_size_quartile3",                  :limit => 2
+    t.integer "insert_size_median",                     :limit => 2
+    t.float   "gc_percent_forward_read",                :limit => 4
+    t.float   "gc_percent_reverse_read",                :limit => 4
+    t.float   "sequence_mismatch_percent_forward_read", :limit => 4
+    t.float   "sequence_mismatch_percent_reverse_read", :limit => 4
+    t.float   "adapters_percent_forward_read",          :limit => 4
+    t.float   "adapters_percent_reverse_read",          :limit => 4
+    t.string  "contaminants_scan_hit1_name",            :limit => 50
+    t.float   "contaminants_scan_hit1_score",           :limit => 6
+    t.string  "contaminants_scan_hit2_name",            :limit => 50
+    t.float   "contaminants_scan_hit2_score",           :limit => 6
+    t.string  "ref_match1_name",                        :limit => 100
+    t.float   "ref_match1_percent",                     :limit => 5
+    t.string  "ref_match2_name",                        :limit => 100
+    t.float   "ref_match2_percent",                     :limit => 5
+    t.string  "tag_sequence"
+    t.float   "tag_decode_percent",                     :limit => 5
+    t.integer "tag_decode_count"
+    t.integer "q20_yield_kb_forward_read"
+    t.integer "q20_yield_kb_reverse_read"
+  end
+
+  add_index "npg_plex_information", ["asset_id"], :name => "npg_plex_asset_id_index"
+  add_index "npg_plex_information", ["asset_name"], :name => "npg_plex_asset_name_index"
+  add_index "npg_plex_information", ["sample_id"], :name => "npg_plex_sample_id_index"
+
+  create_table "npg_run_status", :primary_key => "id_run_status", :force => true do |t|
+    t.integer  "id_run",             :limit => 8, :null => false
+    t.datetime "date"
+    t.integer  "id_run_status_dict",              :null => false
+    t.boolean  "iscurrent",                       :null => false
+  end
+
+  add_index "npg_run_status", ["id_run", "date", "id_run_status_dict"], :name => "npg_run_date_state"
+  add_index "npg_run_status", ["id_run_status_dict"], :name => "npg_id_rsd"
+  add_index "npg_run_status", ["iscurrent"], :name => "npg_rs_iscurrent"
+
+  create_table "npg_run_status_dict", :primary_key => "id_run_status_dict", :force => true do |t|
+    t.string "description", :limit => 64, :default => "", :null => false
+  end
+
+  add_index "npg_run_status_dict", ["description"], :name => "npg_status_description"
 
   create_table "plate_purposes", :primary_key => "dont_use_id", :force => true do |t|
     t.string   "uuid",         :limit => 36, :null => false
@@ -849,10 +1051,12 @@ ActiveRecord::Schema.define(:version => 20110412104421) do
     t.datetime "checked_at"
     t.datetime "last_updated"
     t.datetime "created"
+    t.datetime "inserted_at"
   end
 
   add_index "plate_purposes", ["checked_at"], :name => "index_plate_purposes_on_checked_at"
   add_index "plate_purposes", ["created"], :name => "index_plate_purposes_on_created"
+  add_index "plate_purposes", ["inserted_at"], :name => "index_plate_purposes_on_inserted_at"
   add_index "plate_purposes", ["internal_id"], :name => "index_plate_purposes_on_internal_id"
   add_index "plate_purposes", ["is_current"], :name => "index_plate_purposes_on_is_current"
   add_index "plate_purposes", ["last_updated"], :name => "index_plate_purposes_on_last_updated"
@@ -875,6 +1079,7 @@ ActiveRecord::Schema.define(:version => 20110412104421) do
     t.string   "plate_purpose_uuid",        :limit => 36
     t.string   "infinium_barcode"
     t.string   "location"
+    t.datetime "inserted_at"
   end
 
   add_index "plates", ["barcode"], :name => "index_plates_on_barcode"
@@ -882,12 +1087,15 @@ ActiveRecord::Schema.define(:version => 20110412104421) do
   add_index "plates", ["checked_at"], :name => "index_plates_on_checked_at"
   add_index "plates", ["created"], :name => "index_plates_on_created"
   add_index "plates", ["infinium_barcode"], :name => "index_plates_on_infinium_barcode"
+  add_index "plates", ["inserted_at"], :name => "index_plates_on_inserted_at"
   add_index "plates", ["internal_id"], :name => "index_plates_on_internal_id"
   add_index "plates", ["is_current"], :name => "index_plates_on_is_current"
   add_index "plates", ["last_updated"], :name => "index_plates_on_last_updated"
   add_index "plates", ["name"], :name => "index_plates_on_name"
   add_index "plates", ["plate_purpose_internal_id"], :name => "index_plates_on_plate_purpose_internal_id"
+  add_index "plates", ["plate_purpose_name"], :name => "index_plates_on_plate_purpose_name"
   add_index "plates", ["plate_purpose_uuid"], :name => "index_plates_on_plate_purpose_uuid"
+  add_index "plates", ["plate_size"], :name => "index_plates_on_plate_size"
   add_index "plates", ["uuid"], :name => "index_plates_on_uuid"
 
   create_table "projects", :primary_key => "dont_use_id", :force => true do |t|
@@ -908,6 +1116,7 @@ ActiveRecord::Schema.define(:version => 20110412104421) do
     t.datetime "checked_at"
     t.datetime "last_updated"
     t.datetime "created"
+    t.datetime "inserted_at"
   end
 
   add_index "projects", ["approved"], :name => "index_projects_on_approved"
@@ -944,6 +1153,7 @@ ActiveRecord::Schema.define(:version => 20110412104421) do
     t.datetime "last_updated"
     t.datetime "created"
     t.string   "public_name"
+    t.datetime "inserted_at"
   end
 
   add_index "pulldown_multiplexed_library_tubes", ["created"], :name => "index_pulldown_multiplexed_library_tubes_on_created"
@@ -963,6 +1173,7 @@ ActiveRecord::Schema.define(:version => 20110412104421) do
     t.datetime "checked_at"
     t.datetime "last_updated"
     t.datetime "created"
+    t.datetime "inserted_at"
   end
 
   add_index "quotas", ["checked_at"], :name => "index_quotas_on_checked_at"
@@ -971,6 +1182,7 @@ ActiveRecord::Schema.define(:version => 20110412104421) do
   add_index "quotas", ["is_current"], :name => "index_quotas_on_is_current"
   add_index "quotas", ["last_updated"], :name => "index_quotas_on_last_updated"
   add_index "quotas", ["project_internal_id"], :name => "index_quotas_on_project_internal_id"
+  add_index "quotas", ["project_name"], :name => "index_quotas_on_project_name"
   add_index "quotas", ["project_uuid"], :name => "index_quotas_on_project_uuid"
   add_index "quotas", ["quota_limit"], :name => "index_quotas_on_quota_limit"
   add_index "quotas", ["request_type"], :name => "index_quotas_on_request_type"
@@ -1019,25 +1231,34 @@ ActiveRecord::Schema.define(:version => 20110412104421) do
     t.string   "state",                                :limit => 40
     t.integer  "priority"
     t.string   "user"
+    t.datetime "inserted_at"
   end
 
   add_index "requests", ["checked_at"], :name => "index_requests_on_checked_at"
   add_index "requests", ["created"], :name => "index_requests_on_created"
+  add_index "requests", ["fragment_size_from"], :name => "index_requests_on_fragment_size_from"
+  add_index "requests", ["fragment_size_to"], :name => "index_requests_on_fragment_size_to"
   add_index "requests", ["inserted_at"], :name => "index_requests_on_inserted_at"
   add_index "requests", ["internal_id"], :name => "index_requests_on_internal_id"
   add_index "requests", ["is_current"], :name => "index_requests_on_is_current"
+  add_index "requests", ["is_current"], :name => "study_id_is_current"
   add_index "requests", ["last_updated"], :name => "index_requests_on_last_updated"
   add_index "requests", ["library_type"], :name => "index_requests_on_library_type"
   add_index "requests", ["priority"], :name => "index_requests_on_priority"
   add_index "requests", ["project_internal_id"], :name => "index_requests_on_project_internal_id"
   add_index "requests", ["project_name"], :name => "index_requests_on_project_name"
   add_index "requests", ["project_uuid"], :name => "index_requests_on_project_uuid"
+  add_index "requests", ["read_length"], :name => "index_requests_on_read_length"
   add_index "requests", ["request_type"], :name => "index_requests_on_request_type"
   add_index "requests", ["source_asset_barcode"], :name => "index_requests_on_source_asset_barcode"
+  add_index "requests", ["source_asset_barcode_prefix"], :name => "index_requests_on_source_asset_barcode_prefix"
+  add_index "requests", ["source_asset_closed"], :name => "index_requests_on_source_asset_closed"
   add_index "requests", ["source_asset_internal_id"], :name => "index_requests_on_source_asset_internal_id"
+  add_index "requests", ["source_asset_name"], :name => "index_requests_on_source_asset_name"
   add_index "requests", ["source_asset_sample_internal_id"], :name => "index_requests_on_source_asset_sample_internal_id"
   add_index "requests", ["source_asset_sample_uuid"], :name => "index_requests_on_source_asset_sample_uuid"
   add_index "requests", ["source_asset_state"], :name => "index_requests_on_source_asset_state"
+  add_index "requests", ["source_asset_two_dimensional_barcode"], :name => "index_requests_on_source_asset_two_dimensional_barcode"
   add_index "requests", ["source_asset_type"], :name => "index_requests_on_source_asset_type"
   add_index "requests", ["source_asset_uuid"], :name => "index_requests_on_source_asset_uuid"
   add_index "requests", ["state"], :name => "index_requests_on_state"
@@ -1045,10 +1266,14 @@ ActiveRecord::Schema.define(:version => 20110412104421) do
   add_index "requests", ["study_name"], :name => "index_requests_on_study_name"
   add_index "requests", ["study_uuid"], :name => "index_requests_on_study_uuid"
   add_index "requests", ["target_asset_barcode"], :name => "index_requests_on_target_asset_barcode"
+  add_index "requests", ["target_asset_barcode_prefix"], :name => "index_requests_on_target_asset_barcode_prefix"
+  add_index "requests", ["target_asset_closed"], :name => "index_requests_on_target_asset_closed"
   add_index "requests", ["target_asset_internal_id"], :name => "index_requests_on_target_asset_internal_id"
+  add_index "requests", ["target_asset_name"], :name => "index_requests_on_target_asset_name"
   add_index "requests", ["target_asset_sample_internal_id"], :name => "index_requests_on_target_asset_sample_internal_id"
   add_index "requests", ["target_asset_sample_uuid"], :name => "index_requests_on_target_asset_sample_uuid"
   add_index "requests", ["target_asset_state"], :name => "index_requests_on_target_asset_state"
+  add_index "requests", ["target_asset_two_dimensional_barcode"], :name => "index_requests_on_target_asset_two_dimensional_barcode"
   add_index "requests", ["target_asset_type"], :name => "index_requests_on_target_asset_type"
   add_index "requests", ["target_asset_uuid"], :name => "index_requests_on_target_asset_uuid"
   add_index "requests", ["user"], :name => "index_requests_on_user"
@@ -1073,10 +1298,14 @@ ActiveRecord::Schema.define(:version => 20110412104421) do
     t.datetime "last_updated"
     t.datetime "created"
     t.string   "barcode_prefix",          :limit => 2
+    t.datetime "inserted_at"
   end
 
   add_index "sample_tubes", ["barcode"], :name => "index_sample_tubes_on_barcode"
+  add_index "sample_tubes", ["barcode_prefix"], :name => "index_sample_tubes_on_barcode_prefix"
   add_index "sample_tubes", ["checked_at"], :name => "index_sample_tubes_on_checked_at"
+  add_index "sample_tubes", ["closed"], :name => "index_sample_tubes_on_closed"
+  add_index "sample_tubes", ["concentration"], :name => "index_sample_tubes_on_concentration"
   add_index "sample_tubes", ["created"], :name => "index_sample_tubes_on_created"
   add_index "sample_tubes", ["internal_id"], :name => "index_sample_tubes_on_internal_id"
   add_index "sample_tubes", ["is_current"], :name => "index_sample_tubes_on_is_current"
@@ -1087,7 +1316,9 @@ ActiveRecord::Schema.define(:version => 20110412104421) do
   add_index "sample_tubes", ["sample_uuid"], :name => "index_sample_tubes_on_sample_uuid"
   add_index "sample_tubes", ["scanned_in_date"], :name => "index_sample_tubes_on_scanned_in_date"
   add_index "sample_tubes", ["state"], :name => "index_sample_tubes_on_state"
+  add_index "sample_tubes", ["two_dimensional_barcode"], :name => "index_sample_tubes_on_two_dimensional_barcode"
   add_index "sample_tubes", ["uuid"], :name => "index_sample_tubes_on_uuid"
+  add_index "sample_tubes", ["volume"], :name => "index_sample_tubes_on_volume"
 
   create_table "samples", :primary_key => "dont_use_id", :force => true do |t|
     t.string   "uuid",                       :limit => 36, :null => false
@@ -1119,41 +1350,47 @@ ActiveRecord::Schema.define(:version => 20110412104421) do
     t.string   "sample_visibility"
     t.string   "strain"
     t.boolean  "updated_by_manifest"
+    t.datetime "inserted_at"
   end
 
   add_index "samples", ["accession_number"], :name => "index_samples_on_accession_number"
   add_index "samples", ["checked_at"], :name => "index_samples_on_checked_at"
   add_index "samples", ["cohort"], :name => "index_samples_on_cohort"
   add_index "samples", ["common_name"], :name => "index_samples_on_common_name"
+  add_index "samples", ["control"], :name => "index_samples_on_control"
   add_index "samples", ["country_of_origin"], :name => "index_samples_on_country_of_origin"
   add_index "samples", ["created"], :name => "index_samples_on_created"
   add_index "samples", ["empty_supplier_sample_name"], :name => "index_samples_on_empty_supplier_sample_name"
   add_index "samples", ["ethnicity"], :name => "index_samples_on_ethnicity"
+  add_index "samples", ["father"], :name => "index_samples_on_father"
   add_index "samples", ["gender"], :name => "index_samples_on_gender"
   add_index "samples", ["geographical_region"], :name => "index_samples_on_geographical_region"
+  add_index "samples", ["inserted_at"], :name => "index_samples_on_inserted_at"
   add_index "samples", ["internal_id"], :name => "index_samples_on_internal_id"
   add_index "samples", ["is_current"], :name => "index_samples_on_is_current"
   add_index "samples", ["last_updated"], :name => "index_samples_on_last_updated"
+  add_index "samples", ["mother"], :name => "index_samples_on_mother"
   add_index "samples", ["name"], :name => "index_samples_on_name"
   add_index "samples", ["organism"], :name => "index_samples_on_organism"
   add_index "samples", ["reference_genome"], :name => "index_samples_on_reference_genome"
+  add_index "samples", ["replicate"], :name => "index_samples_on_replicate"
   add_index "samples", ["sanger_sample_id"], :name => "index_samples_on_sanger_sample_id"
   add_index "samples", ["supplier_name"], :name => "index_samples_on_supplier_name"
   add_index "samples", ["taxon_id"], :name => "index_samples_on_taxon_id"
   add_index "samples", ["uuid"], :name => "index_samples_on_uuid"
 
   create_table "studies", :primary_key => "dont_use_id", :force => true do |t|
-    t.string   "uuid",                       :limit => 36, :null => false
+    t.string   "uuid",                           :limit => 36, :null => false
     t.integer  "internal_id"
     t.string   "name"
     t.string   "reference_genome"
     t.boolean  "ethically_approved"
     t.string   "faculty_sponsor"
-    t.string   "state",                      :limit => 50
-    t.string   "study_type",                 :limit => 50
+    t.string   "state",                          :limit => 50
+    t.string   "study_type",                     :limit => 50
     t.text     "abstract"
     t.string   "abbreviation"
-    t.string   "accession_number",           :limit => 50
+    t.string   "accession_number",               :limit => 50
     t.text     "description"
     t.boolean  "is_current"
     t.datetime "checked_at"
@@ -1166,6 +1403,9 @@ ActiveRecord::Schema.define(:version => 20110412104421) do
     t.string   "ena_project_id"
     t.string   "study_title"
     t.string   "study_visibility"
+    t.string   "ega_dac_accession_number"
+    t.string   "array_express_accession_number"
+    t.string   "ega_policy_accession_number"
     t.datetime "inserted_at"
   end
 
@@ -1195,38 +1435,19 @@ ActiveRecord::Schema.define(:version => 20110412104421) do
     t.datetime "checked_at"
     t.datetime "last_updated"
     t.datetime "created"
+    t.datetime "inserted_at"
   end
 
+  add_index "study_samples", ["checked_at"], :name => "index_study_samples_on_checked_at"
+  add_index "study_samples", ["created"], :name => "index_study_samples_on_created"
   add_index "study_samples", ["internal_id"], :name => "index_study_samples_on_internal_id"
   add_index "study_samples", ["is_current"], :name => "index_study_samples_on_is_current"
+  add_index "study_samples", ["last_updated"], :name => "index_study_samples_on_last_updated"
   add_index "study_samples", ["sample_internal_id"], :name => "index_study_samples_on_sample_internal_id"
   add_index "study_samples", ["sample_uuid"], :name => "index_study_samples_on_sample_uuid"
   add_index "study_samples", ["study_internal_id"], :name => "index_study_samples_on_study_internal_id"
   add_index "study_samples", ["study_uuid"], :name => "index_study_samples_on_study_uuid"
   add_index "study_samples", ["uuid"], :name => "index_study_samples_on_uuid"
-
-  create_table "submissions", :force => true do |t|
-    t.integer  "study_id"
-    t.integer  "workflow_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "state",            :limit => 20
-    t.string   "message"
-    t.integer  "user_id"
-    t.text     "item_options"
-    t.text     "request_types"
-    t.text     "request_options"
-    t.text     "assets"
-    t.text     "comments"
-    t.integer  "project_id"
-    t.string   "sti_type"
-    t.string   "template_name"
-    t.integer  "asset_group_id"
-    t.string   "asset_group_name"
-  end
-
-  add_index "submissions", ["state"], :name => "index_submissions_on_state"
-  add_index "submissions", ["study_id"], :name => "index_submissions_on_project_id"
 
   create_table "tag_instances", :primary_key => "dont_use_id", :force => true do |t|
     t.string   "uuid",                    :limit => 36, :null => false
@@ -1246,9 +1467,11 @@ ActiveRecord::Schema.define(:version => 20110412104421) do
     t.datetime "checked_at"
     t.datetime "last_updated"
     t.datetime "created"
+    t.datetime "inserted_at"
   end
 
   add_index "tag_instances", ["barcode"], :name => "index_tag_instances_on_barcode"
+  add_index "tag_instances", ["barcode_prefix"], :name => "index_tag_instances_on_barcode_prefix"
   add_index "tag_instances", ["checked_at"], :name => "index_tag_instances_on_checked_at"
   add_index "tag_instances", ["created"], :name => "index_tag_instances_on_created"
   add_index "tag_instances", ["internal_id"], :name => "index_tag_instances_on_internal_id"
@@ -1262,6 +1485,7 @@ ActiveRecord::Schema.define(:version => 20110412104421) do
   add_index "tag_instances", ["tag_internal_id"], :name => "index_tag_instances_on_tag_internal_id"
   add_index "tag_instances", ["tag_map_id"], :name => "index_tag_instances_on_tag_map_id"
   add_index "tag_instances", ["tag_uuid"], :name => "index_tag_instances_on_tag_uuid"
+  add_index "tag_instances", ["two_dimensional_barcode"], :name => "index_tag_instances_on_two_dimensional_barcode"
   add_index "tag_instances", ["uuid"], :name => "index_tag_instances_on_uuid"
 
   create_table "tags", :primary_key => "dont_use_id", :force => true do |t|
@@ -1276,6 +1500,7 @@ ActiveRecord::Schema.define(:version => 20110412104421) do
     t.datetime "checked_at"
     t.datetime "last_updated"
     t.datetime "created"
+    t.datetime "inserted_at"
   end
 
   add_index "tags", ["checked_at"], :name => "index_tags_on_checked_at"
@@ -1301,8 +1526,12 @@ ActiveRecord::Schema.define(:version => 20110412104421) do
     t.boolean  "deleted"
   end
 
+  add_index "uuid_objects", ["checked_at"], :name => "index_uuid_objects_on_checked_at"
+  add_index "uuid_objects", ["created"], :name => "index_uuid_objects_on_created"
   add_index "uuid_objects", ["internal_id"], :name => "index_uuid_objects_on_internal_id"
+  add_index "uuid_objects", ["last_updated"], :name => "index_uuid_objects_on_last_updated"
   add_index "uuid_objects", ["name"], :name => "index_uuid_objects_on_name"
+  add_index "uuid_objects", ["object_name"], :name => "index_uuid_objects_on_object_name"
   add_index "uuid_objects", ["uuid"], :name => "index_uuid_objects_on_uuid", :unique => true
 
   create_table "wells", :primary_key => "dont_use_id", :force => true do |t|
@@ -1332,16 +1561,25 @@ ActiveRecord::Schema.define(:version => 20110412104421) do
     t.string   "gender_markers",          :limit => 8
     t.string   "genotyping_status"
     t.string   "genotyping_snp_plate_id"
+    t.datetime "inserted_at"
   end
 
+  add_index "wells", ["buffer_volume"], :name => "index_wells_on_buffer_volume"
   add_index "wells", ["checked_at"], :name => "index_wells_on_checked_at"
+  add_index "wells", ["concentration"], :name => "index_wells_on_concentration"
   add_index "wells", ["created"], :name => "index_wells_on_created"
+  add_index "wells", ["current_volume"], :name => "index_wells_on_current_volume"
+  add_index "wells", ["gel_pass"], :name => "index_wells_on_gel_pass"
   add_index "wells", ["inserted_at"], :name => "index_wells_on_inserted_at"
   add_index "wells", ["internal_id"], :name => "index_wells_on_internal_id"
   add_index "wells", ["is_current"], :name => "index_wells_on_is_current"
   add_index "wells", ["last_updated"], :name => "index_wells_on_last_updated"
   add_index "wells", ["map"], :name => "index_wells_on_map"
+  add_index "wells", ["name"], :name => "index_wells_on_name"
+  add_index "wells", ["picked_volume"], :name => "index_wells_on_picked_volume"
+  add_index "wells", ["pico_pass"], :name => "index_wells_on_pico_pass"
   add_index "wells", ["plate_barcode"], :name => "index_wells_on_plate_barcode"
+  add_index "wells", ["requested_volume"], :name => "index_wells_on_requested_volume"
   add_index "wells", ["sample_internal_id"], :name => "index_wells_on_sample_internal_id"
   add_index "wells", ["sample_name"], :name => "index_wells_on_sample_name"
   add_index "wells", ["sample_uuid"], :name => "index_wells_on_sample_uuid"
