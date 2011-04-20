@@ -79,6 +79,16 @@ Given /^the remote "([^"]*)" with UUID "([^"]*)" returns this JSON:$/ do |resour
 end
 
 
+Given /^I have a current "([^"]*)" with UUID "([^"]*)"$/ do |resource_name, uuid|
+  eval(resource_name).new(:uuid => uuid, :is_current => true).save(false)
+end
+
+Then /^there should be (\d+) current rows? for UUID "([^"]*)" in the (Well) table$/ do |expected_current, uuid, resource_name|
+  actual_current = eval(resource_name).find_all_by_uuid_and_is_current(uuid, true).count
+  assert_equal expected_current.to_i, actual_current
+end
+
+
 Then /^the ([^"]*) table should have (\d+) row with UUID "([^"]*)"$/ do |object_name, num_rows, uuid|
   object_count = eval(object_name).find_all_by_uuid(uuid).count
   assert_equal num_rows.to_i, object_count

@@ -5,7 +5,8 @@ module ResourceTools
       alias_attribute :id, :dont_use_id
       before_create :set_checked_at
       before_create :set_is_current
-
+      validate :unique_is_current_for_uuid, :on => :create
+      
       def set_checked_at
         self.checked_at = correct_current_time
       end
@@ -13,7 +14,7 @@ module ResourceTools
       def correct_current_time
         self.class.default_timezone == :utc ? Time.now.utc : Time.now
       end
-      
+
       def self.correct_current_time
         self.default_timezone == :utc ? Time.now.utc : Time.now
       end
@@ -22,19 +23,32 @@ module ResourceTools
         self.is_current = true
       end
 
+      def self.fix_duplicate_is_current_and_return_one(uuid)
+        all_is_current_objects = find_all_by_uuid_and_is_current(uuid,true)
+        current_object = all_is_current_objects.shift
+        if all_is_current_objects.size >= 1
+          all_is_current_objects.each do |duplicate_current_object|
+            duplicate_current_object.is_current = false
+            duplicate_current_object.save(false)
+          end
+        end
+        
+        current_object
+      end
+
       def self.create_or_update(resource_object)
         remote_values = parse_resource_object(resource_object)
-        #FIXME: Inconsistency might occur if there is there might be more than one uuid with is_current set
-        local_object = find_by_uuid_and_is_current(remote_values[:uuid],true)
+        local_object = fix_duplicate_is_current_and_return_one(remote_values[:uuid])
         if local_object
           if local_object.updated_values?(remote_values)
             local_object.is_current = false
+            local_object.save!
             remote_values[:inserted_at] = self.correct_current_time
             create(remote_values)
           else
             local_object.set_checked_at
+            local_object.save!
           end
-          local_object.save!
           local_object
         else
           remote_values[:inserted_at] = self.correct_current_time
@@ -81,6 +95,11 @@ module ResourceTools
       end
 
 
+    end
+    
+    
+    def unique_is_current_for_uuid
+      errors.add(:uuid, 'Duplicate current UUID') if self.class.find_all_by_uuid_and_is_current(self.uuid,true).count > 1
     end
   end
 end
