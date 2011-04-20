@@ -5,9 +5,17 @@ module ResourceTools
       alias_attribute :id, :dont_use_id
       before_create :set_checked_at
       before_create :set_is_current
-      
+
       def set_checked_at
-        self.checked_at = self.class.default_timezone == :utc ? Time.now.utc : Time.now
+        self.checked_at = correct_current_time
+      end
+
+      def correct_current_time
+        self.class.default_timezone == :utc ? Time.now.utc : Time.now
+      end
+      
+      def self.correct_current_time
+        self.default_timezone == :utc ? Time.now.utc : Time.now
       end
 
       def set_is_current
@@ -21,6 +29,7 @@ module ResourceTools
         if local_object
           if local_object.updated_values?(remote_values)
             local_object.is_current = false
+            remote_values[:inserted_at] = self.correct_current_time
             create(remote_values)
           else
             local_object.set_checked_at
@@ -28,6 +37,7 @@ module ResourceTools
           local_object.save!
           local_object
         else
+          remote_values[:inserted_at] = self.correct_current_time
           create(remote_values)
         end
       end
@@ -41,7 +51,7 @@ module ResourceTools
 
         false
       end
-      
+
       def self.parse_resource_object(resource_object)
         lc_class_name = self.model_name.underscore
         return {} if resource_object.nil? || resource_object.send("#{lc_class_name}").nil?
@@ -50,12 +60,12 @@ module ResourceTools
           next if resource_object.send(lc_class_name).attributes[external_name.to_s].nil?
           translated_resource[internal_name] = resource_object.send(lc_class_name).send(external_name)
         end
-        
+
         link_resources(resource_object)
         translated_resource
       end
-      
-      
+
+
     end
   end
 end
