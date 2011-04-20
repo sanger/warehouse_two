@@ -23,6 +23,9 @@ Feature: Update Studies
             "accession_number": "",
             "contaminated_human_dna": "No",
             "description": "xxx",
+            "array_express_accession_number": "AE111",
+            "ega_policy_accession_number": "EGA222",
+            "ega_dac_accession_number": "DAC333",
             "samples": "http://localhost:3000/0_5/studies/11111111-1111-1111-1111-111111111111/samples",
             "data_release_sort_of_study": "genomic sequencing",
             "state": "active"
@@ -31,22 +34,26 @@ Feature: Update Studies
       """
     When I connect to the "Study" resource and save the data
     Then Study "11111111-1111-1111-1111-111111111111" in the warehouse should contain:
-      | reference_genome           | reference                            |
-      | study_type                 | sequencing                           |
-      | name                       | ABC                                  |
-      | ethically_approved         | false                                |
-      | created                    | 2011-01-20 15:39:11 UTC              |
-      | data_release_strategy      | open                                 |
-      | last_updated               | 2011-02-16 10:10:55 UTC              |
-      | uuid                       | 11111111-1111-1111-1111-111111111111 |
-      | abstract                   | some abstract                        |
-      | abbreviation               | 1726STDY                             |
-      | contains_human_dna         | No                                   |
-      | accession_number           |                                      |
-      | contaminated_human_dna     | No                                   |
-      | description                | xxx                                  |
-      | data_release_sort_of_study | genomic sequencing                   |
-      | state                      | active                               |
+      | reference_genome               | reference                            |
+      | study_type                     | sequencing                           |
+      | name                           | ABC                                  |
+      | ethically_approved             | false                                |
+      | created                        | 2011-01-20 15:39:11 UTC              |
+      | data_release_strategy          | open                                 |
+      | last_updated                   | 2011-02-16 10:10:55 UTC              |
+      | uuid                           | 11111111-1111-1111-1111-111111111111 |
+      | abstract                       | some abstract                        |
+      | abbreviation                   | 1726STDY                             |
+      | contains_human_dna             | No                                   |
+      | accession_number               |                                      |
+      | contaminated_human_dna         | No                                   |
+      | description                    | xxx                                  |
+      | array_express_accession_number | AE111                                |
+      | ega_policy_accession_number    | EGA222                               |
+      | ega_dac_accession_number       | DAC333                               |
+      | data_release_sort_of_study     | genomic sequencing                   |
+      | state                          | active                               |
+
 
  
 
@@ -70,6 +77,9 @@ Feature: Update Studies
             "accession_number": "",
             "contaminated_human_dna": "Yes",
             "description": "xxx",
+            "array_express_accession_number": "AE111",
+            "ega_policy_accession_number": "EGA222",
+            "ega_dac_accession_number": "DAC333",
             "samples": "http://localhost:3000/0_5/studies/11111111-1111-1111-1111-111111111111/samples",
             "data_release_sort_of_study": "genomic sequencing",
             "state": "active"
@@ -78,22 +88,25 @@ Feature: Update Studies
       """
     When I connect to the "Study" resource and save the data
     Then Study "11111111-1111-1111-1111-111111111111" in the warehouse should contain:
-      | reference_genome           | reference                            |
-      | study_type                 | sequencing                           |
-      | name                       | ABC                                  |
-      | ethically_approved         | false                                |
-      | created                    | 2011-01-20 15:39:11 UTC              |
-      | data_release_strategy      | open                                 |
-      | last_updated               | 2011-02-16 10:10:55 UTC              |
-      | uuid                       | 11111111-1111-1111-1111-111111111111 |
-      | abstract                   | some abstract                        |
-      | abbreviation               | EFG                                  |
-      | contains_human_dna         | Yes                                  |
-      | accession_number           |                                      |
-      | contaminated_human_dna     | Yes                                  |
-      | description                | xxx                                  |
-      | data_release_sort_of_study | genomic sequencing                   |
-      | state                      | active                               |
+      | reference_genome               | reference                            |
+      | study_type                     | sequencing                           |
+      | name                           | ABC                                  |
+      | ethically_approved             | false                                |
+      | created                        | 2011-01-20 15:39:11 UTC              |
+      | data_release_strategy          | open                                 |
+      | last_updated                   | 2011-02-16 10:10:55 UTC              |
+      | uuid                           | 11111111-1111-1111-1111-111111111111 |
+      | abstract                       | some abstract                        |
+      | abbreviation                   | EFG                                  |
+      | contains_human_dna             | Yes                                  |
+      | accession_number               |                                      |
+      | contaminated_human_dna         | Yes                                  |
+      | description                    | xxx                                  |
+      | data_release_sort_of_study     | genomic sequencing                   |
+      | array_express_accession_number | AE111                                |
+      | ega_policy_accession_number    | EGA222                               |
+      | ega_dac_accession_number       | DAC333                               |
+      | state                          | active                               |
 
 
     Then UuidObject "11111111-1111-1111-1111-111111111111" in the warehouse should contain:

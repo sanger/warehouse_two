@@ -19,6 +19,13 @@ Then /^I should be able to find UUID "([^"]*)" in "([^"]*)" the warehouse$/ do |
   assert_not_nil UuidObject.find_by_uuid(uuid)
 end
 
+
+Then /^UUID "([^"]*)" in "([^"]*)" should have an inserted at time of "([^"]*)"$/ do |uuid, resource_name, time|
+   obj = eval("#{resource_name}").find_by_uuid(uuid)
+   assert_equal Time.parse(time.to_s), Time.parse(obj.inserted_at.to_s)
+end
+
+
 Given /^the "([^"]*)" resource returns the JSON:$/ do |resource_name, resource_json|
   name = resource_name.methodize
   resource_page_1 =  resource_json
@@ -69,4 +76,14 @@ Given /^the remote "([^"]*)" with UUID "([^"]*)" returns this JSON:$/ do |resour
   ActiveResource::HttpMock.respond_to do |mock|
     mock.get "/#{configatron.api_version}/#{resource_name.methodize.pluralize}/#{uuid}.json", {}, resource_json
   end
+end
+
+
+Given /^I have a current "([^"]*)" with UUID "([^"]*)"$/ do |resource_name, uuid|
+  eval(resource_name).new(:uuid => uuid, :is_current => true).save(false)
+end
+
+Then /^there should be (\d+) current rows? for UUID "([^"]*)" in the (Well) table$/ do |expected_current, uuid, resource_name|
+  actual_current = eval(resource_name).find_all_by_uuid_and_is_current(uuid, true).count
+  assert_equal expected_current.to_i, actual_current
 end
