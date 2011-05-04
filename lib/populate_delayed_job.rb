@@ -1,5 +1,5 @@
 def create_delayed_jobs(resource_name, total_number_of_pages)
-  number_of_pages_per_job = 5
+  number_of_pages_per_job = 10
   current_page = 1
 	failure_count = 0
 
