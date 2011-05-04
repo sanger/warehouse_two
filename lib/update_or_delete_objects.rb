@@ -1,1 +1,1 @@
-CheckResources.update_or_delete_resources(31)
+CheckResources.update_or_delete_resources(7)
