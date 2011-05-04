@@ -8,6 +8,7 @@ class UuidObject < ActiveRecord::Base
       remote_resource = eval("Api::#{self.object_name.camelize.singularize}").find(self.uuid)
       eval(self.object_name.camelize.singularize).create_or_update(remote_resource)
       self.update_attributes!(:checked_at => current_time)
+    rescue ActiveResource::ServerError
     rescue ActiveResource::ResourceNotFound
       delete_local_object(current_time)
     end
