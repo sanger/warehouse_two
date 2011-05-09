@@ -81,3 +81,79 @@ Feature: Update library_tubes
       | object_name  | library_tubes           |
       | last_updated | 2010-05-27 17:02:11 UTC |
       | created      | 2010-05-27 17:02:11 UTC |
+      
+  Scenario: When a tube has no scanned in date it shouldnt create a new row each time its checked
+    Given the "LibraryTube" resource returns the JSON:
+      """
+      [{
+          "library_tube": {
+              "created_at": "2010-05-27T17:02:11+00:00",
+              "updated_at": "2010-05-27T17:02:11+00:00",
+              "uuid": "11111111-1111-1111-1111-111111111111",
+              "name": "Tube 1234",
+              "barcode": "1234",
+              "barcode_prefix": "AB",
+              "qc_state": "pending",
+              "closed": true,
+              "concentration": 6.3,
+              "volume": 3.5,
+              "two_dimensional_barcode": "1234",
+              "public_name": "ABCD",
+              "id": 10
+          }
+      }]
+      """
+    When I connect to the "LibraryTube" resource and save the data
+    Then LibraryTube "11111111-1111-1111-1111-111111111111" in the warehouse should contain:
+      | internal_id             | 10                      |
+      | name                    | Tube 1234               |
+      | barcode                 | 1234                    |
+      | barcode_prefix          | AB                      |
+      | state                   | pending                 |
+      | closed                  | true                    |
+      | concentration           | 6.3                     |
+      | volume                  | 3.5                     |
+      | two_dimensional_barcode | 1234                    |
+      | public_name             | ABCD                    |
+      | scanned_in_date         |                         |
+      | last_updated            | 2010-05-27 17:02:11 UTC |
+      | created                 | 2010-05-27 17:02:11 UTC |
+
+    Given the "LibraryTube" resource returns the JSON:
+      """
+      [{
+          "library_tube": {
+              "created_at": "2010-05-27T17:02:11+00:00",
+              "updated_at": "2010-05-27T17:02:11+00:00",
+              "uuid": "11111111-1111-1111-1111-111111111111",
+              "name": "Tube 1234",
+              "barcode": "1234",
+              "barcode_prefix": "AB",
+              "qc_state": "pending",
+              "closed": true,
+              "concentration": 6.3,
+              "volume": 3.5,
+              "two_dimensional_barcode": "1234",
+              "public_name": "ABCD",
+              "id": 10
+          }
+      }]
+      """
+    When I connect to the "LibraryTube" resource and save the data
+    Then LibraryTube "11111111-1111-1111-1111-111111111111" in the warehouse should contain:
+      | internal_id             | 10                      |
+      | name                    | Tube 1234               |
+      | barcode                 | 1234                    |
+      | barcode_prefix          | AB                      |
+      | state                   | pending                 |
+      | closed                  | true                    |
+      | concentration           | 6.3                     |
+      | volume                  | 3.5                     |
+      | two_dimensional_barcode | 1234                    |
+      | public_name             | ABCD                    |
+      | scanned_in_date         |                         |
+      | last_updated            | 2010-05-27 17:02:11 UTC |
+      | created                 | 2010-05-27 17:02:11 UTC |
+   Then the LibraryTube table should have 1 row with UUID "11111111-1111-1111-1111-111111111111"
+  
+  
