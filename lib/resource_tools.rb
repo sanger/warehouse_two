@@ -44,11 +44,26 @@ module ResourceTools
 
       def updated_values?(remote_values)
         remote_values.each do |key, value|
-          next if value.blank? && send("#{key}")
-          next if key == :last_updated || key == :created || key == :entry_date
-          return true unless send("#{key}") == value
+          return true if changed_value?(key, value, [:last_updated, :created, :entry_date])
         end
 
+        false
+      end
+      
+      def updated_values_for_given_row?(old_row)
+        old_row.attributes.each do |key, value|
+           return true if changed_value?(key.to_sym, value, [:last_updated, :created, :entry_date, :is_current, :dont_use_id, :inserted_at , :checked_at])
+        end
+
+        false
+      end
+      
+      def changed_value?(key, value, keys_to_ignore)
+        return false if keys_to_ignore.include?(key)  
+        return false if value.blank? && send("#{key}")
+        return false if value.blank? && send("#{key}").blank?
+        return true unless send("#{key}") == value
+        
         false
       end
 

@@ -77,3 +77,9 @@ Given /^the remote "([^"]*)" with UUID "([^"]*)" returns this JSON:$/ do |resour
     mock.get "/#{configatron.api_version}/#{resource_name.methodize.pluralize}/#{uuid}.json", {}, resource_json
   end
 end
+
+
+Then /^the ([^"]*) table should have (\d+) row with UUID "([^"]*)"$/ do |object_name, num_rows, uuid|
+  object_count = eval(object_name).find_all_by_uuid(uuid).count
+  assert_equal num_rows.to_i, object_count
+end
