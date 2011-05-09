@@ -14,13 +14,18 @@ def load(resource_names, number_of_pages = nil)
 end
 
 def remove_duplicated_history(resource_name)
+  total_deleted = 0
   # remove any historical rows which are the same as the current one
   eval("#{resource_name}").find_each(:conditions => { :is_current => true }) do |asset|
+    num_deleted = 0
     historical_assets = eval("#{resource_name}").find_all_by_uuid_and_is_current(asset.uuid, false)
     historical_assets.each do |old_asset|
       next if asset.updated_values_for_given_row?(old_asset)
-      old_asset.delete
+      old_asset.destroy
+      num_deleted += 1
     end
+    total_deleted += num_deleted
+    puts "#{asset.uuid} - history deleted: #{num_deleted} - total deleted: #{total_deleted}"
   end
 end
 
