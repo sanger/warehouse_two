@@ -4,9 +4,9 @@ class RemoveDuplicatedHistoryTest < ActiveSupport::TestCase
   context "Remove duplicated history" do
     context "Where history is a duplicate of current" do 
       setup do
-        LibraryTube.create!(:uuid => "1")
         historical_tube = LibraryTube.create!(:uuid => "1")
         historical_tube.update_attributes!(:is_current => false)
+        LibraryTube.create!(:uuid => "1")
       end
     
       should "have 1 current and 1 historical value" do
@@ -28,11 +28,11 @@ class RemoveDuplicatedHistoryTest < ActiveSupport::TestCase
     
     context "Where history has lots of duplication of current" do 
       setup do
-        LibraryTube.create!(:uuid => "1")
         1.upto(5) do
           historical_tube = LibraryTube.create!(:uuid => "1")
           historical_tube.update_attributes!(:is_current => false)
         end
+        LibraryTube.create!(:uuid => "1")
       end
     
       should "remove historical tube" do
@@ -48,13 +48,13 @@ class RemoveDuplicatedHistoryTest < ActiveSupport::TestCase
     
     context "Where history has lots of duplication of current and non duplicated history" do 
       setup do
-        LibraryTube.create!(:uuid => "1")
         1.upto(2) do
           historical_tube = LibraryTube.create!(:uuid => "1")
           historical_tube.update_attributes!(:is_current => false)
         end
         @historical_tube_with_diffent_name = LibraryTube.create!(:uuid => "1")
         @historical_tube_with_diffent_name.update_attributes!(:is_current => false, :name => "XYZ")
+        LibraryTube.create!(:uuid => "1")
       end
     
       should "remove historical tube" do
@@ -71,9 +71,9 @@ class RemoveDuplicatedHistoryTest < ActiveSupport::TestCase
     
     context "Where history is not a duplicate of current" do
       setup do
-        LibraryTube.create!(:uuid => "1", :name => "ABC")
         historical_tube = LibraryTube.create!(:uuid => "1")
         historical_tube.update_attributes!(:is_current => false, :name => "XYZ")
+        LibraryTube.create!(:uuid => "1", :name => "ABC")
       end
     
       should "have 1 current and 1 historical value" do

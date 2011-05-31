@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110418100908) do
+ActiveRecord::Schema.define(:version => 20110412105259) do
 
   create_table "asset_audits", :primary_key => "dont_use_id", :force => true do |t|
     t.string   "uuid",                 :limit => 36, :null => false
@@ -729,21 +729,6 @@ ActiveRecord::Schema.define(:version => 20110418100908) do
     t.datetime "inserted_at"
   end
 
-  create_table "delayed_jobs", :force => true do |t|
-    t.integer  "priority",   :default => 0
-    t.integer  "attempts",   :default => 0
-    t.text     "handler"
-    t.text     "last_error"
-    t.datetime "run_at"
-    t.datetime "locked_at"
-    t.datetime "failed_at"
-    t.string   "locked_by"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
-
   create_table "events", :primary_key => "dont_use_id", :force => true do |t|
     t.string   "uuid",               :limit => 36, :null => false
     t.integer  "internal_id"
@@ -783,20 +768,6 @@ ActiveRecord::Schema.define(:version => 20110418100908) do
   add_index "events", ["source_uuid"], :name => "index_events_on_source_uuid"
   add_index "events", ["state"], :name => "index_events_on_state"
   add_index "events", ["uuid"], :name => "index_events_on_uuid"
-
-  create_table "lane_allocation", :id => false, :force => true do |t|
-    t.text     "cost_code",                              :null => false
-    t.text     "budget_division",                        :null => false
-    t.integer  "library_tubes",             :limit => 2
-    t.integer  "multiplexed_library_tubes", :limit => 2
-    t.integer  "37",                        :limit => 2
-    t.integer  "54",                        :limit => 2
-    t.integer  "76",                        :limit => 2
-    t.integer  "108",                       :limit => 2
-    t.datetime "valid_from",                             :null => false
-    t.datetime "valid_to",                               :null => false
-    t.datetime "inserted_at"
-  end
 
   create_table "lanes", :primary_key => "dont_use_id", :force => true do |t|
     t.string   "uuid",                    :limit => 36, :null => false
@@ -932,116 +903,6 @@ ActiveRecord::Schema.define(:version => 20110418100908) do
   add_index "multiplexed_library_tubes", ["two_dimensional_barcode"], :name => "index_multiplexed_library_tubes_on_two_dimensional_barcode"
   add_index "multiplexed_library_tubes", ["uuid"], :name => "index_multiplexed_library_tubes_on_uuid"
   add_index "multiplexed_library_tubes", ["volume"], :name => "index_multiplexed_library_tubes_on_volume"
-
-  create_table "npg_information", :primary_key => "id_npg_information", :force => true do |t|
-    t.integer  "batch_id",                               :limit => 8,                      :null => false
-    t.integer  "id_run",                                 :limit => 8,                      :null => false
-    t.integer  "position",                                                                 :null => false
-    t.integer  "id_run_pair",                            :limit => 8
-    t.datetime "run_complete"
-    t.integer  "cycles",                                                                   :null => false
-    t.integer  "cluster_count",                          :limit => 8
-    t.integer  "pf_bases",                               :limit => 8
-    t.boolean  "is_dev",                                                :default => false, :null => false
-    t.boolean  "has_two_runfolders",                                    :default => false, :null => false
-    t.boolean  "paired_read",                                           :default => false, :null => false
-    t.boolean  "cancelled",                                             :default => false, :null => false
-    t.string   "instrument_name",                        :limit => 32
-    t.string   "instrument_model",                       :limit => 64
-    t.boolean  "manual_qc"
-    t.integer  "clusters_raw",                           :limit => 8
-    t.float    "raw_cluster_density",                    :limit => 12
-    t.float    "pf_cluster_density",                     :limit => 12
-    t.integer  "insert_size_quartile1",                  :limit => 2
-    t.integer  "insert_size_quartile3",                  :limit => 2
-    t.integer  "insert_size_median",                     :limit => 2
-    t.float    "gc_percent_forward_read",                :limit => 4
-    t.float    "gc_percent_reverse_read",                :limit => 4
-    t.float    "sequence_mismatch_percent_forward_read", :limit => 4
-    t.float    "sequence_mismatch_percent_reverse_read", :limit => 4
-    t.float    "adapters_percent_forward_read",          :limit => 4
-    t.float    "adapters_percent_reverse_read",          :limit => 4
-    t.string   "contaminants_scan_hit1_name",            :limit => 50
-    t.float    "contaminants_scan_hit1_score",           :limit => 6
-    t.string   "contaminants_scan_hit2_name",            :limit => 50
-    t.float    "contaminants_scan_hit2_score",           :limit => 6
-    t.string   "ref_match1_name",                        :limit => 100
-    t.float    "ref_match1_percent",                     :limit => 5
-    t.string   "ref_match2_name",                        :limit => 100
-    t.float    "ref_match2_percent",                     :limit => 5
-    t.datetime "run_pending"
-    t.datetime "qc_complete"
-    t.float    "tags_decode_percent",                    :limit => 5
-    t.integer  "asset_id"
-    t.string   "asset_name"
-    t.string   "asset_type"
-    t.integer  "sample_id"
-    t.integer  "request_id"
-    t.string   "lane_type",                              :limit => 20
-    t.integer  "q20_yield_kb_forward_read"
-    t.integer  "q20_yield_kb_reverse_read"
-  end
-
-  add_index "npg_information", ["asset_id"], :name => "npg_asset_id_index"
-  add_index "npg_information", ["asset_name"], :name => "npg_asset_name_index"
-  add_index "npg_information", ["asset_type"], :name => "npg_asset_type_index"
-  add_index "npg_information", ["batch_id", "id_run", "position"], :name => "batch_run_pos", :unique => true
-  add_index "npg_information", ["id_run", "position"], :name => "id_run_position", :unique => true
-  add_index "npg_information", ["request_id"], :name => "npg_request_id_index"
-  add_index "npg_information", ["sample_id"], :name => "npg_sample_id_index"
-
-  create_table "npg_plex_information", :id => false, :force => true do |t|
-    t.integer "batch_id",                               :limit => 8,   :null => false
-    t.integer "id_run",                                 :limit => 8,   :null => false
-    t.integer "position",                                              :null => false
-    t.integer "tag_index",                              :limit => 2,   :null => false
-    t.integer "asset_id"
-    t.string  "asset_name"
-    t.integer "sample_id"
-    t.integer "insert_size_quartile1",                  :limit => 2
-    t.integer "insert_size_quartile3",                  :limit => 2
-    t.integer "insert_size_median",                     :limit => 2
-    t.float   "gc_percent_forward_read",                :limit => 4
-    t.float   "gc_percent_reverse_read",                :limit => 4
-    t.float   "sequence_mismatch_percent_forward_read", :limit => 4
-    t.float   "sequence_mismatch_percent_reverse_read", :limit => 4
-    t.float   "adapters_percent_forward_read",          :limit => 4
-    t.float   "adapters_percent_reverse_read",          :limit => 4
-    t.string  "contaminants_scan_hit1_name",            :limit => 50
-    t.float   "contaminants_scan_hit1_score",           :limit => 6
-    t.string  "contaminants_scan_hit2_name",            :limit => 50
-    t.float   "contaminants_scan_hit2_score",           :limit => 6
-    t.string  "ref_match1_name",                        :limit => 100
-    t.float   "ref_match1_percent",                     :limit => 5
-    t.string  "ref_match2_name",                        :limit => 100
-    t.float   "ref_match2_percent",                     :limit => 5
-    t.string  "tag_sequence"
-    t.float   "tag_decode_percent",                     :limit => 5
-    t.integer "tag_decode_count"
-    t.integer "q20_yield_kb_forward_read"
-    t.integer "q20_yield_kb_reverse_read"
-  end
-
-  add_index "npg_plex_information", ["asset_id"], :name => "npg_plex_asset_id_index"
-  add_index "npg_plex_information", ["asset_name"], :name => "npg_plex_asset_name_index"
-  add_index "npg_plex_information", ["sample_id"], :name => "npg_plex_sample_id_index"
-
-  create_table "npg_run_status", :primary_key => "id_run_status", :force => true do |t|
-    t.integer  "id_run",             :limit => 8, :null => false
-    t.datetime "date"
-    t.integer  "id_run_status_dict",              :null => false
-    t.boolean  "iscurrent",                       :null => false
-  end
-
-  add_index "npg_run_status", ["id_run", "date", "id_run_status_dict"], :name => "npg_run_date_state"
-  add_index "npg_run_status", ["id_run_status_dict"], :name => "npg_id_rsd"
-  add_index "npg_run_status", ["iscurrent"], :name => "npg_rs_iscurrent"
-
-  create_table "npg_run_status_dict", :primary_key => "id_run_status_dict", :force => true do |t|
-    t.string "description", :limit => 64, :default => "", :null => false
-  end
-
-  add_index "npg_run_status_dict", ["description"], :name => "npg_status_description"
 
   create_table "plate_purposes", :primary_key => "dont_use_id", :force => true do |t|
     t.string   "uuid",         :limit => 36, :null => false
@@ -1407,6 +1268,9 @@ ActiveRecord::Schema.define(:version => 20110418100908) do
     t.string   "array_express_accession_number"
     t.string   "ega_policy_accession_number"
     t.datetime "inserted_at"
+    t.string   "ega_dac_accession_number"
+    t.string   "array_express_accession_number"
+    t.string   "ega_policy_accession_number"
   end
 
   add_index "studies", ["abbreviation"], :name => "index_studies_on_abbreviation"
