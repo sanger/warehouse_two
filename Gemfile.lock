@@ -36,7 +36,11 @@ GEM
       term-ansicolor (>= 1.0.5)
     cucumber-rails (0.3.2)
       cucumber (>= 0.8.0)
-    database_cleaner (0.6.7)
+    daemons (1.0.10)
+    database_cleaner (0.6.3)
+    delayed_job (2.0.7)
+      activesupport (~> 2.0)
+      daemons (= 1.0.10)
     diff-lcs (1.1.2)
     factory_girl (1.3.3)
     flay (1.4.2)
@@ -102,6 +106,7 @@ DEPENDENCIES
   configatron
   cucumber-rails (~> 0.3.2)
   database_cleaner
+  delayed_job (~> 2.0.4)
   factory_girl (~> 1.3.1)
   flay
   flog
