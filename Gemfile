@@ -6,6 +6,7 @@ gem "configatron"
 gem "mysql"
 gem "cbrunnkvist-psd_logger"
 gem "alter_table", :git => "http://github.com/sanger/alter_table.git"
+gem "delayed_job", '~>2.0.4'
 
 group :test do
   # bundler requires these gems while running tests
