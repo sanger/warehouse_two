@@ -17,7 +17,7 @@ class Api::Base < ActiveResource::Base
   
   def self.parse_index_with_full_objects(current_page = 1, number_of_pages = nil)
     starting_page = current_page
-    each_page do |results_from_page|
+    each_page(starting_page) do |results_from_page|
       current_time = Time.now.utc
       uuid_data = []
       results_from_page.each do |remote_resource|
