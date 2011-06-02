@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110418100908) do
+ActiveRecord::Schema.define(:version => 20110602094448) do
 
   create_table "asset_audits", :primary_key => "dont_use_id", :force => true do |t|
     t.string   "uuid",                 :limit => 36, :null => false
@@ -723,7 +723,7 @@ ActiveRecord::Schema.define(:version => 20110418100908) do
     t.string   "plate_uuid",              :limit => 36
     t.decimal  "measured_volume",                       :precision => 5, :scale => 2
     t.integer  "sequenom_count"
-    t.string   "gender_markers",          :limit => 8
+    t.string   "gender_markers",          :limit => 40
     t.string   "genotyping_status"
     t.string   "genotyping_snp_plate_id"
     t.datetime "inserted_at"
@@ -1407,9 +1407,6 @@ ActiveRecord::Schema.define(:version => 20110418100908) do
     t.string   "array_express_accession_number"
     t.string   "ega_policy_accession_number"
     t.datetime "inserted_at"
-    t.string   "ega_dac_accession_number"
-    t.string   "array_express_accession_number"
-    t.string   "ega_policy_accession_number"
   end
 
   add_index "studies", ["abbreviation"], :name => "index_studies_on_abbreviation"
@@ -1561,7 +1558,7 @@ ActiveRecord::Schema.define(:version => 20110418100908) do
     t.string   "plate_uuid",              :limit => 36
     t.decimal  "measured_volume",                       :precision => 5, :scale => 2
     t.integer  "sequenom_count"
-    t.string   "gender_markers",          :limit => 8
+    t.string   "gender_markers",          :limit => 40
     t.string   "genotyping_status"
     t.string   "genotyping_snp_plate_id"
     t.datetime "inserted_at"
