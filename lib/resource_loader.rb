@@ -2,7 +2,7 @@ def load(resource_names, number_of_pages = nil)
 	failure_count = 0
   resource_names.each do |resource_name|
     begin
-      eval("Api::#{resource_name}").parse_index_with_full_objects(number_of_pages)
+      eval("Api::#{resource_name}").parse_index_with_full_objects(1, number_of_pages)
     rescue Exception => ex
       failure_count = failure_count + 1
       Rails.logger.warn "Failed - #{resource_name} - #{ex}"
