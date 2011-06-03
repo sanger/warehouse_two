@@ -2,18 +2,6 @@ class Well < ActiveRecord::Base
   include ResourceTools
   
   def self.link_resources(resource_object)
-    lc_class_name = self.model_name.underscore
-    resource = resource_object.send(lc_class_name)
-    if  resource.respond_to?(:plate_uuid) && ! resource.plate_uuid.blank?
-      AssetLink.find_or_create_by_ancestor_uuid_and_descendant_uuid(
-        :descendant_uuid => resource.uuid,
-        :descendant_internal_id => resource.internal_id,
-        :descendant_type => 'wells',
-        :ancestor_uuid   => resource.plate_uuid, 
-        :ancestor_type   => 'plates'
-      )
-    end
-    
   end
   
   def self.map_internal_to_external_attributes
