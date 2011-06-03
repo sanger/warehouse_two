@@ -5,14 +5,22 @@ class Request < ActiveRecord::Base
     lc_class_name = self.model_name.underscore
     resource = resource_object.send(lc_class_name)
     if  resource.respond_to?(:target_asset_uuid) && resource.respond_to?(:source_asset_uuid) && ! resource.target_asset_uuid.blank? && ! resource.source_asset_uuid.blank?
-      AssetLink.find_or_create_by_ancestor_uuid_and_descendant_uuid(
-        :ancestor_uuid   => resource.source_asset_uuid, 
-        :ancestor_internal_id   => resource.respond_to?(:source_asset_internal_id) ? resource.source_asset_internal_id : nil, 
-        :ancestor_type   => resource.respond_to?(:source_asset_type) ? resource.source_asset_type : nil,
-        :descendant_uuid => resource.target_asset_uuid,
-        :descendant_internal_id => resource.respond_to?(:target_asset_internal_id) ? resource.target_asset_internal_id : nil,
-        :descendant_type => resource.respond_to?(:target_asset_type) ? resource.target_asset_type : nil
-      )
+      asset_link = AssetLink.find_by_ancestor_uuid_and_descendant_uuid_and_is_current(resource.source_asset_uuid,  resource.target_asset_uuid, true)
+      unless asset_link
+        ancestor_internal_id   = resource.respond_to?(:source_asset_internal_id) ? resource.source_asset_internal_id : nil
+        ancestor_type   = resource.respond_to?(:source_asset_type) ? resource.source_asset_type : nil
+        descendant_internal_id = resource.respond_to?(:target_asset_internal_id) ? resource.target_asset_internal_id : nil
+        descendant_type = resource.respond_to?(:target_asset_type) ? resource.target_asset_type : nil
+          
+        AssetLink.create!(
+          :ancestor_uuid   => resource.source_asset_uuid, 
+          :ancestor_internal_id   => ancestor_internal_id, 
+          :ancestor_type   => ancestor_type,
+          :descendant_uuid => resource.target_asset_uuid,
+          :descendant_internal_id => descendant_internal_id,
+          :descendant_type => descendant_type
+        )
+      end
     end
     
     if resource.respond_to?(:study_uuid) && ! resource.study_uuid.blank?
