@@ -25,7 +25,6 @@ def remove_duplicated_history(resource_name)
       num_deleted += 1
     end
     total_deleted += num_deleted
-    puts "#{asset.uuid} - history deleted: #{num_deleted} - total deleted: #{total_deleted}"
   end
 end
 
