@@ -126,29 +126,3 @@ Feature: Update Wells
       | last_updated | 2011-03-06 19:40:47 UTC |
       | created      | 2011-03-06 19:40:47 UTC |
 
-
-
-    @plate @asset_link
-    Scenario: Link source and target assets
-      Given the "Well" resource returns the JSON:
-        """
-        [{
-            "well": {
-              "uuid": "11111111-1111-1111-1111-111111111111",
-              "plate_uuid": "11111111-1111-1111-1111-111111111333",
-              "internal_id": 1
-            }
-        }]
-        """
-     When I connect to the "Well" resource and save the data
-     Then an assetlink should exist between assets "11111111-1111-1111-1111-111111111333" and "11111111-1111-1111-1111-111111111111"
-     And the link between assets "11111111-1111-1111-1111-111111111333" and "11111111-1111-1111-1111-111111111111" should contain:
-       | ancestor_uuid          | 11111111-1111-1111-1111-111111111333 |
-       | ancestor_internal_id   |                                      |
-       | ancestor_type          | plates                               |
-       | descendant_uuid        | 11111111-1111-1111-1111-111111111111 |
-       | descendant_internal_id | 1                              |
-       | descendant_type        | wells                                |
-     Then I should be able to find UUID "11111111-1111-1111-1111-111111111111" in "Well" the warehouse
-
-
