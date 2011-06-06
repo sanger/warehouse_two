@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110602094448) do
+ActiveRecord::Schema.define(:version => 20110606081331) do
 
   create_table "asset_audits", :primary_key => "dont_use_id", :force => true do |t|
     t.string   "uuid",                 :limit => 36, :null => false
@@ -355,7 +355,7 @@ ActiveRecord::Schema.define(:version => 20110602094448) do
     t.string   "two_dimensional_barcode"
     t.boolean  "external_release"
     t.boolean  "is_current"
-    t.datetime "scanned_in_date"
+    t.date     "scanned_in_date"
     t.datetime "checked_at"
     t.datetime "last_updated"
     t.datetime "created"
@@ -390,7 +390,7 @@ ActiveRecord::Schema.define(:version => 20110602094448) do
     t.string   "fragment_size_required_to"
     t.string   "sample_name"
     t.boolean  "is_current"
-    t.datetime "scanned_in_date"
+    t.date     "scanned_in_date"
     t.datetime "checked_at"
     t.datetime "last_updated"
     t.datetime "created"
@@ -411,7 +411,7 @@ ActiveRecord::Schema.define(:version => 20110602094448) do
     t.decimal  "volume",                                :precision => 5, :scale => 2
     t.decimal  "concentration",                         :precision => 5, :scale => 2
     t.boolean  "is_current"
-    t.datetime "scanned_in_date"
+    t.date     "scanned_in_date"
     t.datetime "checked_at"
     t.datetime "last_updated"
     t.datetime "created"
@@ -485,7 +485,7 @@ ActiveRecord::Schema.define(:version => 20110602094448) do
     t.decimal  "concentration",                         :precision => 5, :scale => 2
     t.decimal  "volume",                                :precision => 5, :scale => 2
     t.string   "two_dimensional_barcode"
-    t.datetime "scanned_in_date"
+    t.date     "scanned_in_date"
     t.boolean  "is_current"
     t.datetime "checked_at"
     t.datetime "last_updated"
@@ -569,7 +569,7 @@ ActiveRecord::Schema.define(:version => 20110602094448) do
     t.string   "sample_uuid",             :limit => 36
     t.integer  "sample_internal_id"
     t.string   "sample_name"
-    t.datetime "scanned_in_date"
+    t.date     "scanned_in_date"
     t.decimal  "volume",                                :precision => 5, :scale => 2
     t.decimal  "concentration",                         :precision => 5, :scale => 2
     t.boolean  "is_current"
@@ -809,7 +809,7 @@ ActiveRecord::Schema.define(:version => 20110602094448) do
     t.string   "two_dimensional_barcode"
     t.boolean  "external_release"
     t.boolean  "is_current"
-    t.datetime "scanned_in_date"
+    t.date     "scanned_in_date"
     t.datetime "checked_at"
     t.datetime "last_updated"
     t.datetime "created"
@@ -858,7 +858,7 @@ ActiveRecord::Schema.define(:version => 20110602094448) do
     t.string   "fragment_size_required_to"
     t.string   "sample_name"
     t.boolean  "is_current"
-    t.datetime "scanned_in_date"
+    t.date     "scanned_in_date"
     t.datetime "checked_at"
     t.datetime "last_updated"
     t.datetime "created"
@@ -909,7 +909,7 @@ ActiveRecord::Schema.define(:version => 20110602094448) do
     t.decimal  "volume",                                :precision => 5, :scale => 2
     t.decimal  "concentration",                         :precision => 5, :scale => 2
     t.boolean  "is_current"
-    t.datetime "scanned_in_date"
+    t.date     "scanned_in_date"
     t.datetime "checked_at"
     t.datetime "last_updated"
     t.datetime "created"
@@ -1147,7 +1147,7 @@ ActiveRecord::Schema.define(:version => 20110602094448) do
     t.decimal  "concentration",                         :precision => 5, :scale => 2
     t.decimal  "volume",                                :precision => 5, :scale => 2
     t.string   "two_dimensional_barcode"
-    t.datetime "scanned_in_date"
+    t.date     "scanned_in_date"
     t.boolean  "is_current"
     t.datetime "checked_at"
     t.datetime "last_updated"
@@ -1290,7 +1290,7 @@ ActiveRecord::Schema.define(:version => 20110602094448) do
     t.string   "sample_uuid",             :limit => 36
     t.integer  "sample_internal_id"
     t.string   "sample_name"
-    t.datetime "scanned_in_date"
+    t.date     "scanned_in_date"
     t.decimal  "volume",                                :precision => 5, :scale => 2
     t.decimal  "concentration",                         :precision => 5, :scale => 2
     t.boolean  "is_current"
