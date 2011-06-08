@@ -24,6 +24,7 @@ if Delayed::Job.count < 50
   create_delayed_jobs(StudySample, 2200)
   create_delayed_jobs(BillingEvent, 160)
   create_delayed_jobs(Event, 200)
+  create_delayed_jobs(Submission, 40)
 end
 
 
