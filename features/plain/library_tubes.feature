@@ -35,7 +35,7 @@ Feature: Update library_tubes
       | volume                  | 3.5                     |
       | two_dimensional_barcode | 1234                    |
       | public_name             | ABCD                    |
-      | scanned_in_date         | 2010-05-27 17:02:11 UTC |
+      | scanned_in_date         | 2010-05-27              |
       | last_updated            | 2010-05-27 17:02:11 UTC |
       | created                 | 2010-05-27 17:02:11 UTC |
 
@@ -72,7 +72,7 @@ Feature: Update library_tubes
       | volume                  | 3.5                     |
       | two_dimensional_barcode | 1234                    |
       | public_name             | ABCD                    |
-      | scanned_in_date         | 2010-05-27 17:02:11 UTC |
+      | scanned_in_date         | 2010-05-27              |
       | last_updated            | 2010-05-27 17:02:11 UTC |
       | created                 | 2010-05-27 17:02:11 UTC |
     Then UuidObject "11111111-1111-1111-1111-111111111111" in the warehouse should contain:
