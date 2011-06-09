@@ -74,7 +74,8 @@ module ResourceTools
       
       def changed_value?(key, value, keys_to_ignore)
         return false if keys_to_ignore.include?(key)  
-        return false if value.blank? && send("#{key}")
+        return true if value.is_a?(FalseClass) && respond_to?("#{key}") && send("#{key}")
+        return false if value.blank? && ! respond_to?("#{key}")
         return false if value.blank? && send("#{key}").blank?
         return true unless send("#{key}") == value
         
@@ -102,4 +103,5 @@ module ResourceTools
       errors.add(:uuid, 'Duplicate current UUID') if self.class.find_all_by_uuid_and_is_current(self.uuid,true).count > 1
     end
   end
+  
 end
