@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110606081331) do
+ActiveRecord::Schema.define(:version => 20110608133956) do
 
   create_table "asset_audits", :primary_key => "dont_use_id", :force => true do |t|
     t.string   "uuid",                 :limit => 36, :null => false
@@ -245,6 +245,22 @@ ActiveRecord::Schema.define(:version => 20110606081331) do
     t.string   "room"
     t.string   "freezer"
     t.string   "shelf"
+    t.boolean  "is_current"
+    t.datetime "checked_at"
+    t.datetime "last_updated"
+    t.datetime "created"
+    t.datetime "inserted_at"
+  end
+
+  create_table "current_asset_links", :id => false, :force => true do |t|
+    t.integer  "dont_use_id",                          :default => 0, :null => false
+    t.string   "uuid",                   :limit => 36
+    t.string   "ancestor_uuid",          :limit => 36
+    t.integer  "ancestor_internal_id"
+    t.string   "ancestor_type"
+    t.string   "descendant_uuid",        :limit => 36
+    t.integer  "descendant_internal_id"
+    t.string   "descendant_type"
     t.boolean  "is_current"
     t.datetime "checked_at"
     t.datetime "last_updated"
@@ -658,6 +674,33 @@ ActiveRecord::Schema.define(:version => 20110606081331) do
     t.datetime "last_updated"
     t.datetime "created"
     t.datetime "inserted_at"
+  end
+
+  create_table "current_submissions", :id => false, :force => true do |t|
+    t.integer  "dont_use_id",                               :default => 0, :null => false
+    t.string   "uuid",                        :limit => 36,                :null => false
+    t.integer  "internal_id"
+    t.boolean  "is_current"
+    t.datetime "checked_at"
+    t.datetime "last_updated"
+    t.datetime "created"
+    t.string   "created_by"
+    t.string   "template_name"
+    t.string   "state"
+    t.string   "study_name"
+    t.string   "study_uuid",                  :limit => 36
+    t.string   "project_name"
+    t.string   "project_uuid",                :limit => 36
+    t.string   "message"
+    t.string   "comments"
+    t.datetime "inserted_at"
+    t.integer  "read_length"
+    t.string   "fragment_size_required_from"
+    t.string   "fragment_size_required_to"
+    t.string   "library_type"
+    t.string   "sequencing_type"
+    t.integer  "insert_size"
+    t.integer  "number_of_lanes"
   end
 
   create_table "current_tag_instances", :id => false, :force => true do |t|
@@ -1448,6 +1491,47 @@ ActiveRecord::Schema.define(:version => 20110606081331) do
   add_index "study_samples", ["study_internal_id"], :name => "index_study_samples_on_study_internal_id"
   add_index "study_samples", ["study_uuid"], :name => "index_study_samples_on_study_uuid"
   add_index "study_samples", ["uuid"], :name => "index_study_samples_on_uuid"
+
+  create_table "submissions", :primary_key => "dont_use_id", :force => true do |t|
+    t.string   "uuid",                        :limit => 36, :null => false
+    t.integer  "internal_id"
+    t.boolean  "is_current"
+    t.datetime "checked_at"
+    t.datetime "last_updated"
+    t.datetime "created"
+    t.string   "created_by"
+    t.string   "template_name"
+    t.string   "state"
+    t.string   "study_name"
+    t.string   "study_uuid",                  :limit => 36
+    t.string   "project_name"
+    t.string   "project_uuid",                :limit => 36
+    t.string   "message"
+    t.string   "comments"
+    t.datetime "inserted_at"
+    t.integer  "read_length"
+    t.string   "fragment_size_required_from"
+    t.string   "fragment_size_required_to"
+    t.string   "library_type"
+    t.string   "sequencing_type"
+    t.integer  "insert_size"
+    t.integer  "number_of_lanes"
+  end
+
+  add_index "submissions", ["created"], :name => "index_submissions_on_created"
+  add_index "submissions", ["internal_id"], :name => "index_submissions_on_internal_id"
+  add_index "submissions", ["last_updated"], :name => "index_submissions_on_last_updated"
+  add_index "submissions", ["project_uuid"], :name => "index_submissions_on_project_uuid"
+  add_index "submissions", ["study_uuid"], :name => "index_submissions_on_study_uuid"
+  add_index "submissions", ["uuid"], :name => "index_submissions_on_uuid"
+
+  create_table "submitted_assets", :primary_key => "dont_use_id", :force => true do |t|
+    t.string "submission_uuid"
+    t.string "asset_uuid"
+  end
+
+  add_index "submitted_assets", ["asset_uuid"], :name => "index_submitted_assets_on_asset_uuid"
+  add_index "submitted_assets", ["submission_uuid"], :name => "index_submitted_assets_on_submission_uuid"
 
   create_table "tag_instances", :primary_key => "dont_use_id", :force => true do |t|
     t.string   "uuid",                    :limit => 36, :null => false
