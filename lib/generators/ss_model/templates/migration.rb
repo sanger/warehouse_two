@@ -8,6 +8,7 @@ class Add<%= singular_name.camelize %>SsModel < ActiveRecord::Migration
       t.timestamp :checked_at
       t.timestamp :last_updated
       t.timestamp :created
+      t.timestamp :inserted_at
       
       # Add custom column here
     end

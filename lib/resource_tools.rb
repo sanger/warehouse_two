@@ -86,15 +86,12 @@ module ResourceTools
         return {} if resource_object.nil? || resource_object.send("#{lc_class_name}").nil?
         translated_resource = {}
         map_internal_to_external_attributes.each do |internal_name, external_name|
-          next if resource_object.send(lc_class_name).attributes[external_name.to_s].nil?
-          translated_resource[internal_name] = resource_object.send(lc_class_name).send(external_name)
+          translated_resource[internal_name] = [lc_class_name.to_sym, external_name ].flatten.inject(resource_object) { |o,m| o.respond_to?(m) ? o.try(:send, m) : nil }
         end
 
         link_resources(resource_object)
         translated_resource
       end
-
-
     end
     
     
