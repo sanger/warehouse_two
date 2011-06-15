@@ -1,5 +1,5 @@
 GIT
-  remote: http://github.com/sanger/alter_table.git
+  remote: git+ssh://git@github.com/sanger/alter_table.git
   revision: 109850b
   specs:
     alter_table (0.0.1)
