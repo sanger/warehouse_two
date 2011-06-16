@@ -6,8 +6,10 @@ class Submission < ActiveRecord::Base
     resource = resource_object.send(lc_class_name)
     if resource.respond_to?(:asset_uuids) && ! resource.asset_uuids.blank?
       resource.asset_uuids.each do |asset_uuid|
-        next if asset_uuid.blank?
-        SubmittedAsset.find_or_create_by_submission_uuid_and_asset_uuid(
+        return if asset_uuid.blank?
+        submitted_asset = SubmittedAsset.find_by_submission_uuid_and_asset_uuid(resource.uuid, asset_uuid)
+        return if submitted_asset.nil?
+        SubmittedAsset.create!(
           :submission_uuid => resource.uuid,
           :asset_uuid => asset_uuid
         )
