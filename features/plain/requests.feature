@@ -400,12 +400,6 @@ Feature: Update requests
        }]
        """
     When I connect to the "Request" resource and save the data
-    Then a study sample link should exist between study "44444444-1111-1111-1111-111111111111" and sample "33333333-1111-1111-1111-111111111111"
-    And the link between study "44444444-1111-1111-1111-111111111111" and sample "33333333-1111-1111-1111-111111111111" should contain:
-      | sample_uuid          | 33333333-1111-1111-1111-111111111111 |
-      | sample_internal_id   | 789                                  |
-      | study_uuid           | 44444444-1111-1111-1111-111111111111 |
-      | study_internal_id    | 123                                  |
 
     Then a study sample link should exist between study "44444444-1111-1111-1111-111111111111" and sample "22222222-1111-1111-1111-111111111111"
     And the link between study "44444444-1111-1111-1111-111111111111" and sample "22222222-1111-1111-1111-111111111111" should contain:
@@ -510,12 +504,6 @@ Feature: Update requests
        }]
        """
     When I connect to the "Request" resource and save the data
-    Then a study sample link should exist between study "44444444-1111-1111-1111-111111111111" and sample "33333333-1111-1111-1111-111111111111"
-    And the link between study "44444444-1111-1111-1111-111111111111" and sample "33333333-1111-1111-1111-111111111111" should contain:
-      | sample_uuid          | 33333333-1111-1111-1111-111111111111 |
-      | sample_internal_id   |                                      |
-      | study_uuid           | 44444444-1111-1111-1111-111111111111 |
-      | study_internal_id    |                                      |
 
     Then a study sample link should exist between study "44444444-1111-1111-1111-111111111111" and sample "22222222-1111-1111-1111-111111111111"
     And the link between study "44444444-1111-1111-1111-111111111111" and sample "22222222-1111-1111-1111-111111111111" should contain:
