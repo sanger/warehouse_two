@@ -5,7 +5,7 @@ gem "ar-extensions"
 gem "configatron"
 gem "mysql"
 gem "cbrunnkvist-psd_logger"
-gem "alter_table", :git => "http://github.com/sanger/alter_table.git"
+gem "alter_table", :git => "git+ssh://git@github.com/sanger/alter_table.git"
 gem "delayed_job", '~>2.0.4'
 
 group :test do
