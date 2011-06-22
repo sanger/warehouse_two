@@ -1,6 +1,6 @@
 require 'lib/populate_delayed_job'
 
-if Delayed::Job.count < 50
+if Delayed::Job.count < 20
   # use the new API to find out the number of records
   create_delayed_jobs(PlatePurpose, 1)
   create_delayed_jobs(AssetAudit, 10)
@@ -24,7 +24,7 @@ if Delayed::Job.count < 50
   create_delayed_jobs(StudySample, 2200)
   create_delayed_jobs(BillingEvent, 160)
   create_delayed_jobs(Event, 200)
-  create_delayed_jobs(Submission, 40)
+  create_delayed_jobs(Submission, 150)
 end
 
 
