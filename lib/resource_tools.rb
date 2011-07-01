@@ -96,7 +96,7 @@ module ResourceTools
     
     
     def unique_is_current_for_uuid
-      errors.add(:uuid, 'Duplicate current UUID') if self.class.find_all_by_uuid_and_is_current(self.uuid,true).count > 1
+      errors.add(:uuid, 'Duplicate current UUID') if self.class.find_all_by_uuid_and_is_current(self.uuid,true).count > 1 if self.uuid
     end
   end
 end
