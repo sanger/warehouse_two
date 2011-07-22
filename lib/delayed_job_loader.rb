@@ -25,6 +25,7 @@ if Delayed::Job.count < 20
   create_delayed_jobs(BillingEvent, 160)
   create_delayed_jobs(Event, 200)
   create_delayed_jobs(Submission, 150)
+  create_delayed_jobs(Aliquot, 200)
 end
 
 
