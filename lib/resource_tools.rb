@@ -52,7 +52,7 @@ module ResourceTools
           local_object
         else
           remote_values[:inserted_at] = self.correct_current_time
-          create(remote_values)
+          create!(remote_values)
         end
       end
 
