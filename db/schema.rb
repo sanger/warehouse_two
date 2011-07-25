@@ -9,7 +9,38 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110608133956) do
+ActiveRecord::Schema.define(:version => 20110721150613) do
+
+  create_table "aliquots", :primary_key => "dont_use_id", :force => true do |t|
+    t.string   "uuid",                   :limit => 36, :null => false
+    t.integer  "internal_id"
+    t.string   "receptacle_uuid",        :limit => 36
+    t.integer  "receptacle_internal_id"
+    t.string   "study_uuid",             :limit => 36
+    t.integer  "study_internal_id"
+    t.string   "project_uuid",           :limit => 36
+    t.integer  "project_internal_id"
+    t.string   "library_uuid",           :limit => 36
+    t.integer  "library_internal_id"
+    t.string   "sample_uuid",            :limit => 36
+    t.integer  "sample_internal_id"
+    t.string   "tag_uuid",               :limit => 36
+    t.integer  "tag_internal_id"
+    t.string   "receptacle_type"
+    t.string   "library_type"
+    t.integer  "insert_size_from"
+    t.integer  "insert_size_to"
+    t.boolean  "is_current"
+    t.datetime "checked_at"
+    t.datetime "last_updated"
+    t.datetime "created"
+    t.datetime "inserted_at"
+  end
+
+  add_index "aliquots", ["created"], :name => "index_aliquots_on_created"
+  add_index "aliquots", ["internal_id"], :name => "index_aliquots_on_internal_id"
+  add_index "aliquots", ["last_updated"], :name => "index_aliquots_on_last_updated"
+  add_index "aliquots", ["uuid"], :name => "index_aliquots_on_uuid"
 
   create_table "asset_audits", :primary_key => "dont_use_id", :force => true do |t|
     t.string   "uuid",                 :limit => 36, :null => false
