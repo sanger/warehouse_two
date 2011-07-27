@@ -77,7 +77,13 @@ module ResourceTools
         return true if value.is_a?(FalseClass) && respond_to?("#{key}") && send("#{key}")
         return false if value.blank? && ! respond_to?("#{key}")
         return false if value.blank? && send("#{key}").blank?
-        return true unless send("#{key}") == value
+        if value.is_a?(BigDecimal) || value.is_a?(Float)
+           db_value = send("#{key}")
+           # Floating point values don't work with ==
+           return true unless (db_value-value).abs < 0.05
+        else 
+           return true unless send("#{key}") == value
+        end
         
         false
       end
