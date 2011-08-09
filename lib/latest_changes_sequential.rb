@@ -1,5 +1,5 @@
 require File.dirname(__FILE__) + '/resource_loader'
-load(['Submission','PlatePurpose','Quota','Batch','Lane','Project','Study','TagInstance','Tag', 'MultiplexedLibraryTube', 'LibraryTube','SampleTube','BillingEvent','StudySample','Event','BatchRequest','PulldownMultiplexedLibraryTube'], 1)
+load(['Submission','PlatePurpose','Quota','Batch','Lane','Project','Study','Tag', 'MultiplexedLibraryTube', 'LibraryTube','SampleTube','BillingEvent','StudySample','Event','BatchRequest','PulldownMultiplexedLibraryTube'], 1)
 load(['Plate','Sample','AssetAudit','Request'], 10)
 load(['Well', 'AssetLink'], 20)
 
