@@ -1,2 +1,2 @@
 require File.dirname(__FILE__) + '/resource_loader'
-load(['StudySample', 'BillingEvent', 'SampleTube', 'TagInstance', 'Quota'])
+load(['StudySample', 'BillingEvent', 'SampleTube', 'Quota'])

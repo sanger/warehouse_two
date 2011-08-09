@@ -10,7 +10,6 @@ if Delayed::Job.count < 20
   create_delayed_jobs(Plate, 250)
   create_delayed_jobs(Project, 1)
   create_delayed_jobs(Study, 2)
-  create_delayed_jobs(TagInstance, 16)
   create_delayed_jobs(Tag, 1)
   create_delayed_jobs(MultiplexedLibraryTube, 5)
   create_delayed_jobs(LibraryTube, 80)
