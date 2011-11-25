@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110721150613) do
+ActiveRecord::Schema.define(:version => 20111123110814) do
 
   create_table "aliquots", :primary_key => "dont_use_id", :force => true do |t|
     t.string   "uuid",                   :limit => 36, :null => false
@@ -212,7 +212,7 @@ ActiveRecord::Schema.define(:version => 20110721150613) do
     t.string   "library_type"
     t.string   "cost_code"
     t.integer  "price"
-    t.integer  "quantity"
+    t.float    "quantity"
     t.string   "kind"
     t.string   "description"
     t.boolean  "is_current"
