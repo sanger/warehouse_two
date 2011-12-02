@@ -1113,9 +1113,33 @@ ActiveRecord::Schema.define(:version => 20111123110814) do
 
   create_table "npg_run_status_dict", :primary_key => "id_run_status_dict", :force => true do |t|
     t.string "description", :limit => 64, :default => "", :null => false
-  end
+  end 
 
   add_index "npg_run_status_dict", ["description"], :name => "npg_status_description"
+
+  create_table "orders", :primary_key => "dont_use_id", :force => true do |t|
+    t.string   "uuid",                        :limit => 36, :null => false
+    t.integer  "internal_id"
+    t.boolean  "is_current"
+    t.datetime "checked_at"
+    t.datetime "last_updated"
+    t.datetime "created"
+    t.string   "created_by"
+    t.string   "template_name"
+    t.string   "study_name"
+    t.string   "study_uuid",                  :limit => 36
+    t.string   "project_name"
+    t.string   "project_uuid",                :limit => 36
+    t.string   "comments"
+    t.datetime "inserted_at"
+    t.integer  "read_length"
+    t.string   "fragment_size_required_from"
+    t.string   "fragment_size_required_to"
+    t.string   "library_type"
+    t.string   "sequencing_type"
+    t.integer  "insert_size"
+    t.integer  "number_of_lanes"
+  end
 
   create_table "plate_purposes", :primary_key => "dont_use_id", :force => true do |t|
     t.string   "uuid",         :limit => 36, :null => false
