@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111123110814) do
+ActiveRecord::Schema.define(:version => 20111207115105) do
 
   create_table "aliquots", :primary_key => "dont_use_id", :force => true do |t|
     t.string   "uuid",                   :limit => 36, :null => false
@@ -916,8 +916,8 @@ ActiveRecord::Schema.define(:version => 20111123110814) do
     t.string   "two_dimensional_barcode"
     t.string   "sample_uuid",                 :limit => 36
     t.integer  "sample_internal_id"
-    t.decimal  "volume",                                    :precision => 5, :scale => 2
-    t.decimal  "concentration",                             :precision => 5, :scale => 2
+    t.decimal  "volume",                                    :precision => 5,  :scale => 2
+    t.decimal  "concentration",                             :precision => 10, :scale => 2
     t.string   "tag_uuid",                    :limit => 36
     t.integer  "tag_internal_id"
     t.string   "expected_sequence"
@@ -980,8 +980,8 @@ ActiveRecord::Schema.define(:version => 20111123110814) do
     t.boolean  "closed"
     t.string   "state",                   :limit => 50
     t.string   "two_dimensional_barcode"
-    t.decimal  "volume",                                :precision => 5, :scale => 2
-    t.decimal  "concentration",                         :precision => 5, :scale => 2
+    t.decimal  "volume",                                :precision => 5,  :scale => 2
+    t.decimal  "concentration",                         :precision => 10, :scale => 2
     t.boolean  "is_current"
     t.date     "scanned_in_date"
     t.datetime "checked_at"
@@ -1389,8 +1389,8 @@ ActiveRecord::Schema.define(:version => 20111123110814) do
     t.integer  "sample_internal_id"
     t.string   "sample_name"
     t.date     "scanned_in_date"
-    t.decimal  "volume",                                :precision => 5, :scale => 2
-    t.decimal  "concentration",                         :precision => 5, :scale => 2
+    t.decimal  "volume",                                :precision => 5,  :scale => 2
+    t.decimal  "concentration",                         :precision => 10, :scale => 2
     t.boolean  "is_current"
     t.datetime "checked_at"
     t.datetime "last_updated"
