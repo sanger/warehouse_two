@@ -60,6 +60,8 @@ class Request < ActiveRecord::Base
       :project_uuid                         => :project_uuid,
       :project_internal_id                  => :project_internal_id,
       :project_name                         => :project_name,
+      :submission_uuid                      => :submission_uuid, 
+      :submission_internal_id               => :submission_internal_id, 
       :source_asset_uuid                    => :source_asset_uuid,
       :source_asset_internal_id             => :source_asset_internal_id,
       :source_asset_type                    => :source_asset_type,

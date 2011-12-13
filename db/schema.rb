@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111123110814) do
+ActiveRecord::Schema.define(:version => 20111213153810) do
 
   create_table "aliquots", :primary_key => "dont_use_id", :force => true do |t|
     t.string   "uuid",                   :limit => 36, :null => false
@@ -989,6 +989,8 @@ ActiveRecord::Schema.define(:version => 20111123110814) do
     t.datetime "created"
     t.string   "public_name"
     t.datetime "inserted_at"
+    t.string   "submission_uuid",                      :limit => 36
+    t.integer  "submission_internal_id"
   end
 
   add_index "multiplexed_library_tubes", ["barcode"], :name => "index_multiplexed_library_tubes_on_barcode"
@@ -1725,3 +1727,4 @@ ActiveRecord::Schema.define(:version => 20111123110814) do
   add_index "wells", ["uuid"], :name => "index_wells_on_uuid"
 
 end
+  add_index "requests", ["submission_uuid"], :name => "index_requests_on_submission_uuid"
