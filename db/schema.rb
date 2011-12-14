@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111213153810) do
+ActiveRecord::Schema.define(:version => 20111214114129) do
 
   create_table "aliquots", :primary_key => "dont_use_id", :force => true do |t|
     t.string   "uuid",                   :limit => 36, :null => false
@@ -1141,7 +1141,10 @@ ActiveRecord::Schema.define(:version => 20111213153810) do
     t.string   "sequencing_type"
     t.integer  "insert_size"
     t.integer  "number_of_lanes"
+    t.string   "submission_uuid",             :limit => 36
   end
+
+  add_index "orders", ["submission_uuid"], :name => "index_orders_on_submission_uuid"
 
   create_table "plate_purposes", :primary_key => "dont_use_id", :force => true do |t|
     t.string   "uuid",         :limit => 36, :null => false
