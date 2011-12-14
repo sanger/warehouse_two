@@ -17,6 +17,7 @@ class Order < ActiveRecord::Base
       :study_uuid                  => :study_uuid,
       :project_name                => :project_name,
       :project_uuid                => :project_uuid,
+      :submission_uuid             => :submission_uuid,
       :comments                    => :comments,
       :read_length                 => [:request_options, :read_length],
       :fragment_size_required_from => [:request_options, :fragment_size_required, :from],
