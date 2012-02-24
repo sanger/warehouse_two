@@ -7,6 +7,7 @@ gem "mysql"
 gem "cbrunnkvist-psd_logger"
 gem "alter_table", :git => "git+ssh://git@github.com/sanger/alter_table.git"
 gem "delayed_job", '~>2.0.4'
+gem "amqp", "~> 0.9.2"
 
 group :test do
   # bundler requires these gems while running tests

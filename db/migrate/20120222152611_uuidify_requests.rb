@@ -4,8 +4,9 @@ class UuidifyRequests < ActiveRecord::Migration
   def self.up
     uuidify_table(
       :requests, OnlyIndexes(
-        [ :is_current, :source_asset_uuid, :request_type ],
-        [ :is_current, :target_asset_uuid, :request_type ]
+        [ :uuid, :is_current ],
+        [ :source_asset_uuid, :request_type, :is_current ],
+        [ :target_asset_uuid, :request_type, :is_current ]
       )
     )
   end

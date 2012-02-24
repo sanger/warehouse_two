@@ -4,8 +4,8 @@ class UuidifyStudies < ActiveRecord::Migration
   def self.up
     uuidify_table(
       :studies, OnlyIndexes(
-        [ :is_current, :uuid ],
-        [ :is_current, :internal_id ]
+        [ :uuid, :is_current ],
+        [ :internal_id, :is_current ]
       )
     )
   end

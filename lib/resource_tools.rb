@@ -7,6 +7,8 @@ module ResourceTools
       before_create :set_checked_at
       before_create :set_is_current
       validate :unique_is_current_for_uuid, :on => :create
+
+      named_scope :current_for_uuid, lambda { |uuid| { :conditions => { :is_current => true, :uuid => uuid } } }
     end
   end
 
@@ -55,7 +57,7 @@ module ResourceTools
   end
 
   def unique_is_current_for_uuid
-    errors.add(:uuid, 'Duplicate current UUID') if self.class.find_all_by_uuid_and_is_current(self.uuid,true).count > 1 if self.uuid
+    errors.add(:uuid, 'Duplicate current UUID') if self.uuid.present? and self.class.current_for_uuid(self.uuid).count > 1
   end
 
   module ClassMethods

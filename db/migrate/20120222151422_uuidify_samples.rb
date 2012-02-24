@@ -4,8 +4,8 @@ class UuidifySamples < ActiveRecord::Migration
   def self.up
     uuidify_table(
       :samples, OnlyIndexes(
-        [ :is_current, :uuid ],
-        [ :is_current, :internal_id ]
+        [ :uuid, :is_current ],
+        [ :internal_id, :is_current ]
       )
     )
   end

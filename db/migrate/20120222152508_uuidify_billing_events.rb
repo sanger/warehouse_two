@@ -4,7 +4,7 @@ class UuidifyBillingEvents < ActiveRecord::Migration
   def self.up
     uuidify_table(
       :billing_events, OnlyIndexes(
-        [ :is_current, :project_uuid, :request_uuid ]
+        [ :project_uuid, :request_uuid, :is_current ]
       )
     )
   end

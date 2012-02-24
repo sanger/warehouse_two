@@ -15,10 +15,11 @@ class UuidifyOutstandingTables < ActiveRecord::Migration
     :projects,
     :pulldown_multiplexed_library_tubes,
     :sample_tubes,
-    :wells
+    :wells,
+    :tags
   ]
 
   def self.up
-    TABLES.map(&method(:uuidify_table))
+    TABLES.each { |name| uuidify_table(name, OnlyIndexes([ :uuid, :is_current ])) }
   end
 end
