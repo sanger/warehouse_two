@@ -1,48 +1,6 @@
 class Request < ActiveRecord::Base
   include ResourceTools
-  
-  def self.link_resources(resource_object)
-    lc_class_name = self.model_name.underscore
-    resource = resource_object.send(lc_class_name)
-    link_source_asset_to_target_asset(resource, lc_class_name)
-    link_study_to_sample(resource, lc_class_name)
-  end
-  
-  def self.link_source_asset_to_target_asset(resource, lc_class_name)
-    if  resource.respond_to?(:target_asset_uuid) && resource.respond_to?(:source_asset_uuid) && ! resource.target_asset_uuid.blank? && ! resource.source_asset_uuid.blank?
-      asset_link = AssetLink.find_by_ancestor_uuid_and_descendant_uuid_and_is_current(resource.source_asset_uuid,  resource.target_asset_uuid, true)
-      unless asset_link
-        ancestor_internal_id   = resource.respond_to?(:source_asset_internal_id) ? resource.source_asset_internal_id : nil
-        ancestor_type   = resource.respond_to?(:source_asset_type) ? resource.source_asset_type : nil
-        descendant_internal_id = resource.respond_to?(:target_asset_internal_id) ? resource.target_asset_internal_id : nil
-        descendant_type = resource.respond_to?(:target_asset_type) ? resource.target_asset_type : nil
-          
-        AssetLink.create!(
-          :ancestor_uuid   => resource.source_asset_uuid, 
-          :ancestor_internal_id   => ancestor_internal_id, 
-          :ancestor_type   => ancestor_type,
-          :descendant_uuid => resource.target_asset_uuid,
-          :descendant_internal_id => descendant_internal_id,
-          :descendant_type => descendant_type
-        )
-      end
-    end
-  end
-  
-  def self.link_study_to_sample(resource, lc_class_name)
-    if resource.respond_to?(:study_uuid) && ! resource.study_uuid.blank? && resource.respond_to?(:source_asset_sample_uuid) && ! resource.source_asset_sample_uuid.blank?
-      study_sample = StudySample.find_by_sample_uuid_and_study_uuid(resource.source_asset_sample_uuid, resource.study_uuid)
-      unless study_sample
-        StudySample.create!(
-          :sample_uuid => resource.source_asset_sample_uuid,
-          :sample_internal_id => resource.respond_to?(:source_asset_sample_internal_id) ? resource.source_asset_sample_internal_id : nil,
-          :study_uuid => resource.study_uuid,
-          :study_internal_id => resource.respond_to?(:study_internal_id) ? resource.study_internal_id : nil
-        )
-      end
-    end
-  end
-  
+
   def self.map_internal_to_external_attributes
     # Internal DB column => External resource method
     {

@@ -1,6 +1,6 @@
 source :gemcutter
 
-gem "rails", "2.3.11"
+gem "rails", "2.3.14"
 gem "ar-extensions"
 gem "configatron"
 gem "mysql"

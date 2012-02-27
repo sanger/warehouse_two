@@ -1,63 +1,103 @@
+class Hash
+  # Determines if this hash is within an acceptable bounds of the keys common with the
+  # given hash.  It is assumed that values missing from 'other' are unchanged.
+  def within_acceptable_bounds?(other)
+    (self.keys & other.keys).all? do |key|
+      self[key].within_acceptable_bounds?(other[key])
+    end
+  end
+
+  # Does the opposite of slice, returning a hash that does not have the specified keys!
+  def reverse_slice(*keys)
+    dup.delete_if { |k,_| keys.include?(k) }
+  end
+end
+
+class Object
+  alias_method(:within_acceptable_bounds?, :==)
+end
+
+class Numeric
+  def within_acceptable_bounds?(v)
+    (self - v).abs < configatron.numeric_tolerance
+  end
+end
+
+class NilClass
+  def check(_)
+    yield
+  end
+end
+
 module ResourceTools
   def self.included(base)
     base.class_eval do
       extend ClassMethods
       set_primary_key :dont_use_id
       alias_attribute :id, :dont_use_id
-      before_create :set_checked_at
-      before_create :set_is_current
-      validate :unique_is_current_for_uuid, :on => :create
 
-      named_scope :current_for_uuid, lambda { |uuid| { :conditions => { :is_current => true, :uuid => uuid } } }
+      named_scope :for_uuid, lambda { |uuid| { :conditions => { :uuid => uuid } } }
+      named_scope :current, { :conditions => { :is_current => true } }
+
+      # Ensure that the time stamps are correct whenever a record is updated
+      before_create { |record| record.inserted_at = record.correct_current_time }
+      before_save   { |record| record.checked_at  = record.correct_current_time }
+
+      # On creation, ensure that this is the only record that is current.
+      before_create do |record|
+        record.is_current = true
+        record.class.for_uuid(record.uuid).current.update_all('is_current=FALSE')
+      end
+
+      # After saving the UUID details need maintaining.
+      after_create(:create_uuid_object)
+      after_update(:update_uuid_object)
+
+      delegate :correct_current_time, :to => 'self.class'
     end
   end
 
-  def set_checked_at
-    self.checked_at = correct_current_time
+  def to_attributes_for_uuid_object
+    {
+      :last_updated => self.last_updated,
+      :checked_at   => self.checked_at,
+      :object_name  => self.class.name.pluralize.underscore
+    }.tap do |attributes|
+      attributes[:name]        = self.name        if respond_to?(:name)
+      attributes[:internal_id] = self.internal_id if respond_to?(:internal_id)
+    end
   end
 
-  def correct_current_time
-    self.class.default_timezone == :utc ? Time.now.utc : Time.now
+  # Create, or update the existing, UuidObject instance associated with this resource.  This
+  # means that a UUID could change the resource it is referencing.
+  def create_uuid_object
+    object = UuidObject.find_by_uuid(self.uuid) || UuidObject.method(:create!)
+    object.call(self.to_attributes_for_uuid_object.merge(
+      :uuid    => self.uuid,
+      :created => self.created
+    ))
   end
+  private :create_uuid_object
 
-  def set_is_current
-    self.is_current = true
+  # Update the existing UuidObject instance associated with this resource.  It must exist,
+  # otherwise we have inconsistencies in the data.
+  def update_uuid_object
+    ::UuidObject.find_by_uuid(self.uuid).update_attributes!(self.to_attributes_for_uuid_object)
   end
+  private :update_uuid_object
 
   def updated_values?(remote_values)
-    remote_values.each do |key, value|
-      return true if changed_value?(key, value, [:last_updated, :created, :entry_date])
-    end
-
-    false
+    values = remote_values.symbolize_keys.reverse_slice(:last_updated, :created, :entry_date)
+    self.attributes.symbolize_keys.within_acceptable_bounds?(values)
   end
 
-  def updated_values_for_given_row?(old_row)
-    old_row.attributes.each do |key, value|
-      return true if changed_value?(key.to_sym, value, [:last_updated, :created, :entry_date, :is_current, :dont_use_id, :inserted_at , :checked_at])
-    end
-
-    false
+  def checked!
+    self.save!
+    self
   end
 
-  def changed_value?(key, value, keys_to_ignore)
-    return false if keys_to_ignore.include?(key)  
-    return true if value.is_a?(FalseClass) && respond_to?("#{key}") && send("#{key}")
-    return false if value.blank? && ! respond_to?("#{key}")
-    return false if value.blank? && send("#{key}").blank?
-    if value.is_a?(BigDecimal) || value.is_a?(Float)
-      db_value = send("#{key}")
-      # Floating point values don't work with ==
-      return true unless (db_value-value).abs < 0.05
-    else 
-      return true unless send("#{key}") == value
-    end
-
-    false
-  end
-
-  def unique_is_current_for_uuid
-    errors.add(:uuid, 'Duplicate current UUID') if self.uuid.present? and self.class.current_for_uuid(self.uuid).count > 1
+  def check(values)
+    updated_values?(values) ? yield : checked!
   end
 
   module ClassMethods
@@ -65,49 +105,29 @@ module ResourceTools
       self.default_timezone == :utc ? Time.now.utc : Time.now
     end
 
-    def fix_duplicate_is_current_and_return_one(uuid)
-      all_is_current_objects = find_all_by_uuid_and_is_current(uuid,true)
-      current_object = all_is_current_objects.shift
-      if all_is_current_objects.size >= 1
-        all_is_current_objects.each do |duplicate_current_object|
-          duplicate_current_object.is_current = false
-          duplicate_current_object.save(false)
-        end
-      end
-
-      current_object
+    def link_resources(_)
+      # Empty by default
     end
 
     def create_or_update(resource_object)
       remote_values = parse_resource_object(resource_object)
-      local_object = fix_duplicate_is_current_and_return_one(remote_values[:uuid])
-      if local_object
-        if local_object.updated_values?(remote_values)
-          local_object.is_current = false
-          local_object.save!
-          remote_values[:inserted_at] = self.correct_current_time
-          create(remote_values)
-        else
-          local_object.set_checked_at
-          local_object.save!
-        end
-        local_object
-      else
-        remote_values[:inserted_at] = self.correct_current_time
-        create!(remote_values)
-      end
+      local_object = current.for_uuid(remote_values[:uuid]).first
+      local_object.check(remote_values) { create!(remote_values) }
     end
 
     def parse_resource_object(resource_object)
-      lc_class_name = self.model_name.underscore
-      return {} if resource_object.nil? || resource_object.send("#{lc_class_name}").nil?
-      translated_resource = {}
-      map_internal_to_external_attributes.each do |internal_name, external_name|
-        translated_resource[internal_name] = [lc_class_name.to_sym, external_name ].flatten.inject(resource_object) { |o,m| o.respond_to?(m) ? o.try(:send, m) : nil }
-      end
+      resource = resource_object.try(:send, self.model_name.underscore) or return {}
+
+      translated_resource = Hash[
+        map_internal_to_external_attributes.map do |internal_name, external_name|
+          value = Array(external_name).inject(resource) { |o,m| o.respond_to?(m) ? o.send(m) : nil }
+          [internal_name, value]
+        end
+      ]
 
       link_resources(resource_object)
       translated_resource
     end
+    private :parse_resource_object
   end
 end

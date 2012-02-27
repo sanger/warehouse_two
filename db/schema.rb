@@ -12,7 +12,7 @@
 ActiveRecord::Schema.define(:version => 20120223102325) do
 
   create_table "aliquots", :primary_key => "dont_use_id", :force => true do |t|
-    t.binary   "uuid",                   :limit => 16
+    t.binary   "uuid",                   :limit => 16, :null => false
     t.integer  "internal_id"
     t.binary   "receptacle_uuid",        :limit => 16
     t.integer  "receptacle_internal_id"
@@ -37,10 +37,11 @@ ActiveRecord::Schema.define(:version => 20120223102325) do
     t.datetime "inserted_at"
   end
 
-  add_index "aliquots", ["is_current", "sample_uuid", "receptacle_uuid"], :name => "is_current_and_sample_uuid_and_receptacle_uuid_idx"
+  add_index "aliquots", ["sample_uuid", "receptacle_uuid", "is_current"], :name => "sample_uuid_and_receptacle_uuid_and_is_current_idx"
+  add_index "aliquots", ["uuid", "is_current"], :name => "uuid_and_is_current_idx"
 
   create_table "asset_audits", :primary_key => "dont_use_id", :force => true do |t|
-    t.binary   "uuid",                 :limit => 16
+    t.binary   "uuid",                 :limit => 16, :null => false
     t.integer  "internal_id"
     t.string   "key"
     t.string   "message"
@@ -56,8 +57,10 @@ ActiveRecord::Schema.define(:version => 20120223102325) do
     t.datetime "inserted_at"
   end
 
+  add_index "asset_audits", ["uuid", "is_current"], :name => "uuid_and_is_current_idx"
+
   create_table "asset_freezers", :primary_key => "dont_use_id", :force => true do |t|
-    t.binary   "uuid",           :limit => 16
+    t.binary   "uuid",           :limit => 16, :null => false
     t.integer  "internal_id"
     t.string   "name"
     t.string   "asset_type"
@@ -74,8 +77,10 @@ ActiveRecord::Schema.define(:version => 20120223102325) do
     t.datetime "inserted_at"
   end
 
+  add_index "asset_freezers", ["uuid", "is_current"], :name => "uuid_and_is_current_idx"
+
   create_table "asset_links", :primary_key => "dont_use_id", :force => true do |t|
-    t.binary   "uuid",                   :limit => 16
+    t.binary   "uuid",                   :limit => 16, :null => false
     t.binary   "ancestor_uuid",          :limit => 16
     t.integer  "ancestor_internal_id"
     t.string   "ancestor_type"
@@ -89,11 +94,11 @@ ActiveRecord::Schema.define(:version => 20120223102325) do
     t.datetime "inserted_at"
   end
 
-  add_index "asset_links", ["is_current", "ancestor_uuid", "descendant_uuid"], :name => "is_current_and_ancestor_uuid_and_descendant_uuid_idx"
-  add_index "asset_links", ["is_current", "descendant_uuid", "ancestor_uuid"], :name => "is_current_and_descendant_uuid_and_ancestor_uuid_idx"
+  add_index "asset_links", ["ancestor_uuid", "descendant_uuid", "is_current"], :name => "ancestor_uuid_and_descendant_uuid_and_is_current_idx"
+  add_index "asset_links", ["uuid", "is_current"], :name => "uuid_and_is_current_idx"
 
   create_table "batch_requests", :primary_key => "dont_use_id", :force => true do |t|
-    t.binary   "uuid",                     :limit => 16
+    t.binary   "uuid",                     :limit => 16, :null => false
     t.integer  "internal_id"
     t.binary   "batch_uuid",               :limit => 16
     t.integer  "batch_internal_id"
@@ -113,8 +118,10 @@ ActiveRecord::Schema.define(:version => 20120223102325) do
     t.datetime "inserted_at"
   end
 
+  add_index "batch_requests", ["uuid", "is_current"], :name => "uuid_and_is_current_idx"
+
   create_table "batches", :primary_key => "dont_use_id", :force => true do |t|
-    t.binary   "uuid",                 :limit => 16
+    t.binary   "uuid",                 :limit => 16, :null => false
     t.integer  "internal_id"
     t.string   "created_by",           :limit => 30
     t.string   "assigned_to",          :limit => 30
@@ -131,8 +138,10 @@ ActiveRecord::Schema.define(:version => 20120223102325) do
     t.datetime "inserted_at"
   end
 
+  add_index "batches", ["uuid", "is_current"], :name => "uuid_and_is_current_idx"
+
   create_table "billing_events", :primary_key => "dont_use_id", :force => true do |t|
-    t.binary   "uuid",                :limit => 16
+    t.binary   "uuid",                :limit => 16, :null => false
     t.integer  "internal_id"
     t.string   "reference"
     t.integer  "project_internal_id"
@@ -157,7 +166,7 @@ ActiveRecord::Schema.define(:version => 20120223102325) do
     t.datetime "inserted_at"
   end
 
-  add_index "billing_events", ["is_current", "project_uuid", "request_uuid"], :name => "is_current_and_project_uuid_and_request_uuid_idx"
+  add_index "billing_events", ["project_uuid", "request_uuid", "is_current"], :name => "project_uuid_and_request_uuid_and_is_current_idx"
 
   create_table "delayed_jobs", :force => true do |t|
     t.integer  "priority",   :default => 0
@@ -175,7 +184,7 @@ ActiveRecord::Schema.define(:version => 20120223102325) do
   add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
 
   create_table "events", :primary_key => "dont_use_id", :force => true do |t|
-    t.binary   "uuid",               :limit => 16
+    t.binary   "uuid",               :limit => 16, :null => false
     t.integer  "internal_id"
     t.integer  "source_internal_id"
     t.binary   "source_uuid",        :limit => 16
@@ -196,8 +205,10 @@ ActiveRecord::Schema.define(:version => 20120223102325) do
     t.datetime "inserted_at"
   end
 
+  add_index "events", ["uuid", "is_current"], :name => "uuid_and_is_current_idx"
+
   create_table "lanes", :primary_key => "dont_use_id", :force => true do |t|
-    t.binary   "uuid",                    :limit => 16
+    t.binary   "uuid",                    :limit => 16, :null => false
     t.integer  "internal_id"
     t.string   "name"
     t.string   "barcode"
@@ -214,8 +225,10 @@ ActiveRecord::Schema.define(:version => 20120223102325) do
     t.datetime "inserted_at"
   end
 
+  add_index "lanes", ["uuid", "is_current"], :name => "uuid_and_is_current_idx"
+
   create_table "library_tubes", :primary_key => "dont_use_id", :force => true do |t|
-    t.binary   "uuid",                        :limit => 16
+    t.binary   "uuid",                        :limit => 16,                               :null => false
     t.integer  "internal_id"
     t.string   "name"
     t.string   "barcode"
@@ -249,8 +262,10 @@ ActiveRecord::Schema.define(:version => 20120223102325) do
     t.datetime "inserted_at"
   end
 
+  add_index "library_tubes", ["uuid", "is_current"], :name => "uuid_and_is_current_idx"
+
   create_table "multiplexed_library_tubes", :primary_key => "dont_use_id", :force => true do |t|
-    t.binary   "uuid",                    :limit => 16
+    t.binary   "uuid",                    :limit => 16,                               :null => false
     t.integer  "internal_id"
     t.string   "name"
     t.string   "barcode"
@@ -271,8 +286,10 @@ ActiveRecord::Schema.define(:version => 20120223102325) do
     t.integer  "submission_internal_id"
   end
 
+  add_index "multiplexed_library_tubes", ["uuid", "is_current"], :name => "uuid_and_is_current_idx"
+
   create_table "plate_purposes", :primary_key => "dont_use_id", :force => true do |t|
-    t.binary   "uuid",         :limit => 16
+    t.binary   "uuid",         :limit => 16, :null => false
     t.integer  "internal_id"
     t.string   "name"
     t.boolean  "is_current"
@@ -282,8 +299,10 @@ ActiveRecord::Schema.define(:version => 20120223102325) do
     t.datetime "inserted_at"
   end
 
+  add_index "plate_purposes", ["uuid", "is_current"], :name => "uuid_and_is_current_idx"
+
   create_table "plates", :primary_key => "dont_use_id", :force => true do |t|
-    t.binary   "uuid",                      :limit => 16
+    t.binary   "uuid",                      :limit => 16, :null => false
     t.integer  "internal_id"
     t.string   "name"
     t.string   "barcode"
@@ -301,8 +320,10 @@ ActiveRecord::Schema.define(:version => 20120223102325) do
     t.datetime "inserted_at"
   end
 
+  add_index "plates", ["uuid", "is_current"], :name => "uuid_and_is_current_idx"
+
   create_table "projects", :primary_key => "dont_use_id", :force => true do |t|
-    t.binary   "uuid",                    :limit => 16
+    t.binary   "uuid",                    :limit => 16, :null => false
     t.integer  "internal_id"
     t.string   "name"
     t.string   "collaborators"
@@ -322,8 +343,10 @@ ActiveRecord::Schema.define(:version => 20120223102325) do
     t.datetime "inserted_at"
   end
 
+  add_index "projects", ["uuid", "is_current"], :name => "uuid_and_is_current_idx"
+
   create_table "pulldown_multiplexed_library_tubes", :primary_key => "dont_use_id", :force => true do |t|
-    t.binary   "uuid",                    :limit => 16
+    t.binary   "uuid",                    :limit => 16,                               :null => false
     t.integer  "internal_id"
     t.string   "name"
     t.string   "barcode"
@@ -342,8 +365,10 @@ ActiveRecord::Schema.define(:version => 20120223102325) do
     t.datetime "inserted_at"
   end
 
+  add_index "pulldown_multiplexed_library_tubes", ["uuid", "is_current"], :name => "uuid_and_is_current_idx"
+
   create_table "quotas", :primary_key => "dont_use_id", :force => true do |t|
-    t.binary   "uuid",                :limit => 16
+    t.binary   "uuid",                :limit => 16, :null => false
     t.integer  "internal_id"
     t.integer  "quota_limit"
     t.string   "request_type"
@@ -357,10 +382,10 @@ ActiveRecord::Schema.define(:version => 20120223102325) do
     t.datetime "inserted_at"
   end
 
-  add_index "quotas", ["is_current", "project_uuid", "request_type"], :name => "is_current_and_project_uuid_and_request_type_idx"
+  add_index "quotas", ["project_uuid", "request_type", "is_current"], :name => "project_uuid_and_request_type_and_is_current_idx"
 
   create_table "requests", :primary_key => "dont_use_id", :force => true do |t|
-    t.binary   "uuid",                                 :limit => 16
+    t.binary   "uuid",                                 :limit => 16, :null => false
     t.integer  "internal_id"
     t.string   "request_type"
     t.string   "fragment_size_from"
@@ -405,11 +430,12 @@ ActiveRecord::Schema.define(:version => 20120223102325) do
     t.datetime "inserted_at"
   end
 
-  add_index "requests", ["is_current", "source_asset_uuid", "request_type"], :name => "is_current_and_source_asset_uuid_and_request_type_idx"
-  add_index "requests", ["is_current", "target_asset_uuid", "request_type"], :name => "is_current_and_target_asset_uuid_and_request_type_idx"
+  add_index "requests", ["source_asset_uuid", "request_type", "is_current"], :name => "source_asset_uuid_and_request_type_and_is_current_idx"
+  add_index "requests", ["target_asset_uuid", "request_type", "is_current"], :name => "target_asset_uuid_and_request_type_and_is_current_idx"
+  add_index "requests", ["uuid", "is_current"], :name => "uuid_and_is_current_idx"
 
   create_table "sample_tubes", :primary_key => "dont_use_id", :force => true do |t|
-    t.binary   "uuid",                    :limit => 16
+    t.binary   "uuid",                    :limit => 16,                               :null => false
     t.integer  "internal_id"
     t.string   "name"
     t.string   "barcode"
@@ -430,8 +456,10 @@ ActiveRecord::Schema.define(:version => 20120223102325) do
     t.datetime "inserted_at"
   end
 
+  add_index "sample_tubes", ["uuid", "is_current"], :name => "uuid_and_is_current_idx"
+
   create_table "samples", :primary_key => "dont_use_id", :force => true do |t|
-    t.binary   "uuid",                       :limit => 16
+    t.binary   "uuid",                       :limit => 16, :null => false
     t.integer  "internal_id"
     t.string   "name"
     t.string   "reference_genome"
@@ -463,11 +491,11 @@ ActiveRecord::Schema.define(:version => 20120223102325) do
     t.datetime "inserted_at"
   end
 
-  add_index "samples", ["is_current", "internal_id"], :name => "is_current_and_internal_id_idx"
-  add_index "samples", ["is_current", "uuid"], :name => "is_current_and_uuid_idx"
+  add_index "samples", ["internal_id", "is_current"], :name => "internal_id_and_is_current_idx"
+  add_index "samples", ["uuid", "is_current"], :name => "uuid_and_is_current_idx"
 
   create_table "studies", :primary_key => "dont_use_id", :force => true do |t|
-    t.binary   "uuid",                           :limit => 16
+    t.binary   "uuid",                           :limit => 16, :null => false
     t.integer  "internal_id"
     t.string   "name"
     t.string   "reference_genome"
@@ -496,11 +524,11 @@ ActiveRecord::Schema.define(:version => 20120223102325) do
     t.datetime "inserted_at"
   end
 
-  add_index "studies", ["is_current", "internal_id"], :name => "is_current_and_internal_id_idx"
-  add_index "studies", ["is_current", "uuid"], :name => "is_current_and_uuid_idx"
+  add_index "studies", ["internal_id", "is_current"], :name => "internal_id_and_is_current_idx"
+  add_index "studies", ["uuid", "is_current"], :name => "uuid_and_is_current_idx"
 
   create_table "study_samples", :primary_key => "dont_use_id", :force => true do |t|
-    t.binary   "uuid",               :limit => 16
+    t.binary   "uuid",               :limit => 16, :null => false
     t.integer  "internal_id"
     t.integer  "sample_internal_id"
     t.binary   "sample_uuid",        :limit => 16
@@ -513,10 +541,11 @@ ActiveRecord::Schema.define(:version => 20120223102325) do
     t.datetime "inserted_at"
   end
 
-  add_index "study_samples", ["is_current", "sample_uuid", "study_uuid"], :name => "is_current_and_sample_uuid_and_study_uuid_idx"
+  add_index "study_samples", ["sample_uuid", "study_uuid", "is_current"], :name => "sample_uuid_and_study_uuid_and_is_current_idx"
+  add_index "study_samples", ["uuid", "is_current"], :name => "uuid_and_is_current_idx"
 
   create_table "submissions", :primary_key => "dont_use_id", :force => true do |t|
-    t.binary   "uuid",                        :limit => 16
+    t.binary   "uuid",                        :limit => 16, :null => false
     t.integer  "internal_id"
     t.boolean  "is_current"
     t.datetime "checked_at"
@@ -541,9 +570,8 @@ ActiveRecord::Schema.define(:version => 20120223102325) do
     t.integer  "number_of_lanes"
   end
 
-  add_index "submissions", ["is_current", "project_uuid"], :name => "is_current_and_project_uuid_idx"
-  add_index "submissions", ["is_current", "study_uuid", "project_uuid"], :name => "is_current_and_study_uuid_and_project_uuid_idx"
-  add_index "submissions", ["is_current", "uuid"], :name => "is_current_and_uuid_idx"
+  add_index "submissions", ["study_uuid", "is_current", "project_uuid"], :name => "study_uuid_and_is_current_and_project_uuid_idx"
+  add_index "submissions", ["uuid", "is_current"], :name => "uuid_and_is_current_idx"
 
   create_table "submitted_assets", :primary_key => "dont_use_id", :force => true do |t|
     t.binary "submission_uuid", :limit => 16
@@ -553,7 +581,7 @@ ActiveRecord::Schema.define(:version => 20120223102325) do
   add_index "submitted_assets", ["submission_uuid", "asset_uuid"], :name => "submission_uuid_and_asset_uuid_idx"
 
   create_table "tags", :primary_key => "dont_use_id", :force => true do |t|
-    t.binary   "uuid",                  :limit => 16
+    t.binary   "uuid",                  :limit => 16, :null => false
     t.integer  "internal_id"
     t.string   "expected_sequence"
     t.integer  "map_id"
@@ -567,10 +595,10 @@ ActiveRecord::Schema.define(:version => 20120223102325) do
     t.datetime "inserted_at"
   end
 
-  add_index "tags", ["is_current", "uuid"], :name => "is_current_and_uuid_idx"
+  add_index "tags", ["uuid", "is_current"], :name => "uuid_and_is_current_idx"
 
   create_table "uuid_objects", :primary_key => "dont_use_id", :force => true do |t|
-    t.binary   "uuid",         :limit => 16
+    t.binary   "uuid",         :limit => 16, :null => false
     t.integer  "internal_id"
     t.string   "name"
     t.string   "object_name"
@@ -583,7 +611,7 @@ ActiveRecord::Schema.define(:version => 20120223102325) do
   add_index "uuid_objects", ["uuid"], :name => "uuid_idx"
 
   create_table "wells", :primary_key => "dont_use_id", :force => true do |t|
-    t.binary   "uuid",                    :limit => 16
+    t.binary   "uuid",                    :limit => 16,                               :null => false
     t.integer  "internal_id"
     t.string   "name"
     t.string   "map",                     :limit => 5
@@ -611,6 +639,8 @@ ActiveRecord::Schema.define(:version => 20120223102325) do
     t.string   "genotyping_snp_plate_id"
     t.datetime "inserted_at"
   end
+
+  add_index "wells", ["uuid", "is_current"], :name => "uuid_and_is_current_idx"
 
 end
   add_index "requests", ["submission_uuid"], :name => "index_requests_on_submission_uuid"

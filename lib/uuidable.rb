@@ -131,7 +131,7 @@ module Uuidable
     class NullHelper
       attr_reader :indexes
       def initialize(*indexes) ; @indexes = indexes ; end
-      def constrain_column_to_not_null?(_) ; false ; end
+      def constrain_column_to_not_null?(column) ; column.to_sym == :uuid ; end
     end
 
     def self.extended(base)
