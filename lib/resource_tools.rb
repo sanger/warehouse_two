@@ -49,42 +49,9 @@ module ResourceTools
         record.class.for_uuid(record.uuid).current.update_all('is_current=FALSE')
       end
 
-      # After saving the UUID details need maintaining.
-      after_create(:create_uuid_object)
-      after_update(:update_uuid_object)
-
       delegate :correct_current_time, :to => 'self.class'
     end
   end
-
-  def to_attributes_for_uuid_object
-    {
-      :last_updated => self.last_updated,
-      :checked_at   => self.checked_at,
-      :object_name  => self.class.name.pluralize.underscore
-    }.tap do |attributes|
-      attributes[:name]        = self.name        if respond_to?(:name)
-      attributes[:internal_id] = self.internal_id if respond_to?(:internal_id)
-    end
-  end
-
-  # Create, or update the existing, UuidObject instance associated with this resource.  This
-  # means that a UUID could change the resource it is referencing.
-  def create_uuid_object
-    object = UuidObject.find_by_uuid(self.uuid) || UuidObject.method(:create!)
-    object.call(self.to_attributes_for_uuid_object.merge(
-      :uuid    => self.uuid,
-      :created => self.created
-    ))
-  end
-  private :create_uuid_object
-
-  # Update the existing UuidObject instance associated with this resource.  It must exist,
-  # otherwise we have inconsistencies in the data.
-  def update_uuid_object
-    ::UuidObject.find_by_uuid(self.uuid).update_attributes!(self.to_attributes_for_uuid_object)
-  end
-  private :update_uuid_object
 
   def updated_values?(remote_values)
     values = remote_values.symbolize_keys.reverse_slice(:last_updated, :created, :entry_date)

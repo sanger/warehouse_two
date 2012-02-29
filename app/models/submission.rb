@@ -1,22 +1,20 @@
 class Submission < ActiveRecord::Base
   include ResourceTools
-  
+
   def self.link_resources(resource_object)
     lc_class_name = self.model_name.underscore
     resource = resource_object.send(lc_class_name)
-    if resource.respond_to?(:asset_uuids) && ! resource.asset_uuids.blank?
-      resource.asset_uuids.each do |asset_uuid|
-        return if asset_uuid.blank?
-        submitted_asset = SubmittedAsset.find_by_submission_uuid_and_asset_uuid(resource.uuid, asset_uuid)
-        return if submitted_asset.nil?
-        SubmittedAsset.create!(
-          :submission_uuid => resource.uuid,
-          :asset_uuid => asset_uuid
-        )
+    return unless resource.respond_to?(:asset_uuids) and not resource.asset_uuids.blank?
+
+    asset_uuids   = resource.asset_uuids.reject(&:blank?)
+    present_uuids = SubmittedAsset.for_submission(resource).map(&:asset_uuid)
+    SubmittedAsset.create!(
+      (asset_uuids-present_uuids).map do |uuid|
+        { :submission_uuid => resource.uuid, :asset_uuid => uuid }
       end
-    end
+    )
   end
-  
+
   def self.map_internal_to_external_attributes
     # Internal DB column => External resource method
     {
