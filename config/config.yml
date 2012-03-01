@@ -1,19 +1,25 @@
 development:
-  amqp_url: amqp://localhost:5672/
+  amqp:
+    url: amqp://localhost:5672/
+    prefetch: 100
   api_url: http://localhost:3000
   api_version: 0_5
   proxy: ""
   numeric_tolerance: 0.05
 
 test:
-  amqp_url: amqp://localhost:5672/
+  amqp:
+    url: amqp://localhost:5672/
+    prefetch: 100
   api_url: http://localhost:3000
   api_version: 0_5
   proxy: ""
   numeric_tolerance: 0.05
 
 cucumber:
-  amqp_url: amqp://localhost:5672/
+  amqp:
+    url: amqp://localhost:5672/
+    prefetch: 100
   api_url: http://localhost:3000
   api_version: 0_5
   proxy: ""

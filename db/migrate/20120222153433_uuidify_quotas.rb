@@ -4,6 +4,7 @@ class UuidifyQuotas < ActiveRecord::Migration
   def self.up
     uuidify_table(
       :quotas, OnlyIndexes(
+        [ :uuid, :is_current ],
         [ :project_uuid, :request_type, :is_current ]
       )
     )

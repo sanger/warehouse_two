@@ -38,6 +38,7 @@ module ResourceTools
 
       named_scope :for_uuid, lambda { |uuid| { :conditions => { :uuid => uuid } } }
       named_scope :current, { :conditions => { :is_current => true } }
+      named_scope :not_record, lambda { |record| { :conditions => [ 'dont_use_id != ?', record.dont_use_id ] } }
 
       # Ensure that the time stamps are correct whenever a record is updated
       before_create { |record| record.inserted_at = record.correct_current_time }
@@ -46,7 +47,10 @@ module ResourceTools
       # On creation, ensure that this is the only record that is current.
       before_create do |record|
         record.is_current = true
-        record.class.for_uuid(record.uuid).current.update_all('is_current=FALSE')
+      end
+
+      after_create do |record|
+        record.class.for_uuid(record.uuid).current.not_record(record).update_all('is_current=FALSE')
       end
 
       delegate :correct_current_time, :to => 'self.class'

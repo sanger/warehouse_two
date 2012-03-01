@@ -384,6 +384,7 @@ ActiveRecord::Schema.define(:version => 20120229204327) do
     t.datetime "inserted_at"
   end
 
+  add_index "quotas", ["uuid", "is_current"], :name => "uuid_and_is_current_idx"
   add_index "quotas", ["project_uuid", "request_type", "is_current"], :name => "project_uuid_and_request_type_and_is_current_idx"
 
   create_table "requests", :primary_key => "dont_use_id", :force => true do |t|

@@ -2,11 +2,12 @@ require 'amqp'
 
 Rails.logger.info("AMQP Consumer: Starting AMQP consumer ...")
 puts("AMQP Consumer: Starting AMQP consumer ...")
-AMQP.start(configatron.amqp_url) do |client, opened_ok|
+AMQP.start(configatron.amqp.url) do |client, opened_ok|
   show_stopper = Proc.new { client.close { EventMachine.stop } }
   Signal.trap("TERM", show_stopper)
 
   channel = AMQP::Channel.new(client)
+  channel.prefetch(configatron.amqp.prefetch)
   channel.queue('psd.warehouse_two', :passive => true) do |queue, queue_declared|
     Rails.logger.info("AMQP Consumer: Waiting for messages ...")
     puts("AMQP Consumer: Waiting for messages ...")
