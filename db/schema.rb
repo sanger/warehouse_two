@@ -166,6 +166,8 @@ ActiveRecord::Schema.define(:version => 20120229204327) do
     t.datetime "inserted_at"
   end
 
+
+  add_index "billing_events", ["uuid", "is_current"], :name => "uuid_and_is_current_idx"
   add_index "billing_events", ["project_uuid", "request_uuid", "is_current"], :name => "project_uuid_and_request_uuid_and_is_current_idx"
 
   create_table "delayed_jobs", :force => true do |t|
