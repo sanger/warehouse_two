@@ -32,7 +32,7 @@ class CreateUuidObjectsAsView < ActiveRecord::Migration
       columns << (has_name        ? :name        : 'NULL AS name')
       columns << (has_internal_id ? :internal_id : 'NULL AS internal_id')
       columns << "#{table.to_s.inspect} AS object_name"
-      "SELECT #{columns.join(',')} FROM #{table}"
+      "SELECT #{columns.join(',')} FROM #{table} WHERE is_current=TRUE AND uuid IS NOT NULL"
     end
 
     create_view :uuid_objects, "(#{selects.join(') UNION (')})" do |view|
