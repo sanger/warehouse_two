@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120301144022) do
+ActiveRecord::Schema.define(:version => 20120302143501) do
 
   create_table "aliquots", :primary_key => "dont_use_id", :force => true do |t|
     t.binary   "uuid",                   :limit => 16, :null => false
@@ -444,9 +444,12 @@ ActiveRecord::Schema.define(:version => 20120301144022) do
     t.string   "user"
     t.datetime "inserted_at"
     t.datetime "deleted_at"
+    t.binary   "submission_uuid",                      :limit => 16
+    t.integer  "submission_internal_id"
   end
 
   add_index "requests", ["source_asset_uuid", "request_type", "is_current"], :name => "source_asset_uuid_and_request_type_and_is_current_idx"
+  add_index "requests", ["submission_uuid", "is_current"], :name => "submission_uuid_and_is_current_idx"
   add_index "requests", ["target_asset_uuid", "request_type", "is_current"], :name => "target_asset_uuid_and_request_type_and_is_current_idx"
   add_index "requests", ["uuid", "is_current"], :name => "uuid_and_is_current_idx"
 

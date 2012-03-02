@@ -2,8 +2,8 @@ class Request < ActiveRecord::Base
   include ResourceTools
 
   def self.map_internal_to_external_attributes
-    # Internal DB column => External resource method
     {
+      # Internal DB column                  => External resource method
       :internal_id                          => :id,
       :request_type                         => :request_type,
       :state                                => :state,
@@ -11,8 +11,8 @@ class Request < ActiveRecord::Base
       :fragment_size_to                     => :fragment_size_required_to,
       :read_length                          => :read_length,
       :library_type                         => :library_type,
-      :study_uuid                           => :study_uuid, 
-      :study_internal_id                    => :study_internal_id, 
+      :study_uuid                           => :study_uuid,
+      :study_internal_id                    => :study_internal_id,
       :study_name                           => :study_name,
       :project_uuid                         => :project_uuid,
       :project_internal_id                  => :project_internal_id,
@@ -30,8 +30,8 @@ class Request < ActiveRecord::Base
       :source_asset_two_dimensional_barcode => :source_asset_two_dimensional_barcode,
       :source_asset_sample_uuid             => :source_asset_sample_uuid,
       :source_asset_sample_internal_id      => :source_asset_sample_internal_id,
-      :target_asset_uuid                    => :target_asset_uuid,    
-      :target_asset_internal_id             => :target_asset_internal_id,   
+      :target_asset_uuid                    => :target_asset_uuid,
+      :target_asset_internal_id             => :target_asset_internal_id,
       :target_asset_type                    => :target_asset_type,
       :target_asset_name                    => :target_asset_name,
       :target_asset_barcode                 => :target_asset_barcode,
@@ -42,7 +42,9 @@ class Request < ActiveRecord::Base
       :target_asset_sample_uuid             => :target_asset_sample_uuid,
       :target_asset_sample_internal_id      => :target_asset_sample_internal_id,
       :priority                             => :priority,
-      :user                                 => :user
+      :user                                 => :user,
+      :submission_uuid                      => :submission_uuid,
+      :submission_internal_id               => :submission_internal_id
     }
   end
 
