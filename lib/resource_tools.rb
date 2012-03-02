@@ -14,7 +14,9 @@ class Hash
 end
 
 class Object
-  alias_method(:within_acceptable_bounds?, :==)
+  def within_acceptable_bounds?(value)
+    self == value
+  end
 end
 
 class Numeric
@@ -61,9 +63,10 @@ module ResourceTools
     deleted_at.present?
   end
 
-  def updated_values?(remote_values)
-    values = remote_values.symbolize_keys.reverse_slice(:last_updated, :created, :entry_date)
-    self.attributes.symbolize_keys.within_acceptable_bounds?(values)
+  IGNOREABLE_ATTRIBUTES = [ :dont_use_id, :id, :is_current, :inserted_at, :checked_at ]
+
+  def updated_values?(object)
+    not self.attributes.within_acceptable_bounds?(object.attributes.reverse_slice(IGNOREABLE_ATTRIBUTES))
   end
 
   def checked!
@@ -71,8 +74,8 @@ module ResourceTools
     self
   end
 
-  def check(values)
-    updated_values?(values) ? yield : checked!
+  def check(object)
+    updated_values?(object) ? yield : checked!
   end
 
   module ClassMethods
@@ -85,9 +88,9 @@ module ResourceTools
     end
 
     def create_or_update(resource_object)
-      remote_values = parse_resource_object(resource_object)
-      local_object = current.for_uuid(remote_values[:uuid]).first
-      local_object.check(remote_values) { create!(remote_values) }
+      new_object = new(parse_resource_object(resource_object))
+      local_object = current.for_uuid(new_object.uuid).first
+      local_object.check(remote_values) { new_object.save! ; new_object }
     end
 
     # Fields that come from the JSON across all models.
