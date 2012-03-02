@@ -4,7 +4,6 @@ class Event < ActiveRecord::Base
   def self.map_internal_to_external_attributes
     # Internal DB column => External resource method
     {
-      :uuid               => :uuid,
       :internal_id        => :internal_id,
       :source_internal_id => :eventful_internal_id,
       :source_uuid        => :eventful_uuid,
@@ -17,9 +16,7 @@ class Event < ActiveRecord::Base
       :content            => :content,
       :created_by         => :created_by,
       :of_interest_to     => :of_interest_to,
-      :descriptor_key     => :descriptor_key,
-      :last_updated       => :updated_at,
-      :created            => :created_at
+      :descriptor_key     => :descriptor_key
     }
   end
 

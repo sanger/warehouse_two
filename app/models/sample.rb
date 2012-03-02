@@ -4,7 +4,6 @@ class Sample < ActiveRecord::Base
   def self.map_internal_to_external_attributes
     # Internal DB column => External resource method
     {
-      :uuid                => :uuid,
       :internal_id         => :id,
       :name                => :name,
       :sanger_sample_id    => :sanger_sample_id,
@@ -27,9 +26,7 @@ class Sample < ActiveRecord::Base
       :sample_visibility   => :sample_sra_hold,
       :strain              => :sample_strain_att,
       :supplier_name       => :supplier_name,
-      :updated_by_manifest => :updated_by_manifest,
-      :last_updated        => :updated_at,
-      :created             => :created_at
+      :updated_by_manifest => :updated_by_manifest
     }
   end
   

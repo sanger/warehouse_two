@@ -44,10 +44,9 @@ module ResourceTools
       before_create { |record| record.inserted_at = record.correct_current_time }
       before_save   { |record| record.checked_at  = record.correct_current_time }
 
-      # On creation, ensure that this is the only record that is current.
-      before_create do |record|
-        record.is_current = true
-      end
+      # On creation, ensure that this is the only record that is current.  If the record has been
+      # deleted then we need to not set this to current.
+      before_create { |record| record.is_current = !record.deleted? ; true }
 
       after_create do |record|
         record.class.for_uuid(record.uuid).current.not_record(record).update_all('is_current=FALSE')
@@ -55,6 +54,11 @@ module ResourceTools
 
       delegate :correct_current_time, :to => 'self.class'
     end
+  end
+
+  # Has this record been deleted remotely
+  def deleted?
+    deleted_at.present?
   end
 
   def updated_values?(remote_values)
@@ -86,18 +90,27 @@ module ResourceTools
       local_object.check(remote_values) { create!(remote_values) }
     end
 
+    # Fields that come from the JSON across all models.
+    STANDARD_FIELDS = {
+      :uuid         => :uuid,
+      :last_updated => :updated_at,
+      :created      => :created_at,
+      :deleted_at   => :deleted_at
+    }
+
     def parse_resource_object(resource_object)
       resource = resource_object.try(:send, self.model_name.underscore) or return {}
+      helper   = lambda do |(internal_name, external_name)|
+        value = Array(external_name).inject(resource) { |o,m| o.respond_to?(m) ? o.send(m) : nil }
+        [internal_name, value]
+      end
 
-      translated_resource = Hash[
-        map_internal_to_external_attributes.map do |internal_name, external_name|
-          value = Array(external_name).inject(resource) { |o,m| o.respond_to?(m) ? o.send(m) : nil }
-          [internal_name, value]
-        end
-      ]
-
-      link_resources(resource_object)
-      translated_resource
+      Hash[
+        map_internal_to_external_attributes.map(&helper) +
+        STANDARD_FIELDS.map(&helper)
+      ].tap do
+        link_resources(resource_object)
+      end
     end
     private :parse_resource_object
   end

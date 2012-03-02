@@ -4,7 +4,6 @@ class Plate < ActiveRecord::Base
   def self.map_internal_to_external_attributes
     # Internal DB column => External resource method
     {
-      :uuid                        => :uuid,
       :internal_id                 => :id,
       :name                        => :name,
       :barcode                     => :barcode,
@@ -14,9 +13,7 @@ class Plate < ActiveRecord::Base
       :plate_purpose_internal_id   => :plate_purpose_internal_id,
       :plate_purpose_uuid          => :plate_purpose_uuid,
       :infinium_barcode            => :infinium_barcode,
-      :location                    => :location,
-      :last_updated                => :updated_at,
-      :created                     => :created_at
+      :location                    => :location
     }
   end
 

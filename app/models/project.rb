@@ -4,7 +4,6 @@ class Project < ActiveRecord::Base
   def self.map_internal_to_external_attributes
     # Internal DB column => External resource method
     {
-      :uuid                    => :uuid,
       :internal_id             => :id,
       :name                    => :name,
       :collaborators           => :collaborators,
@@ -16,9 +15,7 @@ class Project < ActiveRecord::Base
       :external_funding_source => :external_funding_source,
       :project_manager         => :project_manager,
       :budget_cost_centre      => :budget_cost_centre,
-      :state                   => :state,
-      :last_updated            => :updated_at,
-      :created                 => :created_at
+      :state                   => :state
     }
   end
 

@@ -4,7 +4,6 @@ class Request < ActiveRecord::Base
   def self.map_internal_to_external_attributes
     # Internal DB column => External resource method
     {
-      :uuid                                 => :uuid,
       :internal_id                          => :id,
       :request_type                         => :request_type,
       :state                                => :state,
@@ -43,9 +42,7 @@ class Request < ActiveRecord::Base
       :target_asset_sample_uuid             => :target_asset_sample_uuid,
       :target_asset_sample_internal_id      => :target_asset_sample_internal_id,
       :priority                             => :priority,
-      :user                                 => :user,
-      :last_updated                         => :updated_at,
-      :created                              => :created_at
+      :user                                 => :user
     }
   end
 

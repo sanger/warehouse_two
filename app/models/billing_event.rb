@@ -4,7 +4,6 @@ class BillingEvent < ActiveRecord::Base
   def self.map_internal_to_external_attributes
     # Internal DB column => External resource method
     {
-      :uuid                    => :uuid,
       :internal_id             => :internal_id,
       :reference               => :reference,
       :project_internal_id     => :project_internal_id,
@@ -21,9 +20,7 @@ class BillingEvent < ActiveRecord::Base
       :quantity                => :quantity,
       :kind                    => :kind,
       :description             => :description,
-      :entry_date              => :entry_date,
-      :last_updated            => :updated_at,
-      :created                 => :created_at
+      :entry_date              => :entry_date
     }
   end
 

@@ -4,7 +4,6 @@ class Well < ActiveRecord::Base
   def self.map_internal_to_external_attributes
     # Internal DB column => External resource method
     {
-      :uuid                    => :uuid,
       :internal_id             => :internal_id,
       :name                    => :name,
       :map                     => :map,
@@ -25,9 +24,7 @@ class Well < ActiveRecord::Base
       :sequenom_count          => :sequenom_count,
       :gender_markers          => :gender_markers,
       :genotyping_status       => :genotyping_status,
-      :genotyping_snp_plate_id => :genotyping_snp_plate_id,
-      :last_updated            => :updated_at,
-      :created                 => :created_at
+      :genotyping_snp_plate_id => :genotyping_snp_plate_id
     }
   end
 

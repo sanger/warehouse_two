@@ -6,7 +6,6 @@ class Study < ActiveRecord::Base
     {
       :reference_genome   => :reference_genome,
       :ethically_approved => :ethically_approved,
-      :uuid               => :uuid,
       :internal_id        => :id,
       :name               => :name,
       :faculty_sponsor    => :sac_sponsor,
@@ -26,10 +25,7 @@ class Study < ActiveRecord::Base
       :study_visibility                => :study_visibility,
       :ega_dac_accession_number        => :ega_dac_accession_number,
       :array_express_accession_number  => :array_express_accession_number,
-      :ega_policy_accession_number     => :ega_policy_accession_number,
-      
-      :last_updated       => :updated_at,
-      :created            => :created_at
+      :ega_policy_accession_number     => :ega_policy_accession_number
     }
   end
 

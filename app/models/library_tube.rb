@@ -4,7 +4,6 @@ class LibraryTube < ActiveRecord::Base
   def self.map_internal_to_external_attributes
     # Internal DB column => External resource method
     {
-      :uuid                        => :uuid,
       :internal_id                 => :id,
       :name                        => :name,
       :barcode                     => :barcode,
@@ -30,9 +29,7 @@ class LibraryTube < ActiveRecord::Base
       :fragment_size_required_from => :fragment_size_required_from,
       :fragment_size_required_to   => :fragment_size_required_to,
       :scanned_in_date             => :scanned_in_date,
-      :public_name                 => :public_name,
-      :last_updated                => :updated_at,
-      :created                     => :created_at
+      :public_name                 => :public_name
     }
   end
 

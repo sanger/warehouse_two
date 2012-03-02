@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120229204327) do
+ActiveRecord::Schema.define(:version => 20120301144022) do
 
   create_table "aliquots", :primary_key => "dont_use_id", :force => true do |t|
     t.binary   "uuid",                   :limit => 16, :null => false
@@ -35,6 +35,7 @@ ActiveRecord::Schema.define(:version => 20120229204327) do
     t.datetime "last_updated"
     t.datetime "created"
     t.datetime "inserted_at"
+    t.datetime "deleted_at"
   end
 
   add_index "aliquots", ["sample_uuid", "receptacle_uuid", "is_current"], :name => "sample_uuid_and_receptacle_uuid_and_is_current_idx"
@@ -55,6 +56,7 @@ ActiveRecord::Schema.define(:version => 20120229204327) do
     t.binary   "asset_uuid",           :limit => 16
     t.string   "witnessed_by"
     t.datetime "inserted_at"
+    t.datetime "deleted_at"
   end
 
   add_index "asset_audits", ["uuid", "is_current"], :name => "uuid_and_is_current_idx"
@@ -92,6 +94,7 @@ ActiveRecord::Schema.define(:version => 20120229204327) do
     t.datetime "last_updated"
     t.datetime "created"
     t.datetime "inserted_at"
+    t.datetime "deleted_at"
   end
 
   add_index "asset_links", ["ancestor_uuid", "descendant_uuid", "is_current"], :name => "ancestor_uuid_and_descendant_uuid_and_is_current_idx"
@@ -116,6 +119,7 @@ ActiveRecord::Schema.define(:version => 20120229204327) do
     t.datetime "last_updated"
     t.datetime "created"
     t.datetime "inserted_at"
+    t.datetime "deleted_at"
   end
 
   add_index "batch_requests", ["uuid", "is_current"], :name => "uuid_and_is_current_idx"
@@ -136,6 +140,7 @@ ActiveRecord::Schema.define(:version => 20120229204327) do
     t.datetime "last_updated"
     t.datetime "created"
     t.datetime "inserted_at"
+    t.datetime "deleted_at"
   end
 
   add_index "batches", ["uuid", "is_current"], :name => "uuid_and_is_current_idx"
@@ -164,8 +169,8 @@ ActiveRecord::Schema.define(:version => 20120229204327) do
     t.datetime "last_updated"
     t.datetime "created"
     t.datetime "inserted_at"
+    t.datetime "deleted_at"
   end
-
 
   add_index "billing_events", ["uuid", "is_current"], :name => "uuid_and_is_current_idx"
   add_index "billing_events", ["project_uuid", "request_uuid", "is_current"], :name => "project_uuid_and_request_uuid_and_is_current_idx"
@@ -205,6 +210,7 @@ ActiveRecord::Schema.define(:version => 20120229204327) do
     t.datetime "last_updated"
     t.datetime "created"
     t.datetime "inserted_at"
+    t.datetime "deleted_at"
   end
 
   add_index "events", ["uuid", "is_current"], :name => "uuid_and_is_current_idx"
@@ -225,6 +231,7 @@ ActiveRecord::Schema.define(:version => 20120229204327) do
     t.datetime "last_updated"
     t.datetime "created"
     t.datetime "inserted_at"
+    t.datetime "deleted_at"
   end
 
   add_index "lanes", ["uuid", "is_current"], :name => "uuid_and_is_current_idx"
@@ -262,6 +269,7 @@ ActiveRecord::Schema.define(:version => 20120229204327) do
     t.datetime "created"
     t.string   "public_name"
     t.datetime "inserted_at"
+    t.datetime "deleted_at"
   end
 
   add_index "library_tubes", ["uuid", "is_current"], :name => "uuid_and_is_current_idx"
@@ -284,8 +292,7 @@ ActiveRecord::Schema.define(:version => 20120229204327) do
     t.datetime "created"
     t.string   "public_name"
     t.datetime "inserted_at"
-    t.string   "submission_uuid",                      :limit => 36
-    t.integer  "submission_internal_id"
+    t.datetime "deleted_at"
   end
 
   add_index "multiplexed_library_tubes", ["uuid", "is_current"], :name => "uuid_and_is_current_idx"
@@ -299,6 +306,7 @@ ActiveRecord::Schema.define(:version => 20120229204327) do
     t.datetime "last_updated"
     t.datetime "created"
     t.datetime "inserted_at"
+    t.datetime "deleted_at"
   end
 
   add_index "plate_purposes", ["uuid", "is_current"], :name => "uuid_and_is_current_idx"
@@ -320,6 +328,7 @@ ActiveRecord::Schema.define(:version => 20120229204327) do
     t.string   "infinium_barcode"
     t.string   "location"
     t.datetime "inserted_at"
+    t.datetime "deleted_at"
   end
 
   add_index "plates", ["uuid", "is_current"], :name => "uuid_and_is_current_idx"
@@ -343,6 +352,7 @@ ActiveRecord::Schema.define(:version => 20120229204327) do
     t.datetime "last_updated"
     t.datetime "created"
     t.datetime "inserted_at"
+    t.datetime "deleted_at"
   end
 
   add_index "projects", ["uuid", "is_current"], :name => "uuid_and_is_current_idx"
@@ -365,6 +375,7 @@ ActiveRecord::Schema.define(:version => 20120229204327) do
     t.datetime "created"
     t.string   "public_name"
     t.datetime "inserted_at"
+    t.datetime "deleted_at"
   end
 
   add_index "pulldown_multiplexed_library_tubes", ["uuid", "is_current"], :name => "uuid_and_is_current_idx"
@@ -382,6 +393,7 @@ ActiveRecord::Schema.define(:version => 20120229204327) do
     t.datetime "last_updated"
     t.datetime "created"
     t.datetime "inserted_at"
+    t.datetime "deleted_at"
   end
 
   add_index "quotas", ["uuid", "is_current"], :name => "uuid_and_is_current_idx"
@@ -431,6 +443,7 @@ ActiveRecord::Schema.define(:version => 20120229204327) do
     t.integer  "priority"
     t.string   "user"
     t.datetime "inserted_at"
+    t.datetime "deleted_at"
   end
 
   add_index "requests", ["source_asset_uuid", "request_type", "is_current"], :name => "source_asset_uuid_and_request_type_and_is_current_idx"
@@ -457,6 +470,7 @@ ActiveRecord::Schema.define(:version => 20120229204327) do
     t.datetime "created"
     t.string   "barcode_prefix",          :limit => 2
     t.datetime "inserted_at"
+    t.datetime "deleted_at"
   end
 
   add_index "sample_tubes", ["uuid", "is_current"], :name => "uuid_and_is_current_idx"
@@ -492,6 +506,7 @@ ActiveRecord::Schema.define(:version => 20120229204327) do
     t.string   "strain"
     t.boolean  "updated_by_manifest"
     t.datetime "inserted_at"
+    t.datetime "deleted_at"
   end
 
   add_index "samples", ["internal_id", "is_current"], :name => "internal_id_and_is_current_idx"
@@ -525,6 +540,7 @@ ActiveRecord::Schema.define(:version => 20120229204327) do
     t.string   "array_express_accession_number"
     t.string   "ega_policy_accession_number"
     t.datetime "inserted_at"
+    t.datetime "deleted_at"
   end
 
   add_index "studies", ["internal_id", "is_current"], :name => "internal_id_and_is_current_idx"
@@ -542,6 +558,7 @@ ActiveRecord::Schema.define(:version => 20120229204327) do
     t.datetime "last_updated"
     t.datetime "created"
     t.datetime "inserted_at"
+    t.datetime "deleted_at"
   end
 
   add_index "study_samples", ["sample_uuid", "study_uuid", "is_current"], :name => "sample_uuid_and_study_uuid_and_is_current_idx"
@@ -571,14 +588,16 @@ ActiveRecord::Schema.define(:version => 20120229204327) do
     t.string   "sequencing_type"
     t.integer  "insert_size"
     t.integer  "number_of_lanes"
+    t.datetime "deleted_at"
   end
 
   add_index "submissions", ["study_uuid", "is_current", "project_uuid"], :name => "study_uuid_and_is_current_and_project_uuid_idx"
   add_index "submissions", ["uuid", "is_current"], :name => "uuid_and_is_current_idx"
 
   create_table "submitted_assets", :primary_key => "dont_use_id", :force => true do |t|
-    t.binary "submission_uuid", :limit => 16
-    t.binary "asset_uuid",      :limit => 16
+    t.binary   "submission_uuid", :limit => 16
+    t.binary   "asset_uuid",      :limit => 16
+    t.datetime "deleted_at"
   end
 
   add_index "submitted_assets", ["submission_uuid", "asset_uuid"], :name => "submission_uuid_and_asset_uuid_idx"
@@ -596,6 +615,7 @@ ActiveRecord::Schema.define(:version => 20120229204327) do
     t.datetime "last_updated"
     t.datetime "created"
     t.datetime "inserted_at"
+    t.datetime "deleted_at"
   end
 
   add_index "tags", ["uuid", "is_current"], :name => "uuid_and_is_current_idx"
@@ -628,6 +648,7 @@ ActiveRecord::Schema.define(:version => 20120229204327) do
     t.string   "genotyping_status"
     t.string   "genotyping_snp_plate_id"
     t.datetime "inserted_at"
+    t.datetime "deleted_at"
   end
 
   add_index "wells", ["uuid", "is_current"], :name => "uuid_and_is_current_idx"
@@ -645,4 +666,3 @@ ActiveRecord::Schema.define(:version => 20120229204327) do
   end
 
 end
-  add_index "requests", ["submission_uuid"], :name => "index_requests_on_submission_uuid"
