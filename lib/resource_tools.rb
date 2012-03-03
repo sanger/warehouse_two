@@ -1,36 +1,3 @@
-class Hash
-  # Determines if this hash is within an acceptable bounds of the keys common with the
-  # given hash.  It is assumed that values missing from 'other' are unchanged.
-  def within_acceptable_bounds?(other)
-    (self.keys & other.keys).all? do |key|
-      self[key].within_acceptable_bounds?(other[key])
-    end
-  end
-
-  # Does the opposite of slice, returning a hash that does not have the specified keys!
-  def reverse_slice(*keys)
-    dup.delete_if { |k,_| keys.include?(k) }
-  end
-end
-
-class Object
-  def within_acceptable_bounds?(value)
-    self == value
-  end
-end
-
-class Numeric
-  def within_acceptable_bounds?(v)
-    (self - v).abs < configatron.numeric_tolerance
-  end
-end
-
-class NilClass
-  def check(_)
-    yield
-  end
-end
-
 module ResourceTools
   def self.included(base)
     base.class_eval do
@@ -63,10 +30,11 @@ module ResourceTools
     deleted_at.present?
   end
 
-  IGNOREABLE_ATTRIBUTES = [ :dont_use_id, :id, :is_current, :inserted_at, :checked_at ]
+  IGNOREABLE_ATTRIBUTES = [ 'dont_use_id', 'id', 'is_current', 'inserted_at', 'checked_at' ]
 
   def updated_values?(object)
-    not self.attributes.within_acceptable_bounds?(object.attributes.reverse_slice(IGNOREABLE_ATTRIBUTES))
+    us, them = self.attributes.stringify_keys, object.attributes.stringify_keys.reverse_slice(IGNOREABLE_ATTRIBUTES)
+    not us.within_acceptable_bounds?(them)
   end
 
   def checked!
@@ -90,7 +58,7 @@ module ResourceTools
     def create_or_update(resource_object)
       new_object = new(parse_resource_object(resource_object))
       local_object = current.for_uuid(new_object.uuid).first
-      local_object.check(remote_values) { new_object.save! ; new_object }
+      local_object.check(new_object) { new_object.save! ; new_object }
     end
 
     # Fields that come from the JSON across all models.
@@ -117,4 +85,53 @@ module ResourceTools
     end
     private :parse_resource_object
   end
+
+  module CoreExtensions
+    module Hash
+      # Determines if this hash is within an acceptable bounds of the keys common with the
+      # given hash.  It is assumed that values missing from 'other' are unchanged.
+      def within_acceptable_bounds?(other)
+        (self.keys & other.keys).all? do |key|
+          self[key].within_acceptable_bounds?(other[key])
+        end
+      end
+
+      # Does the opposite of slice, returning a hash that does not have the specified keys!
+      def reverse_slice(*keys)
+        keys.flatten!
+        dup.delete_if { |k,_| keys.include?(k) }
+      end
+    end
+
+    module Object
+      def within_acceptable_bounds?(value)
+        self == value
+      end
+    end
+
+    module String
+      def within_acceptable_bounds?(value)
+        self == value.to_s
+      end
+    end
+
+    module Numeric
+      def within_acceptable_bounds?(v)
+        (self - v).abs < configatron.numeric_tolerance
+      end
+    end
+
+    module NilClass
+      def check(_)
+        yield
+      end
+    end
+  end
 end
+
+# Extend the core classes with the behaviour we need
+class Hash     ; include ResourceTools::CoreExtensions::Hash     ; end
+class Object   ; include ResourceTools::CoreExtensions::Object   ; end
+class String   ; include ResourceTools::CoreExtensions::String   ; end
+class Numeric  ; include ResourceTools::CoreExtensions::Numeric  ; end
+class NilClass ; include ResourceTools::CoreExtensions::NilClass ; end

@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120302143501) do
+ActiveRecord::Schema.define(:version => 20120303091313) do
 
   create_table "aliquots", :primary_key => "dont_use_id", :force => true do |t|
     t.binary   "uuid",                   :limit => 16, :null => false
@@ -172,8 +172,8 @@ ActiveRecord::Schema.define(:version => 20120302143501) do
     t.datetime "deleted_at"
   end
 
-  add_index "billing_events", ["uuid", "is_current"], :name => "uuid_and_is_current_idx"
   add_index "billing_events", ["project_uuid", "request_uuid", "is_current"], :name => "project_uuid_and_request_uuid_and_is_current_idx"
+  add_index "billing_events", ["uuid", "is_current"], :name => "uuid_and_is_current_idx"
 
   create_table "delayed_jobs", :force => true do |t|
     t.integer  "priority",   :default => 0
@@ -396,8 +396,8 @@ ActiveRecord::Schema.define(:version => 20120302143501) do
     t.datetime "deleted_at"
   end
 
-  add_index "quotas", ["uuid", "is_current"], :name => "uuid_and_is_current_idx"
   add_index "quotas", ["project_uuid", "request_type", "is_current"], :name => "project_uuid_and_request_type_and_is_current_idx"
+  add_index "quotas", ["uuid", "is_current"], :name => "uuid_and_is_current_idx"
 
   create_table "requests", :primary_key => "dont_use_id", :force => true do |t|
     t.binary   "uuid",                                 :limit => 16, :null => false
@@ -420,7 +420,7 @@ ActiveRecord::Schema.define(:version => 20120302143501) do
     t.string   "source_asset_barcode"
     t.string   "source_asset_barcode_prefix"
     t.string   "source_asset_state"
-    t.string   "source_asset_closed"
+    t.boolean  "source_asset_closed"
     t.string   "source_asset_two_dimensional_barcode"
     t.binary   "source_asset_sample_uuid",             :limit => 16
     t.integer  "source_asset_sample_internal_id"
@@ -431,7 +431,7 @@ ActiveRecord::Schema.define(:version => 20120302143501) do
     t.string   "target_asset_barcode"
     t.string   "target_asset_barcode_prefix"
     t.string   "target_asset_state"
-    t.string   "target_asset_closed"
+    t.boolean  "target_asset_closed"
     t.string   "target_asset_two_dimensional_barcode"
     t.binary   "target_asset_sample_uuid",             :limit => 16
     t.integer  "target_asset_sample_internal_id"
