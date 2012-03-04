@@ -55,11 +55,16 @@ module ResourceTools
       self.default_timezone == :utc ? Time.now.utc : Time.now
     end
 
+    def create_or_update_from_json(json)
+      create_or_update(Json.new(json))
+    end
+
     def create_or_update(attributes)
       new_object   = new(attributes.reverse_merge(:data => attributes))
       local_object = current.for_uuid(new_object.uuid).first
       local_object.check(new_object) { new_object.save! ; new_object }
     end
+    private :create_or_update
 
     def ignore_attribute(*names)
       names.each do |name|
