@@ -20,7 +20,7 @@ class Order < ActiveRecord::Base
 
   def request_options=(values)
     REMAPPING_OPTIONS.each do |methods, attribute|
-      self[attribute] = Array(methods).inject(values) { |v,m| v.send(m) }
+      self[attribute] = Array(methods).inject(values) { |v,m| v.try(:send, m) }
     end
   end
 
