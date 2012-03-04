@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120303091313) do
+ActiveRecord::Schema.define(:version => 20120304105927) do
 
   create_table "aliquots", :primary_key => "dont_use_id", :force => true do |t|
     t.binary   "uuid",                   :limit => 16, :null => false
@@ -297,6 +297,35 @@ ActiveRecord::Schema.define(:version => 20120303091313) do
 
   add_index "multiplexed_library_tubes", ["uuid", "is_current"], :name => "uuid_and_is_current_idx"
 
+  create_table "orders", :primary_key => "dont_use_id", :force => true do |t|
+    t.binary   "uuid",                        :limit => 16, :null => false
+    t.integer  "internal_id"
+    t.boolean  "is_current"
+    t.datetime "checked_at"
+    t.datetime "last_updated"
+    t.datetime "created"
+    t.string   "created_by"
+    t.string   "template_name"
+    t.string   "study_name"
+    t.binary   "study_uuid",                  :limit => 16
+    t.string   "project_name"
+    t.binary   "project_uuid",                :limit => 16
+    t.string   "comments"
+    t.datetime "inserted_at"
+    t.integer  "read_length"
+    t.string   "fragment_size_required_from"
+    t.string   "fragment_size_required_to"
+    t.string   "library_type"
+    t.string   "sequencing_type"
+    t.integer  "insert_size"
+    t.integer  "number_of_lanes"
+    t.binary   "submission_uuid",             :limit => 16
+    t.datetime "deleted_at"
+  end
+
+  add_index "orders", ["study_uuid", "is_current", "project_uuid"], :name => "study_uuid_and_is_current_and_project_uuid_idx"
+  add_index "orders", ["uuid", "is_current"], :name => "uuid_and_is_current_idx"
+
   create_table "plate_purposes", :primary_key => "dont_use_id", :force => true do |t|
     t.binary   "uuid",         :limit => 16, :null => false
     t.integer  "internal_id"
@@ -568,42 +597,28 @@ ActiveRecord::Schema.define(:version => 20120303091313) do
   add_index "study_samples", ["uuid", "is_current"], :name => "uuid_and_is_current_idx"
 
   create_table "submissions", :primary_key => "dont_use_id", :force => true do |t|
-    t.binary   "uuid",                        :limit => 16, :null => false
+    t.binary   "uuid",         :limit => 16, :null => false
     t.integer  "internal_id"
     t.boolean  "is_current"
     t.datetime "checked_at"
     t.datetime "last_updated"
     t.datetime "created"
     t.string   "created_by"
-    t.string   "template_name"
     t.string   "state"
-    t.string   "study_name"
-    t.binary   "study_uuid",                  :limit => 16
-    t.string   "project_name"
-    t.binary   "project_uuid",                :limit => 16
     t.string   "message"
-    t.string   "comments"
     t.datetime "inserted_at"
-    t.integer  "read_length"
-    t.string   "fragment_size_required_from"
-    t.string   "fragment_size_required_to"
-    t.string   "library_type"
-    t.string   "sequencing_type"
-    t.integer  "insert_size"
-    t.integer  "number_of_lanes"
     t.datetime "deleted_at"
   end
 
-  add_index "submissions", ["study_uuid", "is_current", "project_uuid"], :name => "study_uuid_and_is_current_and_project_uuid_idx"
   add_index "submissions", ["uuid", "is_current"], :name => "uuid_and_is_current_idx"
 
   create_table "submitted_assets", :primary_key => "dont_use_id", :force => true do |t|
-    t.binary   "submission_uuid", :limit => 16
-    t.binary   "asset_uuid",      :limit => 16
+    t.binary   "order_uuid", :limit => 16
+    t.binary   "asset_uuid", :limit => 16
     t.datetime "deleted_at"
   end
 
-  add_index "submitted_assets", ["submission_uuid", "asset_uuid"], :name => "submission_uuid_and_asset_uuid_idx"
+  add_index "submitted_assets", ["order_uuid", "asset_uuid"], :name => "submission_uuid_and_asset_uuid_idx"
 
   create_table "tags", :primary_key => "dont_use_id", :force => true do |t|
     t.binary   "uuid",                  :limit => 16, :null => false

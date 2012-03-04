@@ -61,6 +61,12 @@ module ResourceTools
       local_object.check(new_object) { new_object.save! ; new_object }
     end
 
+    def ignore_attribute(*names)
+      names.each do |name|
+        class_eval(%Q{def #{name}=(value) ; end})
+      end
+    end
+
     def json(&block)
       const_set(:Json, Class.new(Json, &block))
     end
