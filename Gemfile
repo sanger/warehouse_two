@@ -9,6 +9,7 @@ gem "alter_table", :git => "git+ssh://git@github.com/sanger/alter_table.git"
 gem "delayed_job", '~>2.0.4'
 gem "amqp", "~> 0.9.2"
 gem "rails_sql_views"
+gem "hashie", "~> 1.2.0"
 
 group :test do
   # bundler requires these gems while running tests

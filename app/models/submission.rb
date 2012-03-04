@@ -1,19 +1,29 @@
 class Submission < ActiveRecord::Base
   include ResourceTools
 
-  def self.link_resources(resource_object)
-    lc_class_name = self.model_name.underscore
-    resource = resource_object.send(lc_class_name)
-    return unless resource.respond_to?(:asset_uuids) and not resource.asset_uuids.blank?
-
-    asset_uuids   = resource.asset_uuids.reject(&:blank?)
-    present_uuids = SubmittedAsset.for_submission(resource).map(&:asset_uuid)
-    SubmittedAsset.create!(
-      (asset_uuids-present_uuids).map do |uuid|
-        { :submission_uuid => resource.uuid, :asset_uuid => uuid }
-      end
-    )
+  # Override the behaviour so that we check that the submitted assets have not changed.
+  def updated_values?(submission)
+    super or submitted_assets_have_changed?(submission)
   end
+
+  def submitted_assets_have_changed?(submission)
+    SubmittedAsset.for_submission(self).map(&:asset_uuid).sort != submission.data.asset_uuids.sort
+  end
+  private :submitted_assets_have_changed?
+
+  # Whenever we create a submission we need to ensure that the submitted assets are maintained.
+  after_create :generate_submitted_assets
+
+  def generate_submitted_assets
+    SubmittedAsset.for_submission(self).map(&:destroy)
+    return unless data.asset_uuids?
+
+    asset_uuids = data.asset_uuids.reject(&:blank?).map do |uuid|
+      { :submission_uuid => self.uuid, :asset_uuid => uuid }
+    end
+    SubmittedAsset.create!(asset_uuids) unless asset_uuids.empty?
+  end
+  private :generate_submitted_assets
 
   def self.map_internal_to_external_attributes
     # Internal DB column => External resource method

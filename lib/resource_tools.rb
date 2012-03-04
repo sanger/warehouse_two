@@ -5,6 +5,10 @@ module ResourceTools
       set_primary_key :dont_use_id
       alias_attribute :id, :dont_use_id
 
+      # The original data information is stored here
+      attr_accessor :data
+
+      # A few useful named scopes
       named_scope :for_uuid, lambda { |uuid| { :conditions => { :uuid => uuid } } }
       named_scope :current, { :conditions => { :is_current => true } }
       named_scope :not_record, lambda { |record| { :conditions => [ 'dont_use_id != ?', record.dont_use_id ] } }
@@ -51,39 +55,43 @@ module ResourceTools
       self.default_timezone == :utc ? Time.now.utc : Time.now
     end
 
-    def link_resources(_)
-      # Empty by default
-    end
-
-    def create_or_update(resource_object)
-      new_object = new(parse_resource_object(resource_object))
+    def create_or_update(attributes)
+      new_object   = new(attributes.reverse_merge(:data => attributes))
       local_object = current.for_uuid(new_object.uuid).first
       local_object.check(new_object) { new_object.save! ; new_object }
     end
 
-    # Fields that come from the JSON across all models.
-    STANDARD_FIELDS = {
-      :uuid         => :uuid,
-      :last_updated => :updated_at,
-      :created      => :created_at,
-      :deleted_at   => :deleted_at
-    }
-
-    def parse_resource_object(resource_object)
-      resource = resource_object.try(:send, self.model_name.underscore) or return {}
-      helper   = lambda do |(internal_name, external_name)|
-        value = Array(external_name).inject(resource) { |o,m| o.respond_to?(m) ? o.send(m) : nil }
-        [internal_name, value]
-      end
-
-      Hash[
-        map_internal_to_external_attributes.map(&helper) +
-        STANDARD_FIELDS.map(&helper)
-      ].tap do
-        link_resources(resource_object)
-      end
+    def json(&block)
+      const_set(:Json, Class.new(Json, &block))
     end
-    private :parse_resource_object
+    private :json
+  end
+
+  class Json < Hashie::Mash
+    class_inheritable_reader :translations
+    write_inheritable_attribute(:translations, {})
+
+    class << self
+      # Hashes in subkeys might as well be normal Hashie::Mash instances as we don't want to bleed
+      # the key conversion further into the data.
+      def subkey_class
+        Hashie::Mash
+      end
+
+      # JSON attributes can be translated into the attributes on the way in.
+      def translate(details)
+        translations.merge!(Hash[details.map { |k,v| [k.to_s, v.to_s] }])
+      end
+
+      def convert_key(key)
+        translations[key.to_s] || key.to_s
+      end
+      private :convert_key
+    end
+
+    delegate :convert_key, :to => 'self.class'
+
+    translate(:updated_at => :last_updated, :created_at => :created)
   end
 
   module CoreExtensions
@@ -111,12 +119,14 @@ module ResourceTools
 
     module String
       def within_acceptable_bounds?(value)
+        return false if value.nil?
         self == value.to_s
       end
     end
 
     module Numeric
       def within_acceptable_bounds?(v)
+        return false if v.nil?
         (self - v).abs < configatron.numeric_tolerance
       end
     end

@@ -15,12 +15,13 @@ AMQP.start(configatron.amqp.url) do |client, opened_ok|
       begin
         Rails.logger.debug("AMQP Consumer: Message received from queue: #{payload.inspect}")
 
-        json = ActiveSupport::JSON.decode(payload)
+        json         = ActiveSupport::JSON.decode(payload)
+        payload_name = json.keys.first
         begin
-          class_name          = json.keys.first.classify
-          db_model, api_model = class_name.constantize, "Api::#{class_name}".constantize
+          class_name          = payload_name.classify
+          db_model, api_model = class_name.constantize, class_name::Json
           ActiveRecord::Base.transaction do
-            db_model.create_or_update(api_model.new(json)).tap do |record|
+            db_model.create_or_update(api_model.new(json[payload_name])).tap do |record|
               metadata.ack  # Acknowledge receipt!
               Rails.logger.debug("AMQP Consumer: Created #{record.class.name}(#{record.id})")
             end

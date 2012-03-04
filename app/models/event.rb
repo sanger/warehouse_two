@@ -1,23 +1,11 @@
 class Event < ActiveRecord::Base
   include ResourceTools
-  
-  def self.map_internal_to_external_attributes
-    # Internal DB column => External resource method
-    {
-      :internal_id        => :internal_id,
-      :source_internal_id => :eventful_internal_id,
-      :source_uuid        => :eventful_uuid,
-      :source_type        => :eventful_type,
-      :message            => :message,
-      :state              => :family,
-      :identifier         => :identifier,
-      :location           => :location,
-      :actioned           => :actioned,
-      :content            => :content,
-      :created_by         => :created_by,
-      :of_interest_to     => :of_interest_to,
-      :descriptor_key     => :descriptor_key
-    }
-  end
 
+  json do
+    translate(
+      :eventful_internal_id => :source_internal_id,
+      :eventful_uuid        => :source_uuid,
+      :eventful_type        => :source_type
+    )
+  end
 end
