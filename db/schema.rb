@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120304105927) do
+ActiveRecord::Schema.define(:version => 20120305120543) do
 
   create_table "aliquots", :primary_key => "dont_use_id", :force => true do |t|
     t.binary   "uuid",                   :limit => 16, :null => false
@@ -38,6 +38,7 @@ ActiveRecord::Schema.define(:version => 20120304105927) do
     t.datetime "deleted_at"
   end
 
+  add_index "aliquots", ["receptacle_uuid", "sample_uuid", "is_current"], :name => "receptacle_uuid_and_sample_uuid_and_is_current_idx"
   add_index "aliquots", ["sample_uuid", "receptacle_uuid", "is_current"], :name => "sample_uuid_and_receptacle_uuid_and_is_current_idx"
   add_index "aliquots", ["uuid", "is_current"], :name => "uuid_and_is_current_idx"
 
