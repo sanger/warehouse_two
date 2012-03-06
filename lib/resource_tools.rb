@@ -15,7 +15,7 @@ module ResourceTools
 
       # Ensure that the time stamps are correct whenever a record is updated
       before_create { |record| record.inserted_at = record.correct_current_time }
-      before_save   { |record| record.checked_at  = record.correct_current_time }
+      before_save   { |record| record.checked_at  = record.checked_time_now }
 
       # On creation, ensure that this is the only record that is current.  If the record has been
       # deleted then we need to not set this to current.
@@ -26,6 +26,7 @@ module ResourceTools
       end
 
       delegate :correct_current_time, :to => 'self.class'
+      delegate :checked_time_now, :to => 'self.class'
     end
   end
 
@@ -54,6 +55,12 @@ module ResourceTools
     def correct_current_time
       self.default_timezone == :utc ? Time.now.utc : Time.now
     end
+    private :correct_current_time
+
+    def checked_time_now
+      correct_current_time
+    end
+    private :checked_time_now
 
     def create_or_update_from_json(json)
       create_or_update(Json.new(json))

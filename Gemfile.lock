@@ -18,7 +18,6 @@ GEM
     activeresource (2.3.14)
       activesupport (= 2.3.14)
     activesupport (2.3.14)
-    addressable (2.2.7)
     amq-client (0.9.2)
       amq-protocol (>= 0.9.0)
       eventmachine
@@ -27,54 +26,25 @@ GEM
       amq-client (~> 0.9.2)
       amq-protocol (>= 0.9.0)
       eventmachine
-    ar-extensions (0.9.5)
-      activerecord (~> 2.1)
-    builder (3.0.0)
     cbrunnkvist-psd_logger (0.1.5)
-    ci_reporter (1.7.0)
-      builder (>= 2.1.2)
-    columnize (0.3.6)
     configatron (2.9.0)
       yamler (>= 0.1.0)
-    cucumber (1.1.8)
-      builder (>= 2.1.2)
-      diff-lcs (>= 1.1.2)
-      gherkin (~> 2.8.0)
-      json (>= 1.4.6)
-      term-ansicolor (>= 1.0.6)
-    cucumber-rails (0.3.2)
-      cucumber (>= 0.8.0)
-    daemons (1.0.10)
     database_cleaner (0.7.1)
-    delayed_job (2.0.7)
-      activesupport (~> 2.0)
-      daemons (= 1.0.10)
     diff-lcs (1.1.3)
     eventmachine (0.12.10)
-    factory_girl (1.3.3)
-    flay (1.4.3)
-      ruby_parser (~> 2.0)
-      sexp_processor (~> 3.0)
-    flog (2.5.3)
-      ruby_parser (~> 2.0)
-      sexp_processor (~> 3.0)
-    gherkin (2.8.0)
-      json (>= 1.4.6)
+    ffi (1.0.11)
+    growl (1.0.3)
+    guard (1.0.0)
+      ffi (>= 0.5.0)
+      thor (~> 0.14.6)
+    guard-bundler (0.1.3)
+      bundler (>= 1.0.0)
+      guard (>= 0.2.2)
+    guard-rspec (0.6.0)
+      guard (>= 0.10.0)
     hashie (1.2.0)
-    json (1.6.5)
-    launchy (2.0.5)
-      addressable (~> 2.2.6)
-    linecache (0.46)
-      rbx-require-relative (> 0.0.4)
-    metaclass (0.0.1)
-    mocha (0.10.4)
-      metaclass (~> 0.0.1)
     mysql (2.8.1)
-    nokogiri (1.5.0)
-    polyglot (0.3.3)
     rack (1.1.3)
-    rack-test (0.6.1)
-      rack (>= 1.0)
     rails (2.3.14)
       actionmailer (= 2.3.14)
       actionpack (= 2.3.14)
@@ -85,29 +55,15 @@ GEM
     rails_sql_views (0.8.0)
       activerecord
     rake (0.9.2.2)
-    rbx-require-relative (0.0.6)
-    rcov (1.0.0)
-    roodi (2.1.0)
-      ruby_parser
-    ruby-debug (0.10.4)
-      columnize (>= 0.1)
-      ruby-debug-base (~> 0.10.4.0)
-    ruby-debug-base (0.10.4)
-      linecache (>= 0.3)
-    ruby_parser (2.3.1)
-      sexp_processor (~> 3.0)
-    sexp_processor (3.0.10)
-    shoulda (2.10.3)
-    term-ansicolor (1.0.7)
-    test-unit (2.4.7)
-    timecop (0.3.5)
-    treetop (1.2.6)
-      polyglot (>= 0.2.5)
-    webrat (0.7.3)
-      nokogiri (>= 1.2.0)
-      rack (>= 1.0)
-      rack-test (>= 0.5.3)
-    webrat-rspec-rails (0.1.1)
+    rspec (2.8.0)
+      rspec-core (~> 2.8.0)
+      rspec-expectations (~> 2.8.0)
+      rspec-mocks (~> 2.8.0)
+    rspec-core (2.8.0)
+    rspec-expectations (2.8.0)
+      diff-lcs (~> 1.1.2)
+    rspec-mocks (2.8.0)
+    thor (0.14.6)
     yamler (0.1.0)
 
 PLATFORMS
@@ -116,29 +72,15 @@ PLATFORMS
 DEPENDENCIES
   alter_table!
   amqp (~> 0.9.2)
-  ar-extensions
   cbrunnkvist-psd_logger
-  ci_reporter
   configatron
-  cucumber-rails (~> 0.3.2)
   database_cleaner
-  delayed_job (~> 2.0.4)
-  factory_girl (~> 1.3.1)
-  flay
-  flog
+  growl
+  guard
+  guard-bundler
+  guard-rspec
   hashie (~> 1.2.0)
-  launchy
-  mocha
   mysql
-  nokogiri
   rails (= 2.3.14)
   rails_sql_views
-  rcov
-  roodi
-  ruby-debug
-  shoulda (~> 2.10.0)
-  test-unit
-  timecop
-  treetop (~> 1.2.5)
-  webrat
-  webrat-rspec-rails
+  rspec (~> 2.8.0)
