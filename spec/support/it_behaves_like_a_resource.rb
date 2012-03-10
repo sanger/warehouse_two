@@ -8,7 +8,7 @@ shared_examples_for 'a resource' do
     end
 
     context 'when the fields are unchanged' do
-      let(:checked_time_now) { Time.parse('2012-Mar-06 13:20') }
+      let(:checked_time_now) { Time.parse('2012-Mar-06 13:20').utc }
 
       before(:each) do
         described_class.create_or_update_from_json(json)
@@ -21,7 +21,7 @@ shared_examples_for 'a resource' do
       end
 
       it 'marks the existing record as checked' do
-        described_class.first.checked_at.should == checked_time_now.utc
+        described_class.first.checked_at.should == checked_time_now
       end
     end
 
@@ -31,9 +31,13 @@ shared_examples_for 'a resource' do
           let(:checked_time_now) { Time.parse('2012-Mar-06 13:20') }
 
           before(:each) do
-            described_class.create_or_update_from_json(json)
+            # We have to account for attribute translation, so process through the JSON handler
+            # and then update the attribute.
+            attributes = described_class::Json.new(json)
+            described_class.send(:create_or_update, attributes)
             described_class.stub(:checked_time_now).and_return(checked_time_now)
-            described_class.create_or_update_from_json(json.merge(attribute => 'changed'))
+            attributes[attribute] = 'changed'
+            described_class.send(:create_or_update, attributes)
           end
 
           it 'does not add a new row' do
@@ -41,7 +45,7 @@ shared_examples_for 'a resource' do
           end
 
           it 'marks the existing record as checked' do
-            described_class.first.checked_at.should == checked_time_now.utc
+            described_class.first.checked_at.utc.should == checked_time_now.utc
           end
         end
       end

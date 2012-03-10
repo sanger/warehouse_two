@@ -3,7 +3,6 @@ module ResourceTools
     base.class_eval do
       extend ClassMethods
       set_primary_key :dont_use_id
-      alias_attribute :id, :dont_use_id
 
       # The original data information is stored here
       attr_accessor :data
@@ -35,7 +34,7 @@ module ResourceTools
     deleted_at.present?
   end
 
-  IGNOREABLE_ATTRIBUTES = [ 'dont_use_id', 'id', 'is_current', 'inserted_at', 'checked_at' ]
+  IGNOREABLE_ATTRIBUTES = [ 'dont_use_id', 'is_current', 'inserted_at', 'checked_at' ]
 
   def updated_values?(object)
     us, them = self.attributes.stringify_keys, object.attributes.stringify_keys.reverse_slice(IGNOREABLE_ATTRIBUTES)
@@ -63,7 +62,7 @@ module ResourceTools
     private :checked_time_now
 
     def create_or_update_from_json(json)
-      create_or_update(Json.new(json))
+      create_or_update(self::Json.new(json))
     end
 
     def create_or_update(attributes)
