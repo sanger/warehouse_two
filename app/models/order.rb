@@ -30,7 +30,8 @@ class Order < ActiveRecord::Base
   end
 
   def submitted_assets_have_changed?(order)
-    SubmittedAsset.for_order(self).map(&:asset_uuid).sort != order.data.asset_uuids.sort
+    asset_uuids = order.data.asset_uuids || []
+    SubmittedAsset.for_order(self).map(&:asset_uuid).sort != asset_uuids.sort
   end
   private :submitted_assets_have_changed?
 
