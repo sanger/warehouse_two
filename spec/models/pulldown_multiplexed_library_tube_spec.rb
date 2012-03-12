@@ -2,6 +2,7 @@ require 'spec_helper'
 
 describe PulldownMultiplexedLibraryTube do
   it_behaves_like 'a resource'
+  it_behaves_like 'maps JSON fields', :qc_state => :state
 
   let(:json) do
     {
@@ -10,7 +11,7 @@ describe PulldownMultiplexedLibraryTube do
       :name                    => "name",
       :barcode                 => "barcode",
       :barcode_prefix          => "bp",
-      :state                   => "state",
+      :qc_state                => "state",
       :closed                  => true,
       :concentration           => "concentration",
       :volume                  => "volume",
