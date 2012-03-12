@@ -1,6 +1,12 @@
 class Request < ActiveRecord::Base
   include ResourceTools
 
+  ignore_attribute(
+    :project_url,
+    :study_url,
+    :submission_url
+  )
+
   json do
     translate(
       :id                          => :internal_id,

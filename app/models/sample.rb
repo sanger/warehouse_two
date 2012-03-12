@@ -1,6 +1,16 @@
 class Sample < ActiveRecord::Base
   include ResourceTools
 
+  ignore_attribute(
+    :new_name_format,
+    :gc_content,
+    :sample_manifest_id,
+    :supplier_plate_id,
+    :dna_source,
+    :sample_tubes,
+    :volume
+  )
+
   json do
     translate(
       :sample_common_name          => :common_name,
