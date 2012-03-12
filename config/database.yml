@@ -15,6 +15,3 @@ test: &test
   username: root
   password:
   socket: /tmp/mysql.sock
-
-cucumber:
-  <<: *test

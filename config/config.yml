@@ -9,9 +9,3 @@ test:
     url: amqp://localhost:5672/
     prefetch: 100
   numeric_tolerance: 0.05
-
-cucumber:
-  amqp:
-    url: amqp://localhost:5672/
-    prefetch: 100
-  numeric_tolerance: 0.05
