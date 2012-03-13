@@ -1,12 +1,13 @@
 class Order < ActiveRecord::Base
   include ResourceTools
 
-  ignore_attribute(
-    :submission_internal_id,
-    :project_internal_id,
-    :study_internal_id,
-    :asset_uuids
-  )
+  json do
+    ignore(
+      :submission_internal_id,
+      :project_internal_id,
+      :study_internal_id
+    )
+  end
 
   REMAPPING_OPTIONS = {
     :read_length                     => :read_length,
@@ -22,6 +23,10 @@ class Order < ActiveRecord::Base
     REMAPPING_OPTIONS.each do |methods, attribute|
       self[attribute] = Array(methods).inject(values) { |v,m| v.try(:send, m) }
     end
+  end
+
+  def asset_uuids=(_)
+    # Ignore this
   end
 
   # Override the behaviour so that we check that the submitted assets have not changed.

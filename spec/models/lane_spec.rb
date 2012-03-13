@@ -3,6 +3,7 @@ require 'spec_helper'
 describe Lane do
   it_behaves_like 'a resource'
   it_behaves_like 'maps JSON fields', :qc_state => :state
+  it_behaves_like 'ignores JSON fields', [ :requests ]
 
   let(:json) do
     {

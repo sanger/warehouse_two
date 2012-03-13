@@ -1,9 +1,8 @@
 class Aliquot < ActiveRecord::Base
   include ResourceTools
 
-  ignore_attribute(:sample_url, :receptacle_url)
-
   json do
+    ignore(:sample_url, :receptacle_url)
     translate(:id => :internal_id)
   end
 end

@@ -72,14 +72,9 @@ module ResourceTools
     end
     private :create_or_update
 
-    def ignore_attribute(*names)
-      names.each do |name|
-        class_eval(%Q{def #{name}=(value) ; end})
-      end
-    end
-
     def json(&block)
-      const_set(:Json, Class.new(Json, &block))
+      const_set(:Json, Class.new(Json)) unless const_get(:Json).parent == self
+      const_get(:Json).tap { |json_handler| json_handler.instance_eval(&block) }
     end
     private :json
   end
@@ -88,11 +83,18 @@ module ResourceTools
     class_inheritable_reader :translations
     write_inheritable_attribute(:translations, {})
 
+    class_inheritable_reader :ignoreable
+    write_inheritable_attribute(:ignoreable, [])
+
     class << self
       # Hashes in subkeys might as well be normal Hashie::Mash instances as we don't want to bleed
       # the key conversion further into the data.
       def subkey_class
         Hashie::Mash
+      end
+
+      def ignore(*attributes)
+        ignoreable.concat(attributes.map(&:to_s))
       end
 
       # JSON attributes can be translated into the attributes on the way in.
@@ -104,6 +106,11 @@ module ResourceTools
         translations[key.to_s] || key.to_s
       end
       private :convert_key
+    end
+
+    def initialize(*args, &block)
+      super
+      delete_if { |k,_| ignoreable.include?(k) }
     end
 
     delegate :convert_key, :to => 'self.class'

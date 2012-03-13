@@ -2,6 +2,15 @@ require 'spec_helper'
 
 describe Submission do
   it_behaves_like 'a resource'
+  it_behaves_like 'ignores JSON fields', [
+    :study_uuid,
+    :study_internal_id,
+    :study_name,
+    :project_uuid,
+    :project_internal_id,
+    :project_name,
+    :orders
+  ]
 
   let(:json) do
     {

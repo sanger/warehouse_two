@@ -14,7 +14,10 @@ module Labware
     def self.included(base)
       base.class_eval do
         include Labware
-        ignore_attribute(:lanes, :requests)
+
+        json do
+          ignore(:lanes, :requests)
+        end
       end
     end
   end
@@ -23,7 +26,10 @@ module Labware
     def self.included(base)
       base.class_eval do
         include Labware
-        ignore_attribute(:library_tubes, :requests)
+
+        json do
+          ignore(:library_tubes, :requests)
+        end
       end
     end
   end
@@ -32,7 +38,10 @@ module Labware
     def self.included(base)
       base.class_eval do
         include Labware
-        ignore_attribute(:requests)
+
+        json do
+          ignore(:requests)
+        end
       end
     end
   end

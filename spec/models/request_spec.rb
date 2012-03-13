@@ -7,6 +7,11 @@ describe Request do
     :fragment_size_required_from => :fragment_size_from,
     :fragment_size_required_to => :fragment_size_to
   }
+  it_behaves_like 'ignores JSON fields', [
+    :project_url,
+    :study_url,
+    :submission_url
+  ]
 
   let(:json) do
     {

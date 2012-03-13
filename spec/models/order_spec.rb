@@ -2,6 +2,11 @@ require 'spec_helper'
 
 describe Order do
   it_behaves_like 'a resource'
+  it_behaves_like 'ignores JSON fields', [
+    :submission_internal_id,
+    :project_internal_id,
+    :study_internal_id
+  ]
 
   context 'remapping request options' do
     subject { described_class.new(described_class::Json.new(json)) }

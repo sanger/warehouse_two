@@ -7,6 +7,7 @@ describe Event do
     :eventful_uuid        => :source_uuid,
     :eventful_type        => :source_type
   }
+  it_behaves_like 'ignores JSON fields', [ :family ]
 
   let(:json) do
     {

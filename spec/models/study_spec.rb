@@ -3,6 +3,11 @@ require 'spec_helper'
 describe Study do
   it_behaves_like 'a resource'
   it_behaves_like 'maps JSON fields', :id => :internal_id, :sac_sponsor => :faculty_sponsor
+  it_behaves_like 'ignores JSON fields', [
+    :projects,
+    :commercially_available,
+    :samples
+  ]
 
   let(:json) do
     {

@@ -11,6 +11,15 @@ describe Sample do
     :sample_sra_hold             => :sample_visibility,
     :sample_strain_att           => :strain
   }
+  it_behaves_like 'ignores JSON fields', [
+    :new_name_format,
+    :gc_content,
+    :sample_manifest_id,
+    :supplier_plate_id,
+    :dna_source,
+    :sample_tubes,
+    :volume
+  ]
 
   let(:json) do
     {
