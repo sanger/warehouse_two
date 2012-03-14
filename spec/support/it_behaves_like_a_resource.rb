@@ -27,6 +27,8 @@ shared_examples_for 'a resource' do
 
     context 'when ignored fields change' do
       ResourceTools::IGNOREABLE_ATTRIBUTES.each do |attribute|
+        next if attribute.to_s == 'dont_use_id' # Protected by mass-assignment!
+
         context "when #{attribute.to_sym.inspect} changes" do
           let(:checked_time_now) { Time.parse('2012-Mar-06 13:20') }
 

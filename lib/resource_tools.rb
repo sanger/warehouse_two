@@ -1,16 +1,17 @@
 module ResourceTools
   def self.included(base)
     base.class_eval do
+      include Uuidable
       extend ClassMethods
-      set_primary_key :dont_use_id
+      self.primary_key = :dont_use_id
 
       # The original data information is stored here
       attr_accessor :data
 
       # A few useful named scopes
-      named_scope :for_uuid, lambda { |uuid| { :conditions => { :uuid => uuid } } }
-      named_scope :current, { :conditions => { :is_current => true } }
-      named_scope :not_record, lambda { |record| { :conditions => [ 'dont_use_id != ?', record.dont_use_id ] } }
+      scope :for_uuid, lambda { |uuid| where(:uuid => uuid) }
+      scope :current, where(:is_current => true)
+      scope :not_record, lambda { |record| where('dont_use_id != ?', record.dont_use_id) }
 
       # Ensure that the time stamps are correct whenever a record is updated
       before_create { |record| record.inserted_at = record.correct_current_time }
@@ -73,18 +74,18 @@ module ResourceTools
     private :create_or_update
 
     def json(&block)
-      const_set(:Json, Class.new(Json)) unless const_get(:Json).parent == self
+      const_set(:Json, Class.new(ResourceTools::Json)) unless const_get(:Json).parent == self
       const_get(:Json).tap { |json_handler| json_handler.instance_eval(&block) }
     end
     private :json
   end
 
   class Json < Hashie::Mash
-    class_inheritable_reader :translations
-    write_inheritable_attribute(:translations, {})
+    class_attribute :translations
+    self.translations = {}
 
-    class_inheritable_reader :ignoreable
-    write_inheritable_attribute(:ignoreable, [])
+    class_attribute :ignoreable
+    self.ignoreable = []
 
     class << self
       # Hashes in subkeys might as well be normal Hashie::Mash instances as we don't want to bleed
@@ -94,12 +95,12 @@ module ResourceTools
       end
 
       def ignore(*attributes)
-        ignoreable.concat(attributes.map(&:to_s))
+        self.ignoreable += attributes.map(&:to_s)
       end
 
       # JSON attributes can be translated into the attributes on the way in.
       def translate(details)
-        translations.merge!(Hash[details.map { |k,v| [k.to_s, v.to_s] }])
+        self.translations = Hash[details.map { |k,v| [k.to_s, v.to_s] }].reverse_merge(self.translations)
       end
 
       def convert_key(key)
