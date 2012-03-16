@@ -99,7 +99,7 @@ describe 'core extensions' do
       # so that we actually get within it, otherwise we're just in the situation where we're
       # trying to compare floats ... which means deltas ... which means tolerance ...
       let(:bounds) do
-        tolerance_adjustment = configatron.numeric_tolerance - 1.0e-15
+        tolerance_adjustment = subject.class.numeric_tolerance - 1.0e-15
         (subject-tolerance_adjustment .. subject+tolerance_adjustment)
       end
 

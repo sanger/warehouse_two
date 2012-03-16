@@ -34,4 +34,11 @@ WarehouseTwo::Application.configure do
 
   # Expands the lines which load the assets
   config.assets.debug = true
+
+  # Configure the numeric tolerance
+  config.numeric_tolerance = 0.05
+
+  # Configure the AMQP consumer
+  config.amqp.url = 'amqp://localhost:5672/'
+  config.amqp.prefetch = 100
 end

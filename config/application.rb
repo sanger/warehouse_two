@@ -11,12 +11,14 @@ end
 
 module WarehouseTwo
   class Application < Rails::Application
-#    config.frameworks        -= [ :active_resource, :action_mailer ]
     config.autoload_paths    += [ "#{config.root}/lib" ]
     config.time_zone          = 'UTC'
     config.encoding           = "utf-8"
     config.filter_parameters += [:password]
     config.assets.enabled     = false
     config.assets.version     = '1.0'
+
+    # We're going to need a specialised configuration for our AMQP consumer
+    config.amqp = ActiveSupport::Configurable::Configuration.new
   end
 end

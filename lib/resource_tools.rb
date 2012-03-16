@@ -1,31 +1,30 @@
 module ResourceTools
-  def self.included(base)
-    base.class_eval do
-      include Uuidable
-      extend ClassMethods
-      self.primary_key = :dont_use_id
+  extend ActiveSupport::Concern
+  include Uuidable
 
-      # The original data information is stored here
-      attr_accessor :data
+  included do
+    self.primary_key = :dont_use_id
 
-      # A few useful named scopes
-      scope :current, where(:is_current => true)
-      scope :not_current, where(:is_current => false)
-      scope :for_uuid, lambda { |uuid| where(:uuid => uuid) }
-      scope :not_record, lambda { |record| where('dont_use_id != ?', record.dont_use_id) }
-      scope :most_recent, order('last_updated DESC')
+    # The original data information is stored here
+    attr_accessor :data
 
-      # Ensure that the time stamps are correct whenever a record is updated
-      before_create { |record| record.inserted_at = record.correct_current_time }
-      before_save   { |record| record.checked_at  = record.checked_time_now }
+    # A few useful named scopes
+    scope :current, where(:is_current => true)
+    scope :not_current, where(:is_current => false)
+    scope :for_uuid, lambda { |uuid| where(:uuid => uuid) }
+    scope :not_record, lambda { |record| where('dont_use_id != ?', record.dont_use_id) }
+    scope :most_recent, order('last_updated DESC')
 
-      # Ensure that on creation the currentness of the records are maintained
-      before_create(:maintain_our_currentness)
-      after_create(:maintain_other_currentness, :if => :considered_most_recent_version?)
+    # Ensure that the time stamps are correct whenever a record is updated
+    before_create { |record| record.inserted_at = record.correct_current_time }
+    before_save   { |record| record.checked_at  = record.checked_time_now }
 
-      delegate :correct_current_time, :to => 'self.class'
-      delegate :checked_time_now, :to => 'self.class'
-    end
+    # Ensure that on creation the currentness of the records are maintained
+    before_create(:maintain_our_currentness)
+    after_create(:maintain_other_currentness, :if => :considered_most_recent_version?)
+
+    delegate :correct_current_time, :to => 'self.class'
+    delegate :checked_time_now, :to => 'self.class'
   end
 
   # A new record means old records are no longer current.  This means that they go out of being
@@ -181,9 +180,21 @@ module ResourceTools
     end
 
     module Numeric
+      extend ActiveSupport::Concern
+
+      included do
+        delegate :numeric_tolerance, :to => 'self.class'
+      end
+
+      module ClassMethods
+        def numeric_tolerance
+          @numeric_tolerance ||= WarehouseTwo::Application.config.numeric_tolerance
+        end
+      end
+
       def within_acceptable_bounds?(v)
         return false if v.nil?
-        (self - v).abs < configatron.numeric_tolerance
+        (self - v).abs < numeric_tolerance
       end
     end
 

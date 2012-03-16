@@ -34,4 +34,11 @@ WarehouseTwo::Application.configure do
 
   # Print deprecation notices to the stderr
   config.active_support.deprecation = :stderr
+
+  # Configure the numeric tolerance
+  config.numeric_tolerance = 0.05
+
+  # Configure the AMQP consumer
+  config.amqp.url = 'amqp://localhost:5672/'
+  config.amqp.prefecth = 100
 end

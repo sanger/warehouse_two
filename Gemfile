@@ -1,7 +1,6 @@
 source :rubygems
 
 gem "rails", "3.2.2"
-gem "configatron"
 gem "mysql2"
 gem "cbrunnkvist-psd_logger"
 gem "amqp", "~> 0.9.2"
@@ -14,9 +13,6 @@ gem "rake", "= 0.9.2"
 
 group :test, :development do
   gem 'rspec-rails', '~> 2.8.0'
-end
-group :test do
-  gem 'database_cleaner'
 end
 
 group :development do
