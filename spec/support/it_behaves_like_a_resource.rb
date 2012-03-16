@@ -106,21 +106,6 @@ shared_examples_for 'a resource' do
       end
     end
 
-    context 'when a record is deleted' do
-      before(:each) do
-        described_class.create_or_update_from_json(timestamped_json)
-        described_class.create_or_update_from_json(timestamped_json.merge(:updated_at => modified_at, :deleted_at => modified_at))
-      end
-
-      it_behaves_like 'maintains history' do
-        let(:current_to) { modified_at }
-      end
-
-      it 'has no current rows' do
-        described_class.current.should be_empty
-      end
-    end
-
     context 'when a record is updated prior to the latest current' do
       before(:each) do
         described_class.create_or_update_from_json(timestamped_json)
@@ -132,6 +117,33 @@ shared_examples_for 'a resource' do
       end
       it_behaves_like 'maintains currency' do
         let(:last_updated_at) { originally_created_at }
+      end
+    end
+
+    context 'when a record is deleted' do
+      before(:each) do
+        described_class.create_or_update_from_json(timestamped_json)
+        described_class.create_or_update_from_json(timestamped_json.merge(:updated_at => modified_at, :deleted_at => modified_at + 1.day))
+      end
+
+      it 'has no current rows' do
+        described_class.current.should be_empty
+      end
+
+      it 'adds a new row' do
+        described_class.count.should == 2
+      end
+
+      it 'maintains the flow of currency' do
+        original, deleted = described_class.not_current.all
+
+        original.is_current.should be_false
+        original.current_from.utc.should == originally_created_at.utc
+        original.current_to.utc.should   == modified_at.utc
+
+        deleted.is_current.should be_false
+        deleted.current_from.utc.should == modified_at.utc
+        deleted.current_to.utc.should   == (modified_at + 1.day).utc
       end
     end
   end

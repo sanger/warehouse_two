@@ -27,19 +27,22 @@ module ResourceTools
     delegate :checked_time_now, :to => 'self.class'
   end
 
-  # A new record means old records are no longer current.  This means that they go out of being
-  # current at the point our record was modified.
+  # A new record means old records are no longer current.  All previously current records go out of currency at
+  # the point this new record entered (remember, we're not talking about the lifetime of the record in the app
+  # itself, but the period for the delta change we have just received).
   def maintain_other_currentness
-    current_versions.not_record(self).update_all("is_current=FALSE, current_to=#{self.last_updated.to_s(:db).inspect}")
+    current_versions.not_record(self).update_all("is_current=FALSE, current_to=#{self.current_from.to_s(:db).inspect}")
   end
   private :maintain_other_currentness
 
-  # A new record is current iff it has not been deleted and it is the most up-to-date.
+  # A new record is current iff it has not been deleted and it is the most up-to-date.  All records are current
+  # from the point at which they were updated; non-current records, however, have a point at which they were
+  # deleted or when they were updated.
   def maintain_our_currentness
-    self.current_from = self.created
+    self.current_from = self.last_updated
     if deleted? or not considered_most_recent_version?
       self.is_current = false
-      self.current_to = self.last_updated
+      self.current_to = self.deleted_at || self.last_updated
     else
       self.is_current = true
       self.current_to = nil
