@@ -8,6 +8,8 @@ module Uuidable
       base.class_eval do
         alias_method_chain(:new_column, :uuid)
         const_set(:UuidColumn, Class.new(base::Column) { extend UuidColumnBehaviour })
+
+        alias_method_chain(:type_to_sql, :uuid)
       end
     end
 
@@ -27,6 +29,12 @@ module Uuidable
     def new_column_with_uuid(field, default, type, null, collation)
       constructor = (type == 'binary(16)') ? self.class::UuidColumn.method(:new) : method(:new_column_without_uuid)
       constructor.call(field, default, type, null, collation)
+    end
+
+    # MySQL adapter forces BINARY columns into BLOBs which is exactly what we don't need here otherwise
+    # our indexes get all messed up.  So force the correct column type.
+    def type_to_sql_with_uuid(type, limit = nil, precision = nil, scale = nil)
+      (type.to_s == 'binary' && limit == 16) ? 'binary(16)' : type_to_sql_without_uuid(type, limit, precision, scale)
     end
   end
 
@@ -154,9 +162,11 @@ module Uuidable
   end
 end
 
-require 'active_record/connection_adapters/mysql2_adapter'
-class ActiveRecord::ConnectionAdapters::Mysql2Adapter
-  include Uuidable::ConnectionAdapter
+# We have to lazily include our updates, otherwise ActiveRecord gets well confused!
+ActiveSupport.on_load(:active_record) do
+  class ActiveRecord::ConnectionAdapters::Mysql2Adapter
+    include Uuidable::ConnectionAdapter
+  end
 end
 
 class String

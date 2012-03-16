@@ -9,33 +9,51 @@ module ResourceTools
       attr_accessor :data
 
       # A few useful named scopes
-      scope :for_uuid, lambda { |uuid| where(:uuid => uuid) }
       scope :current, where(:is_current => true)
+      scope :not_current, where(:is_current => false)
+      scope :for_uuid, lambda { |uuid| where(:uuid => uuid) }
       scope :not_record, lambda { |record| where('dont_use_id != ?', record.dont_use_id) }
 
       # Ensure that the time stamps are correct whenever a record is updated
       before_create { |record| record.inserted_at = record.correct_current_time }
       before_save   { |record| record.checked_at  = record.checked_time_now }
 
-      # On creation, ensure that this is the only record that is current.  If the record has been
-      # deleted then we need to not set this to current.
-      before_create { |record| record.is_current = !record.deleted? ; true }
-
-      after_create do |record|
-        record.class.for_uuid(record.uuid).current.not_record(record).update_all('is_current=FALSE')
-      end
+      # Ensure that on creation the currentness of the records are maintained
+      before_create(:maintain_our_currentness)
+      after_create(:maintain_other_currentness)
 
       delegate :correct_current_time, :to => 'self.class'
       delegate :checked_time_now, :to => 'self.class'
     end
   end
 
+  # A new record means old records are no longer current.  This means that they go out of being
+  # current at the point our record was modified.
+  def maintain_other_currentness
+    self.class.for_uuid(self.uuid).current.not_record(self).update_all("is_current=FALSE, current_to=#{self.last_updated.to_s(:db).inspect}")
+  end
+  private :maintain_other_currentness
+
+  # A new record is current iff it has not been deleted
+  def maintain_our_currentness
+    self.current_from = self.created
+    if deleted?
+      self.is_current = false
+      self.current_to = self.last_updated
+    else
+      self.is_current = true
+      self.current_to = nil
+    end
+    true
+  end
+  private :maintain_our_currentness
+
   # Has this record been deleted remotely
   def deleted?
     deleted_at.present?
   end
 
-  IGNOREABLE_ATTRIBUTES = [ 'dont_use_id', 'is_current', 'inserted_at', 'checked_at' ]
+  IGNOREABLE_ATTRIBUTES = [ 'dont_use_id', 'is_current', 'inserted_at', 'checked_at', 'current_from', 'current_to' ]
 
   def updated_values?(object)
     us, them = self.attributes.stringify_keys, object.attributes.stringify_keys.reverse_slice(IGNOREABLE_ATTRIBUTES)

@@ -4,10 +4,13 @@ gem "rails", "3.2.2"
 gem "configatron"
 gem "mysql2"
 gem "cbrunnkvist-psd_logger"
-#gem "alter_table", :git => "git+ssh://git@github.com/sanger/alter_table.git"
 gem "amqp", "~> 0.9.2"
-gem "rails_sql_views"
 gem "hashie", "~> 1.2.0"
+
+# Need a branched verion of the rails_sql_views gem to support MySQL2 and ActiveRecord 3, but that is
+# fixed against a specific version of Rake, which is actually a downgrade for Rails 3.2.
+gem "rails_sql_views", :git => "git+ssh://git@github.com/anathematic/rails_sql_views.git"
+gem "rake", "= 0.9.2"
 
 group :test, :development do
   gem 'rspec-rails', '~> 2.8.0'

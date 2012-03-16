@@ -1,3 +1,3 @@
 ActiveSupport::Inflector.inflections do |inflect|
-  inflect.singular 'quota', 'quota'
+  inflect.uncountable 'quota'
 end

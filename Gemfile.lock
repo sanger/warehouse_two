@@ -1,3 +1,12 @@
+GIT
+  remote: git+ssh://git@github.com/anathematic/rails_sql_views.git
+  revision: c2b7269663dc1f4355a769f736f526d7b322df8d
+  specs:
+    rails_sql_views (0.8.0.2.laripk)
+      activerecord
+      rails (~> 3.1.rc1)
+      rake (= 0.9.2)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -83,8 +92,6 @@ GEM
       activesupport (= 3.2.2)
       bundler (~> 1.0)
       railties (= 3.2.2)
-    rails_sql_views (0.8.0)
-      activerecord
     railties (3.2.2)
       actionpack (= 3.2.2)
       activesupport (= 3.2.2)
@@ -92,7 +99,7 @@ GEM
       rake (>= 0.8.7)
       rdoc (~> 3.4)
       thor (~> 0.14.6)
-    rake (0.9.2.2)
+    rake (0.9.2)
     rdoc (3.12)
       json (~> 1.4)
     rspec (2.8.0)
@@ -135,5 +142,6 @@ DEPENDENCIES
   hashie (~> 1.2.0)
   mysql2
   rails (= 3.2.2)
-  rails_sql_views
+  rails_sql_views!
+  rake (= 0.9.2)
   rspec-rails (~> 2.8.0)
