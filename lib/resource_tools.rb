@@ -13,6 +13,7 @@ module ResourceTools
       scope :not_current, where(:is_current => false)
       scope :for_uuid, lambda { |uuid| where(:uuid => uuid) }
       scope :not_record, lambda { |record| where('dont_use_id != ?', record.dont_use_id) }
+      scope :most_recent, order('last_updated DESC')
 
       # Ensure that the time stamps are correct whenever a record is updated
       before_create { |record| record.inserted_at = record.correct_current_time }
@@ -20,7 +21,7 @@ module ResourceTools
 
       # Ensure that on creation the currentness of the records are maintained
       before_create(:maintain_our_currentness)
-      after_create(:maintain_other_currentness)
+      after_create(:maintain_other_currentness, :if => :considered_most_recent_version?)
 
       delegate :correct_current_time, :to => 'self.class'
       delegate :checked_time_now, :to => 'self.class'
@@ -30,14 +31,14 @@ module ResourceTools
   # A new record means old records are no longer current.  This means that they go out of being
   # current at the point our record was modified.
   def maintain_other_currentness
-    self.class.for_uuid(self.uuid).current.not_record(self).update_all("is_current=FALSE, current_to=#{self.last_updated.to_s(:db).inspect}")
+    current_versions.not_record(self).update_all("is_current=FALSE, current_to=#{self.last_updated.to_s(:db).inspect}")
   end
   private :maintain_other_currentness
 
-  # A new record is current iff it has not been deleted
+  # A new record is current iff it has not been deleted and it is the most up-to-date.
   def maintain_our_currentness
     self.current_from = self.created
-    if deleted?
+    if deleted? or not considered_most_recent_version?
       self.is_current = false
       self.current_to = self.last_updated
     else
@@ -47,6 +48,18 @@ module ResourceTools
     true
   end
   private :maintain_our_currentness
+
+  def current_versions
+    self.class.for_uuid(self.uuid).current
+  end
+  private :current_versions
+
+  # Can this record be considered the most recent version?
+  def considered_most_recent_version?
+    currently_most_recent = current_versions.most_recent.first
+    currently_most_recent.nil? or (currently_most_recent == self) or (currently_most_recent.last_updated <= self.last_updated)
+  end
+  private :considered_most_recent_version?
 
   # Has this record been deleted remotely
   def deleted?
