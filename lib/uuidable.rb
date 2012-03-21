@@ -1,6 +1,12 @@
 # Extend ActiveRecord::Base with this module and all UUID columns will be automatically handled as though they
 # are stored as BINARY(16) in the database but accessible as their string representations from code.
 module Uuidable
+  extend ActiveSupport::Concern
+
+  included do
+    scope :for_uuid, lambda { |uuid| where(:uuid => uuid) }
+  end
+
   # MySQL decides that BINARY(16) columns really mean TINYBLOB(255), which is not what we mean, so we catch
   # the UUID column types and make damn sure that they are what we say they are.
   module ConnectionAdapter

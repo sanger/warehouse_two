@@ -9,7 +9,7 @@ describe Order do
   ]
 
   context 'remapping request options' do
-    subject { described_class.new(described_class::Json.new(json)) }
+    subject { described_class.new(described_class.send(:json).new(json)) }
 
     described_class::REMAPPING_OPTIONS.each do |json_attribute, attribute|
       arrayed = Array(json_attribute)

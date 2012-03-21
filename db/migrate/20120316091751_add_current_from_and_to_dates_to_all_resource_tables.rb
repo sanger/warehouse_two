@@ -5,6 +5,7 @@ class AddCurrentFromAndToDatesToAllResourceTables < ActiveRecord::Migration
       change_table(table, :bulk => true) do |t|
         t.column(:current_from, :datetime)
         t.column(:current_to,   :datetime)
+        t.index([ :current_to, :uuid, :current_from ], :name => :current_to_and_uuid_and_current_from_idx)
       end
 
       # In all cases the current_from is now and the current_to is set only for those rows
