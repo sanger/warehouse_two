@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120321134857) do
+ActiveRecord::Schema.define(:version => 20120322133601) do
 
   create_table "aliquots", :primary_key => "dont_use_id", :force => true do |t|
     t.binary   "uuid",                   :limit => 16, :null => false
@@ -44,7 +44,9 @@ ActiveRecord::Schema.define(:version => 20120321134857) do
 
   add_index "aliquots", ["current_from", "uuid", "current_to"], :name => "current_from_and_uuid_and_current_to_idx"
   add_index "aliquots", ["current_to", "uuid", "current_from"], :name => "current_to_and_uuid_and_current_from_idx"
+  add_index "aliquots", ["receptacle_uuid", "sample_uuid", "current_to", "current_from"], :name => "receptacle_uuid_and_sample_uuid_and_current_idx"
   add_index "aliquots", ["receptacle_uuid", "sample_uuid", "is_current"], :name => "receptacle_uuid_and_sample_uuid_and_is_current_idx"
+  add_index "aliquots", ["sample_uuid", "receptacle_uuid", "current_to", "current_from"], :name => "sample_uuid_and_receptacle_uuid_and_current_idx"
   add_index "aliquots", ["sample_uuid", "receptacle_uuid", "is_current"], :name => "sample_uuid_and_receptacle_uuid_and_is_current_idx"
   add_index "aliquots", ["uuid", "is_current"], :name => "uuid_and_is_current_idx"
 
@@ -110,6 +112,7 @@ ActiveRecord::Schema.define(:version => 20120321134857) do
     t.datetime "current_to"
   end
 
+  add_index "asset_links", ["ancestor_uuid", "descendant_uuid", "current_to", "current_from"], :name => "ancestor_uuid_and_descendant_uuid_and_current_idx"
   add_index "asset_links", ["ancestor_uuid", "descendant_uuid", "is_current"], :name => "ancestor_uuid_and_descendant_uuid_and_is_current_idx"
   add_index "asset_links", ["current_from", "uuid", "current_to"], :name => "current_from_and_uuid_and_current_to_idx"
   add_index "asset_links", ["current_to", "uuid", "current_from"], :name => "current_to_and_uuid_and_current_from_idx"
@@ -199,6 +202,7 @@ ActiveRecord::Schema.define(:version => 20120321134857) do
 
   add_index "billing_events", ["current_from", "uuid", "current_to"], :name => "current_from_and_uuid_and_current_to_idx"
   add_index "billing_events", ["current_to", "uuid", "current_from"], :name => "current_to_and_uuid_and_current_from_idx"
+  add_index "billing_events", ["project_uuid", "request_uuid", "current_to", "current_from"], :name => "project_uuid_and_request_uuid_and_current_idx"
   add_index "billing_events", ["project_uuid", "request_uuid", "is_current"], :name => "project_uuid_and_request_uuid_and_is_current_idx"
   add_index "billing_events", ["uuid", "is_current"], :name => "uuid_and_is_current_idx"
 
@@ -370,6 +374,8 @@ ActiveRecord::Schema.define(:version => 20120321134857) do
 
   add_index "orders", ["current_from", "uuid", "current_to"], :name => "current_from_and_uuid_and_current_to_idx"
   add_index "orders", ["current_to", "uuid", "current_from"], :name => "current_to_and_uuid_and_current_from_idx"
+  add_index "orders", ["study_uuid", "current_to", "current_from", "project_uuid"], :name => "study_uuid_and_current_and_project_uuid_idx"
+  add_index "orders", ["study_uuid", "current_to", "project_uuid", "current_from"], :name => "study_uuid_and_current_to_and_project_uuid_and_current_from_idx"
   add_index "orders", ["study_uuid", "is_current", "project_uuid"], :name => "study_uuid_and_is_current_and_project_uuid_idx"
   add_index "orders", ["uuid", "is_current"], :name => "uuid_and_is_current_idx"
 
@@ -492,6 +498,7 @@ ActiveRecord::Schema.define(:version => 20120321134857) do
 
   add_index "quotas", ["current_from", "uuid", "current_to"], :name => "current_from_and_uuid_and_current_to_idx"
   add_index "quotas", ["current_to", "uuid", "current_from"], :name => "current_to_and_uuid_and_current_from_idx"
+  add_index "quotas", ["project_uuid", "request_type", "current_to", "current_from"], :name => "project_uuid_and_request_type_and_current_idx"
   add_index "quotas", ["project_uuid", "request_type", "is_current"], :name => "project_uuid_and_request_type_and_is_current_idx"
   add_index "quotas", ["uuid", "is_current"], :name => "uuid_and_is_current_idx"
 
@@ -548,8 +555,11 @@ ActiveRecord::Schema.define(:version => 20120321134857) do
 
   add_index "requests", ["current_from", "uuid", "current_to"], :name => "current_from_and_uuid_and_current_to_idx"
   add_index "requests", ["current_to", "uuid", "current_from"], :name => "current_to_and_uuid_and_current_from_idx"
+  add_index "requests", ["source_asset_uuid", "request_type", "current_to", "current_from"], :name => "source_asset_uuid_and_request_type_and_current_idx"
   add_index "requests", ["source_asset_uuid", "request_type", "is_current"], :name => "source_asset_uuid_and_request_type_and_is_current_idx"
+  add_index "requests", ["submission_uuid", "current_to", "current_from"], :name => "submission_uuid_and_current_idx"
   add_index "requests", ["submission_uuid", "is_current"], :name => "submission_uuid_and_is_current_idx"
+  add_index "requests", ["target_asset_uuid", "request_type", "current_to", "current_from"], :name => "target_asset_uuid_and_request_type_and_current_idx"
   add_index "requests", ["target_asset_uuid", "request_type", "is_current"], :name => "target_asset_uuid_and_request_type_and_is_current_idx"
   add_index "requests", ["uuid", "is_current"], :name => "uuid_and_is_current_idx"
 
@@ -620,6 +630,7 @@ ActiveRecord::Schema.define(:version => 20120321134857) do
 
   add_index "samples", ["current_from", "uuid", "current_to"], :name => "current_from_and_uuid_and_current_to_idx"
   add_index "samples", ["current_to", "uuid", "current_from"], :name => "current_to_and_uuid_and_current_from_idx"
+  add_index "samples", ["internal_id", "current_to", "current_from"], :name => "internal_id_and_current_idx"
   add_index "samples", ["internal_id", "is_current"], :name => "internal_id_and_is_current_idx"
   add_index "samples", ["uuid", "is_current"], :name => "uuid_and_is_current_idx"
 
@@ -658,6 +669,7 @@ ActiveRecord::Schema.define(:version => 20120321134857) do
 
   add_index "studies", ["current_from", "uuid", "current_to"], :name => "current_from_and_uuid_and_current_to_idx"
   add_index "studies", ["current_to", "uuid", "current_from"], :name => "current_to_and_uuid_and_current_from_idx"
+  add_index "studies", ["internal_id", "current_to", "current_from"], :name => "internal_id_and_current_idx"
   add_index "studies", ["internal_id", "is_current"], :name => "internal_id_and_is_current_idx"
   add_index "studies", ["uuid", "is_current"], :name => "uuid_and_is_current_idx"
 
@@ -680,6 +692,7 @@ ActiveRecord::Schema.define(:version => 20120321134857) do
 
   add_index "study_samples", ["current_from", "uuid", "current_to"], :name => "current_from_and_uuid_and_current_to_idx"
   add_index "study_samples", ["current_to", "uuid", "current_from"], :name => "current_to_and_uuid_and_current_from_idx"
+  add_index "study_samples", ["sample_uuid", "study_uuid", "current_to", "current_from"], :name => "sample_uuid_and_study_uuid_and_current_idx"
   add_index "study_samples", ["sample_uuid", "study_uuid", "is_current"], :name => "sample_uuid_and_study_uuid_and_is_current_idx"
   add_index "study_samples", ["uuid", "is_current"], :name => "uuid_and_is_current_idx"
 
