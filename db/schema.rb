@@ -42,6 +42,7 @@ ActiveRecord::Schema.define(:version => 20120321134857) do
     t.datetime "current_to"
   end
 
+  add_index "aliquots", ["current_from", "uuid", "current_to"], :name => "current_from_and_uuid_and_current_to_idx"
   add_index "aliquots", ["current_to", "uuid", "current_from"], :name => "current_to_and_uuid_and_current_from_idx"
   add_index "aliquots", ["receptacle_uuid", "sample_uuid", "is_current"], :name => "receptacle_uuid_and_sample_uuid_and_is_current_idx"
   add_index "aliquots", ["sample_uuid", "receptacle_uuid", "is_current"], :name => "sample_uuid_and_receptacle_uuid_and_is_current_idx"
@@ -67,6 +68,7 @@ ActiveRecord::Schema.define(:version => 20120321134857) do
     t.datetime "current_to"
   end
 
+  add_index "asset_audits", ["current_from", "uuid", "current_to"], :name => "current_from_and_uuid_and_current_to_idx"
   add_index "asset_audits", ["current_to", "uuid", "current_from"], :name => "current_to_and_uuid_and_current_from_idx"
   add_index "asset_audits", ["uuid", "is_current"], :name => "uuid_and_is_current_idx"
 
@@ -109,6 +111,7 @@ ActiveRecord::Schema.define(:version => 20120321134857) do
   end
 
   add_index "asset_links", ["ancestor_uuid", "descendant_uuid", "is_current"], :name => "ancestor_uuid_and_descendant_uuid_and_is_current_idx"
+  add_index "asset_links", ["current_from", "uuid", "current_to"], :name => "current_from_and_uuid_and_current_to_idx"
   add_index "asset_links", ["current_to", "uuid", "current_from"], :name => "current_to_and_uuid_and_current_from_idx"
   add_index "asset_links", ["uuid", "is_current"], :name => "uuid_and_is_current_idx"
 
@@ -136,6 +139,7 @@ ActiveRecord::Schema.define(:version => 20120321134857) do
     t.datetime "current_to"
   end
 
+  add_index "batch_requests", ["current_from", "uuid", "current_to"], :name => "current_from_and_uuid_and_current_to_idx"
   add_index "batch_requests", ["current_to", "uuid", "current_from"], :name => "current_to_and_uuid_and_current_from_idx"
   add_index "batch_requests", ["uuid", "is_current"], :name => "uuid_and_is_current_idx"
 
@@ -160,6 +164,7 @@ ActiveRecord::Schema.define(:version => 20120321134857) do
     t.datetime "current_to"
   end
 
+  add_index "batches", ["current_from", "uuid", "current_to"], :name => "current_from_and_uuid_and_current_to_idx"
   add_index "batches", ["current_to", "uuid", "current_from"], :name => "current_to_and_uuid_and_current_from_idx"
   add_index "batches", ["uuid", "is_current"], :name => "uuid_and_is_current_idx"
 
@@ -192,6 +197,7 @@ ActiveRecord::Schema.define(:version => 20120321134857) do
     t.datetime "current_to"
   end
 
+  add_index "billing_events", ["current_from", "uuid", "current_to"], :name => "current_from_and_uuid_and_current_to_idx"
   add_index "billing_events", ["current_to", "uuid", "current_from"], :name => "current_to_and_uuid_and_current_from_idx"
   add_index "billing_events", ["project_uuid", "request_uuid", "is_current"], :name => "project_uuid_and_request_uuid_and_is_current_idx"
   add_index "billing_events", ["uuid", "is_current"], :name => "uuid_and_is_current_idx"
@@ -236,6 +242,7 @@ ActiveRecord::Schema.define(:version => 20120321134857) do
     t.datetime "current_to"
   end
 
+  add_index "events", ["current_from", "uuid", "current_to"], :name => "current_from_and_uuid_and_current_to_idx"
   add_index "events", ["current_to", "uuid", "current_from"], :name => "current_to_and_uuid_and_current_from_idx"
   add_index "events", ["uuid", "is_current"], :name => "uuid_and_is_current_idx"
 
@@ -260,6 +267,7 @@ ActiveRecord::Schema.define(:version => 20120321134857) do
     t.datetime "current_to"
   end
 
+  add_index "lanes", ["current_from", "uuid", "current_to"], :name => "current_from_and_uuid_and_current_to_idx"
   add_index "lanes", ["current_to", "uuid", "current_from"], :name => "current_to_and_uuid_and_current_from_idx"
   add_index "lanes", ["uuid", "is_current"], :name => "uuid_and_is_current_idx"
 
@@ -301,6 +309,7 @@ ActiveRecord::Schema.define(:version => 20120321134857) do
     t.datetime "current_to"
   end
 
+  add_index "library_tubes", ["current_from", "uuid", "current_to"], :name => "current_from_and_uuid_and_current_to_idx"
   add_index "library_tubes", ["current_to", "uuid", "current_from"], :name => "current_to_and_uuid_and_current_from_idx"
   add_index "library_tubes", ["uuid", "is_current"], :name => "uuid_and_is_current_idx"
 
@@ -327,6 +336,7 @@ ActiveRecord::Schema.define(:version => 20120321134857) do
     t.datetime "current_to"
   end
 
+  add_index "multiplexed_library_tubes", ["current_from", "uuid", "current_to"], :name => "current_from_and_uuid_and_current_to_idx"
   add_index "multiplexed_library_tubes", ["current_to", "uuid", "current_from"], :name => "current_to_and_uuid_and_current_from_idx"
   add_index "multiplexed_library_tubes", ["uuid", "is_current"], :name => "uuid_and_is_current_idx"
 
@@ -358,6 +368,7 @@ ActiveRecord::Schema.define(:version => 20120321134857) do
     t.datetime "current_to"
   end
 
+  add_index "orders", ["current_from", "uuid", "current_to"], :name => "current_from_and_uuid_and_current_to_idx"
   add_index "orders", ["current_to", "uuid", "current_from"], :name => "current_to_and_uuid_and_current_from_idx"
   add_index "orders", ["study_uuid", "is_current", "project_uuid"], :name => "study_uuid_and_is_current_and_project_uuid_idx"
   add_index "orders", ["uuid", "is_current"], :name => "uuid_and_is_current_idx"
@@ -376,6 +387,7 @@ ActiveRecord::Schema.define(:version => 20120321134857) do
     t.datetime "current_to"
   end
 
+  add_index "plate_purposes", ["current_from", "uuid", "current_to"], :name => "current_from_and_uuid_and_current_to_idx"
   add_index "plate_purposes", ["current_to", "uuid", "current_from"], :name => "current_to_and_uuid_and_current_from_idx"
   add_index "plate_purposes", ["uuid", "is_current"], :name => "uuid_and_is_current_idx"
 
@@ -401,6 +413,7 @@ ActiveRecord::Schema.define(:version => 20120321134857) do
     t.datetime "current_to"
   end
 
+  add_index "plates", ["current_from", "uuid", "current_to"], :name => "current_from_and_uuid_and_current_to_idx"
   add_index "plates", ["current_to", "uuid", "current_from"], :name => "current_to_and_uuid_and_current_from_idx"
   add_index "plates", ["uuid", "is_current"], :name => "uuid_and_is_current_idx"
 
@@ -428,6 +441,7 @@ ActiveRecord::Schema.define(:version => 20120321134857) do
     t.datetime "current_to"
   end
 
+  add_index "projects", ["current_from", "uuid", "current_to"], :name => "current_from_and_uuid_and_current_to_idx"
   add_index "projects", ["current_to", "uuid", "current_from"], :name => "current_to_and_uuid_and_current_from_idx"
   add_index "projects", ["uuid", "is_current"], :name => "uuid_and_is_current_idx"
 
@@ -454,6 +468,7 @@ ActiveRecord::Schema.define(:version => 20120321134857) do
     t.datetime "current_to"
   end
 
+  add_index "pulldown_multiplexed_library_tubes", ["current_from", "uuid", "current_to"], :name => "current_from_and_uuid_and_current_to_idx"
   add_index "pulldown_multiplexed_library_tubes", ["current_to", "uuid", "current_from"], :name => "current_to_and_uuid_and_current_from_idx"
   add_index "pulldown_multiplexed_library_tubes", ["uuid", "is_current"], :name => "uuid_and_is_current_idx"
 
@@ -475,6 +490,7 @@ ActiveRecord::Schema.define(:version => 20120321134857) do
     t.datetime "current_to"
   end
 
+  add_index "quotas", ["current_from", "uuid", "current_to"], :name => "current_from_and_uuid_and_current_to_idx"
   add_index "quotas", ["current_to", "uuid", "current_from"], :name => "current_to_and_uuid_and_current_from_idx"
   add_index "quotas", ["project_uuid", "request_type", "is_current"], :name => "project_uuid_and_request_type_and_is_current_idx"
   add_index "quotas", ["uuid", "is_current"], :name => "uuid_and_is_current_idx"
@@ -530,6 +546,7 @@ ActiveRecord::Schema.define(:version => 20120321134857) do
     t.datetime "current_to"
   end
 
+  add_index "requests", ["current_from", "uuid", "current_to"], :name => "current_from_and_uuid_and_current_to_idx"
   add_index "requests", ["current_to", "uuid", "current_from"], :name => "current_to_and_uuid_and_current_from_idx"
   add_index "requests", ["source_asset_uuid", "request_type", "is_current"], :name => "source_asset_uuid_and_request_type_and_is_current_idx"
   add_index "requests", ["submission_uuid", "is_current"], :name => "submission_uuid_and_is_current_idx"
@@ -561,6 +578,7 @@ ActiveRecord::Schema.define(:version => 20120321134857) do
     t.datetime "current_to"
   end
 
+  add_index "sample_tubes", ["current_from", "uuid", "current_to"], :name => "current_from_and_uuid_and_current_to_idx"
   add_index "sample_tubes", ["current_to", "uuid", "current_from"], :name => "current_to_and_uuid_and_current_from_idx"
   add_index "sample_tubes", ["uuid", "is_current"], :name => "uuid_and_is_current_idx"
 
@@ -600,6 +618,7 @@ ActiveRecord::Schema.define(:version => 20120321134857) do
     t.datetime "current_to"
   end
 
+  add_index "samples", ["current_from", "uuid", "current_to"], :name => "current_from_and_uuid_and_current_to_idx"
   add_index "samples", ["current_to", "uuid", "current_from"], :name => "current_to_and_uuid_and_current_from_idx"
   add_index "samples", ["internal_id", "is_current"], :name => "internal_id_and_is_current_idx"
   add_index "samples", ["uuid", "is_current"], :name => "uuid_and_is_current_idx"
@@ -637,6 +656,7 @@ ActiveRecord::Schema.define(:version => 20120321134857) do
     t.datetime "current_to"
   end
 
+  add_index "studies", ["current_from", "uuid", "current_to"], :name => "current_from_and_uuid_and_current_to_idx"
   add_index "studies", ["current_to", "uuid", "current_from"], :name => "current_to_and_uuid_and_current_from_idx"
   add_index "studies", ["internal_id", "is_current"], :name => "internal_id_and_is_current_idx"
   add_index "studies", ["uuid", "is_current"], :name => "uuid_and_is_current_idx"
@@ -658,6 +678,7 @@ ActiveRecord::Schema.define(:version => 20120321134857) do
     t.datetime "current_to"
   end
 
+  add_index "study_samples", ["current_from", "uuid", "current_to"], :name => "current_from_and_uuid_and_current_to_idx"
   add_index "study_samples", ["current_to", "uuid", "current_from"], :name => "current_to_and_uuid_and_current_from_idx"
   add_index "study_samples", ["sample_uuid", "study_uuid", "is_current"], :name => "sample_uuid_and_study_uuid_and_is_current_idx"
   add_index "study_samples", ["uuid", "is_current"], :name => "uuid_and_is_current_idx"
@@ -678,6 +699,7 @@ ActiveRecord::Schema.define(:version => 20120321134857) do
     t.datetime "current_to"
   end
 
+  add_index "submissions", ["current_from", "uuid", "current_to"], :name => "current_from_and_uuid_and_current_to_idx"
   add_index "submissions", ["current_to", "uuid", "current_from"], :name => "current_to_and_uuid_and_current_from_idx"
   add_index "submissions", ["uuid", "is_current"], :name => "uuid_and_is_current_idx"
 
@@ -707,6 +729,7 @@ ActiveRecord::Schema.define(:version => 20120321134857) do
     t.datetime "current_to"
   end
 
+  add_index "tags", ["current_from", "uuid", "current_to"], :name => "current_from_and_uuid_and_current_to_idx"
   add_index "tags", ["current_to", "uuid", "current_from"], :name => "current_to_and_uuid_and_current_from_idx"
   add_index "tags", ["uuid", "is_current"], :name => "uuid_and_is_current_idx"
 
@@ -743,6 +766,7 @@ ActiveRecord::Schema.define(:version => 20120321134857) do
     t.datetime "current_to"
   end
 
+  add_index "wells", ["current_from", "uuid", "current_to"], :name => "current_from_and_uuid_and_current_to_idx"
   add_index "wells", ["current_to", "uuid", "current_from"], :name => "current_to_and_uuid_and_current_from_idx"
   add_index "wells", ["uuid", "is_current"], :name => "uuid_and_is_current_idx"
 
