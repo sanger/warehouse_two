@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Aliquot do
   it_behaves_like 'a resource'
   it_behaves_like 'maps JSON fields', :id => :internal_id
-  it_behaves_like 'ignores JSON fields', [ :sample_url, :receptacle_url ]
+  it_behaves_like 'ignores JSON fields', [ :sample_url, :receptacle_url, :project_url, :study_url, :library_url ]
 
   let(:json) do
     {
