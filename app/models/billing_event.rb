@@ -26,7 +26,8 @@ class BillingEvent < ActiveRecord::Base
       :description             => :description,
       :entry_date              => :entry_date,
       :last_updated            => :updated_at,
-      :created                 => :created_at
+      :created                 => :created_at,
+      :bait_library_type       => :bait_library_type
     }
   end
 
