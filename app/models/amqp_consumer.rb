@@ -27,7 +27,8 @@ class AmqpConsumer
                 end
               end
             rescue => exception
-              channel.reject(metadata.delivery_tag, true)   # Requeue the message later
+              # The system is setup to deadletter rejected messages, so simply reject it here with no re-queueing
+              channel.reject(metadata.delivery_tag, false)
               raise
             end
           rescue NameError => exception
