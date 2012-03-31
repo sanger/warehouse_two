@@ -18,9 +18,8 @@ module ResourceTools::SequenceOfDates
     # then we are not current.
     if deleted?
       self.date_sequence_from, self.date_sequence_to = self.deleted_at, self.deleted_at
-    else
-      record = related.current_after(self.date_sequence_from).first
-      self.date_sequence_to = record.date_sequence_from if record.present?
+    elsif records_after_us?
+      self.date_sequence_to = related.current_after(self.date_sequence_from).first.date_sequence_from
     end
 
     # TODO: Remove this once the is_current column has been removed from third party queries
@@ -30,6 +29,11 @@ module ResourceTools::SequenceOfDates
     true
   end
   private :maintain_our_currentness
+
+  def records_after_us?
+    related.records_after(self.date_sequence_from).exists?
+  end
+  private :records_after_us?
 
   # Ensures that this record ends its currency when the specified record starts.  Effectively we're saying
   # "I *run into* that record".
@@ -59,6 +63,7 @@ module ResourceTools::SequenceOfDates
       scope :ordered_future, order("#{from_field} ASC")
       scope :ordered_history, order("#{from_field} DESC")
 
+      scope :records_after,  lambda { |datetime| where("#{from_field} >= ?", datetime) }
       scope :current_after,  lambda { |datetime| where("#{from_field} >= ?", datetime).ordered_future }
       scope :current_before, lambda { |datetime| where("#{to_field}   <  ?", datetime).ordered_history }
 
