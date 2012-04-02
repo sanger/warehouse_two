@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120331083658) do
+ActiveRecord::Schema.define(:version => 20120402132558) do
 
   create_table "aliquots", :primary_key => "dont_use_id", :force => true do |t|
     t.binary   "uuid",                   :limit => 16, :null => false
@@ -42,10 +42,10 @@ ActiveRecord::Schema.define(:version => 20120331083658) do
     t.datetime "current_to"
   end
 
-  add_index "aliquots", ["current_from", "uuid", "current_to"], :name => "current_from_and_uuid_and_current_to_idx"
   add_index "aliquots", ["current_to", "uuid", "current_from"], :name => "current_to_and_uuid_and_current_from_idx"
   add_index "aliquots", ["receptacle_uuid", "sample_uuid", "current_to", "current_from"], :name => "receptacle_uuid_and_sample_uuid_and_current_idx"
   add_index "aliquots", ["sample_uuid", "receptacle_uuid", "current_to", "current_from"], :name => "sample_uuid_and_receptacle_uuid_and_current_idx"
+  add_index "aliquots", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
 
   create_table "asset_audits", :primary_key => "dont_use_id", :force => true do |t|
     t.binary   "uuid",                 :limit => 16, :null => false
@@ -67,8 +67,8 @@ ActiveRecord::Schema.define(:version => 20120331083658) do
     t.datetime "current_to"
   end
 
-  add_index "asset_audits", ["current_from", "uuid", "current_to"], :name => "current_from_and_uuid_and_current_to_idx"
   add_index "asset_audits", ["current_to", "uuid", "current_from"], :name => "current_to_and_uuid_and_current_from_idx"
+  add_index "asset_audits", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
 
   create_table "asset_freezers", :primary_key => "dont_use_id", :force => true do |t|
     t.binary   "uuid",           :limit => 16, :null => false
@@ -109,8 +109,8 @@ ActiveRecord::Schema.define(:version => 20120331083658) do
   end
 
   add_index "asset_links", ["ancestor_uuid", "descendant_uuid", "current_to", "current_from"], :name => "ancestor_uuid_and_descendant_uuid_and_current_idx"
-  add_index "asset_links", ["current_from", "uuid", "current_to"], :name => "current_from_and_uuid_and_current_to_idx"
   add_index "asset_links", ["current_to", "uuid", "current_from"], :name => "current_to_and_uuid_and_current_from_idx"
+  add_index "asset_links", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
 
   create_table "batch_requests", :primary_key => "dont_use_id", :force => true do |t|
     t.binary   "uuid",                     :limit => 16, :null => false
@@ -136,8 +136,8 @@ ActiveRecord::Schema.define(:version => 20120331083658) do
     t.datetime "current_to"
   end
 
-  add_index "batch_requests", ["current_from", "uuid", "current_to"], :name => "current_from_and_uuid_and_current_to_idx"
   add_index "batch_requests", ["current_to", "uuid", "current_from"], :name => "current_to_and_uuid_and_current_from_idx"
+  add_index "batch_requests", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
 
   create_table "batches", :primary_key => "dont_use_id", :force => true do |t|
     t.binary   "uuid",                 :limit => 16, :null => false
@@ -160,8 +160,8 @@ ActiveRecord::Schema.define(:version => 20120331083658) do
     t.datetime "current_to"
   end
 
-  add_index "batches", ["current_from", "uuid", "current_to"], :name => "current_from_and_uuid_and_current_to_idx"
   add_index "batches", ["current_to", "uuid", "current_from"], :name => "current_to_and_uuid_and_current_from_idx"
+  add_index "batches", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
 
   create_table "billing_events", :primary_key => "dont_use_id", :force => true do |t|
     t.binary   "uuid",                :limit => 16, :null => false
@@ -192,9 +192,9 @@ ActiveRecord::Schema.define(:version => 20120331083658) do
     t.datetime "current_to"
   end
 
-  add_index "billing_events", ["current_from", "uuid", "current_to"], :name => "current_from_and_uuid_and_current_to_idx"
   add_index "billing_events", ["current_to", "uuid", "current_from"], :name => "current_to_and_uuid_and_current_from_idx"
   add_index "billing_events", ["project_uuid", "request_uuid", "current_to", "current_from"], :name => "project_uuid_and_request_uuid_and_current_idx"
+  add_index "billing_events", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
 
   create_table "delayed_jobs", :force => true do |t|
     t.integer  "priority",   :default => 0
@@ -236,8 +236,8 @@ ActiveRecord::Schema.define(:version => 20120331083658) do
     t.datetime "current_to"
   end
 
-  add_index "events", ["current_from", "uuid", "current_to"], :name => "current_from_and_uuid_and_current_to_idx"
   add_index "events", ["current_to", "uuid", "current_from"], :name => "current_to_and_uuid_and_current_from_idx"
+  add_index "events", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
 
   create_table "lanes", :primary_key => "dont_use_id", :force => true do |t|
     t.binary   "uuid",                    :limit => 16, :null => false
@@ -260,8 +260,8 @@ ActiveRecord::Schema.define(:version => 20120331083658) do
     t.datetime "current_to"
   end
 
-  add_index "lanes", ["current_from", "uuid", "current_to"], :name => "current_from_and_uuid_and_current_to_idx"
   add_index "lanes", ["current_to", "uuid", "current_from"], :name => "current_to_and_uuid_and_current_from_idx"
+  add_index "lanes", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
 
   create_table "library_tubes", :primary_key => "dont_use_id", :force => true do |t|
     t.binary   "uuid",                        :limit => 16,                               :null => false
@@ -301,8 +301,8 @@ ActiveRecord::Schema.define(:version => 20120331083658) do
     t.datetime "current_to"
   end
 
-  add_index "library_tubes", ["current_from", "uuid", "current_to"], :name => "current_from_and_uuid_and_current_to_idx"
   add_index "library_tubes", ["current_to", "uuid", "current_from"], :name => "current_to_and_uuid_and_current_from_idx"
+  add_index "library_tubes", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
 
   create_table "multiplexed_library_tubes", :primary_key => "dont_use_id", :force => true do |t|
     t.binary   "uuid",                    :limit => 16,                               :null => false
@@ -327,8 +327,8 @@ ActiveRecord::Schema.define(:version => 20120331083658) do
     t.datetime "current_to"
   end
 
-  add_index "multiplexed_library_tubes", ["current_from", "uuid", "current_to"], :name => "current_from_and_uuid_and_current_to_idx"
   add_index "multiplexed_library_tubes", ["current_to", "uuid", "current_from"], :name => "current_to_and_uuid_and_current_from_idx"
+  add_index "multiplexed_library_tubes", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
 
   create_table "orders", :primary_key => "dont_use_id", :force => true do |t|
     t.binary   "uuid",                        :limit => 16, :null => false
@@ -358,10 +358,10 @@ ActiveRecord::Schema.define(:version => 20120331083658) do
     t.datetime "current_to"
   end
 
-  add_index "orders", ["current_from", "uuid", "current_to"], :name => "current_from_and_uuid_and_current_to_idx"
   add_index "orders", ["current_to", "uuid", "current_from"], :name => "current_to_and_uuid_and_current_from_idx"
   add_index "orders", ["study_uuid", "current_to", "current_from", "project_uuid"], :name => "study_uuid_and_current_and_project_uuid_idx"
   add_index "orders", ["study_uuid", "current_to", "project_uuid", "current_from"], :name => "study_uuid_and_current_to_and_project_uuid_and_current_from_idx"
+  add_index "orders", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
 
   create_table "plate_purposes", :primary_key => "dont_use_id", :force => true do |t|
     t.binary   "uuid",         :limit => 16, :null => false
@@ -377,8 +377,8 @@ ActiveRecord::Schema.define(:version => 20120331083658) do
     t.datetime "current_to"
   end
 
-  add_index "plate_purposes", ["current_from", "uuid", "current_to"], :name => "current_from_and_uuid_and_current_to_idx"
   add_index "plate_purposes", ["current_to", "uuid", "current_from"], :name => "current_to_and_uuid_and_current_from_idx"
+  add_index "plate_purposes", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
 
   create_table "plates", :primary_key => "dont_use_id", :force => true do |t|
     t.binary   "uuid",                      :limit => 16, :null => false
@@ -402,8 +402,8 @@ ActiveRecord::Schema.define(:version => 20120331083658) do
     t.datetime "current_to"
   end
 
-  add_index "plates", ["current_from", "uuid", "current_to"], :name => "current_from_and_uuid_and_current_to_idx"
   add_index "plates", ["current_to", "uuid", "current_from"], :name => "current_to_and_uuid_and_current_from_idx"
+  add_index "plates", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
 
   create_table "projects", :primary_key => "dont_use_id", :force => true do |t|
     t.binary   "uuid",                    :limit => 16, :null => false
@@ -429,8 +429,8 @@ ActiveRecord::Schema.define(:version => 20120331083658) do
     t.datetime "current_to"
   end
 
-  add_index "projects", ["current_from", "uuid", "current_to"], :name => "current_from_and_uuid_and_current_to_idx"
   add_index "projects", ["current_to", "uuid", "current_from"], :name => "current_to_and_uuid_and_current_from_idx"
+  add_index "projects", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
 
   create_table "pulldown_multiplexed_library_tubes", :primary_key => "dont_use_id", :force => true do |t|
     t.binary   "uuid",                    :limit => 16,                               :null => false
@@ -455,8 +455,8 @@ ActiveRecord::Schema.define(:version => 20120331083658) do
     t.datetime "current_to"
   end
 
-  add_index "pulldown_multiplexed_library_tubes", ["current_from", "uuid", "current_to"], :name => "current_from_and_uuid_and_current_to_idx"
   add_index "pulldown_multiplexed_library_tubes", ["current_to", "uuid", "current_from"], :name => "current_to_and_uuid_and_current_from_idx"
+  add_index "pulldown_multiplexed_library_tubes", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
 
   create_table "quotas", :primary_key => "dont_use_id", :force => true do |t|
     t.binary   "uuid",                :limit => 16, :null => false
@@ -476,9 +476,9 @@ ActiveRecord::Schema.define(:version => 20120331083658) do
     t.datetime "current_to"
   end
 
-  add_index "quotas", ["current_from", "uuid", "current_to"], :name => "current_from_and_uuid_and_current_to_idx"
   add_index "quotas", ["current_to", "uuid", "current_from"], :name => "current_to_and_uuid_and_current_from_idx"
   add_index "quotas", ["project_uuid", "request_type", "current_to", "current_from"], :name => "project_uuid_and_request_type_and_current_idx"
+  add_index "quotas", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
 
   create_table "requests", :primary_key => "dont_use_id", :force => true do |t|
     t.binary   "uuid",                                 :limit => 16, :null => false
@@ -531,11 +531,11 @@ ActiveRecord::Schema.define(:version => 20120331083658) do
     t.datetime "current_to"
   end
 
-  add_index "requests", ["current_from", "uuid", "current_to"], :name => "current_from_and_uuid_and_current_to_idx"
   add_index "requests", ["current_to", "uuid", "current_from"], :name => "current_to_and_uuid_and_current_from_idx"
   add_index "requests", ["source_asset_uuid", "request_type", "current_to", "current_from"], :name => "source_asset_uuid_and_request_type_and_current_idx"
   add_index "requests", ["submission_uuid", "current_to", "current_from"], :name => "submission_uuid_and_current_idx"
   add_index "requests", ["target_asset_uuid", "request_type", "current_to", "current_from"], :name => "target_asset_uuid_and_request_type_and_current_idx"
+  add_index "requests", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
 
   create_table "sample_tubes", :primary_key => "dont_use_id", :force => true do |t|
     t.binary   "uuid",                    :limit => 16,                               :null => false
@@ -562,8 +562,8 @@ ActiveRecord::Schema.define(:version => 20120331083658) do
     t.datetime "current_to"
   end
 
-  add_index "sample_tubes", ["current_from", "uuid", "current_to"], :name => "current_from_and_uuid_and_current_to_idx"
   add_index "sample_tubes", ["current_to", "uuid", "current_from"], :name => "current_to_and_uuid_and_current_from_idx"
+  add_index "sample_tubes", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
 
   create_table "samples", :primary_key => "dont_use_id", :force => true do |t|
     t.binary   "uuid",                       :limit => 16, :null => false
@@ -601,9 +601,9 @@ ActiveRecord::Schema.define(:version => 20120331083658) do
     t.datetime "current_to"
   end
 
-  add_index "samples", ["current_from", "uuid", "current_to"], :name => "current_from_and_uuid_and_current_to_idx"
   add_index "samples", ["current_to", "uuid", "current_from"], :name => "current_to_and_uuid_and_current_from_idx"
   add_index "samples", ["internal_id", "current_to", "current_from"], :name => "internal_id_and_current_idx"
+  add_index "samples", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
 
   create_table "studies", :primary_key => "dont_use_id", :force => true do |t|
     t.binary   "uuid",                           :limit => 16, :null => false
@@ -638,9 +638,9 @@ ActiveRecord::Schema.define(:version => 20120331083658) do
     t.datetime "current_to"
   end
 
-  add_index "studies", ["current_from", "uuid", "current_to"], :name => "current_from_and_uuid_and_current_to_idx"
   add_index "studies", ["current_to", "uuid", "current_from"], :name => "current_to_and_uuid_and_current_from_idx"
   add_index "studies", ["internal_id", "current_to", "current_from"], :name => "internal_id_and_current_idx"
+  add_index "studies", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
 
   create_table "study_samples", :primary_key => "dont_use_id", :force => true do |t|
     t.binary   "uuid",               :limit => 16, :null => false
@@ -659,9 +659,9 @@ ActiveRecord::Schema.define(:version => 20120331083658) do
     t.datetime "current_to"
   end
 
-  add_index "study_samples", ["current_from", "uuid", "current_to"], :name => "current_from_and_uuid_and_current_to_idx"
   add_index "study_samples", ["current_to", "uuid", "current_from"], :name => "current_to_and_uuid_and_current_from_idx"
   add_index "study_samples", ["sample_uuid", "study_uuid", "current_to", "current_from"], :name => "sample_uuid_and_study_uuid_and_current_idx"
+  add_index "study_samples", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
 
   create_table "submissions", :primary_key => "dont_use_id", :force => true do |t|
     t.binary   "uuid",         :limit => 16, :null => false
@@ -679,8 +679,8 @@ ActiveRecord::Schema.define(:version => 20120331083658) do
     t.datetime "current_to"
   end
 
-  add_index "submissions", ["current_from", "uuid", "current_to"], :name => "current_from_and_uuid_and_current_to_idx"
   add_index "submissions", ["current_to", "uuid", "current_from"], :name => "current_to_and_uuid_and_current_from_idx"
+  add_index "submissions", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
 
   create_table "submitted_assets", :primary_key => "dont_use_id", :force => true do |t|
     t.binary   "order_uuid", :limit => 16
@@ -708,8 +708,8 @@ ActiveRecord::Schema.define(:version => 20120331083658) do
     t.datetime "current_to"
   end
 
-  add_index "tags", ["current_from", "uuid", "current_to"], :name => "current_from_and_uuid_and_current_to_idx"
   add_index "tags", ["current_to", "uuid", "current_from"], :name => "current_to_and_uuid_and_current_from_idx"
+  add_index "tags", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
 
   create_table "wells", :primary_key => "dont_use_id", :force => true do |t|
     t.binary   "uuid",                    :limit => 16,                               :null => false
@@ -744,8 +744,8 @@ ActiveRecord::Schema.define(:version => 20120331083658) do
     t.datetime "current_to"
   end
 
-  add_index "wells", ["current_from", "uuid", "current_to"], :name => "current_from_and_uuid_and_current_to_idx"
   add_index "wells", ["current_to", "uuid", "current_from"], :name => "current_to_and_uuid_and_current_from_idx"
+  add_index "wells", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
 
   create_view "current_aliquots", "select `aliquots`.`dont_use_id` AS `dont_use_id`,`aliquots`.`uuid` AS `uuid`,`aliquots`.`internal_id` AS `internal_id`,`aliquots`.`receptacle_uuid` AS `receptacle_uuid`,`aliquots`.`receptacle_internal_id` AS `receptacle_internal_id`,`aliquots`.`study_uuid` AS `study_uuid`,`aliquots`.`study_internal_id` AS `study_internal_id`,`aliquots`.`project_uuid` AS `project_uuid`,`aliquots`.`project_internal_id` AS `project_internal_id`,`aliquots`.`library_uuid` AS `library_uuid`,`aliquots`.`library_internal_id` AS `library_internal_id`,`aliquots`.`sample_uuid` AS `sample_uuid`,`aliquots`.`sample_internal_id` AS `sample_internal_id`,`aliquots`.`tag_uuid` AS `tag_uuid`,`aliquots`.`tag_internal_id` AS `tag_internal_id`,`aliquots`.`receptacle_type` AS `receptacle_type`,`aliquots`.`library_type` AS `library_type`,`aliquots`.`insert_size_from` AS `insert_size_from`,`aliquots`.`insert_size_to` AS `insert_size_to`,`aliquots`.`is_current` AS `is_current`,`aliquots`.`checked_at` AS `checked_at`,`aliquots`.`last_updated` AS `last_updated`,`aliquots`.`created` AS `created`,`aliquots`.`inserted_at` AS `inserted_at`,`aliquots`.`deleted_at` AS `deleted_at`,`aliquots`.`current_from` AS `current_from`,`aliquots`.`current_to` AS `current_to` from `aliquots` where isnull(`aliquots`.`current_to`)", :force => true do |v|
     v.column :dont_use_id
