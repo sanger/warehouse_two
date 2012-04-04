@@ -23,4 +23,7 @@ WarehouseTwo::Application.configure do
   config.amqp.prefetch           = 100
   config.amqp.requeue            = false
   config.amqp.reconnect_interval = 10
+
+  # Configure the API interface
+  config.api.root = 'http://localhost:3000/0_5/'
 end

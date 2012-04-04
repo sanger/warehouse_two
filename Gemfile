@@ -5,6 +5,7 @@ gem "mysql2"
 gem "cbrunnkvist-psd_logger"
 gem "amqp", "~> 0.9.2"
 gem "hashie", "~> 1.2.0"
+gem "rest-client"
 
 # Need a branched verion of the rails_sql_views gem to support MySQL2 and ActiveRecord 3, but that is
 # fixed against a specific version of Rake, which is actually a downgrade for Rails 3.2.
@@ -13,6 +14,7 @@ gem "rake", "= 0.9.2"
 
 group :test, :development do
   gem 'rspec-rails', '~> 2.8.0'
+  gem 'mocktra', '~> 1.0.2'
 end
 
 group :development do

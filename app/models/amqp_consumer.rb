@@ -33,7 +33,7 @@ class AmqpConsumer
         connection.periodically_reconnect(reconnect_interval)
       else
         error { "Connection error #{connection_close.reply_code}: #{connection_close.reply_text}" }
-        EventMachine.stop  # Brutally stop the consumer!
+        EventMachine.stop     # Brutally stop the consumer!
       end
     end
 

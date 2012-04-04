@@ -20,5 +20,6 @@ module WarehouseTwo
 
     # We're going to need a specialised configuration for our AMQP consumer
     config.amqp = ActiveSupport::Configurable::Configuration.new
+    config.api  = ActiveSupport::Configurable::Configuration.new
   end
 end

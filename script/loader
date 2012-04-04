@@ -1,0 +1,61 @@
+#!/usr/bin/env ruby
+require 'thor'
+require File.expand_path('../../config/environment', __FILE__)
+
+class ::String
+  module Ranging
+    def to_range
+      case
+      when self =~ /^(\d+)..(\d+)$/  then ($1.to_i .. $2.to_i)
+      when self =~ /^(\d+)...(\d+)$/ then ($1.to_i ... $2.to_i)
+      when self.to_i > 0             then [self.to_i]
+      else raise StandardError, "Cannot convert #{self.inspect} to a range"
+      end
+    end
+  end
+
+  include Ranging
+end
+
+class Load < Thor
+  include Thor::Actions
+
+  desc "all MODEL", "Loads all of the records from beginning to end of the specified model"
+  def all(model_name)
+    pages(model_name, ApiConsumer::InfiniteSequence.new)
+  end
+
+  desc "pages MODEL PAGES", "Loads the records from the specified list, or range, of pages for the specified model"
+  def pages(model_name, *pages)
+    say "Loading pages for #{model_name} ..."
+    client_for(model_name).each_page(rangify(pages)) do |page, index|
+      say "Page #{index} with #{page.size} records handled"
+    end
+    say "Pages loaded successfully"
+  end
+
+  desc "uuids MODEL UUIDS", "Loads all of the specified UUIDs for the specified model"
+  def uuids(model_name, *uuids)
+    say "Loading individual UUIDs for #{model_name} ..."
+    client_for(model_name).for_uuid(uuids).each do |record|
+      say "Record for UUID #{record.uuid} loaded"
+    end
+    say "All UUIDs loaded"
+  end
+
+  no_tasks do
+    def client_for(model_name)
+      ApiConsumer.new(model_name.classify.constantize)
+    end
+    private :client_for
+
+    def rangify(values)
+      raise StandardError, "Specify a range in the form '1 2 3', '1..3', '1...3' or combinations of those" if values.empty?
+      return values.first if values.first.is_a?(ApiConsumer::InfiniteSequence)
+      values.map(&:to_range).map(&:to_a).flatten
+    end
+    private :rangify
+  end
+end
+
+Load.start
