@@ -7,6 +7,10 @@ gem "amqp", "~> 0.9.2"
 gem "hashie", "~> 1.2.0"
 gem "rest-client"
 
+# We have to use composite primary keys because of the table partitioning
+gem "composite_primary_keys", "~> 5.0.4"
+gem "activerecord-partitioning", :git => "git+ssh://git@github.com/sanger/activerecord-partitioning.git"
+
 # Need a branched verion of the rails_sql_views gem to support MySQL2 and ActiveRecord 3, but that is
 # fixed against a specific version of Rake, which is actually a downgrade for Rails 3.2.
 gem "rails_sql_views", :git => "git+ssh://git@github.com/anathematic/rails_sql_views.git"

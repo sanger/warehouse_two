@@ -8,13 +8,15 @@ module ResourceTools
   include ResourceTools::Timestamps
 
   included do
-    self.primary_key = :dont_use_id
+    # Our primary keys are composite based on the UUID of the record and it's currency.  Because of this we have
+    # to write a specialised 'not_record' scope that deals with that.
+    self.primary_keys = [ :uuid, :current_to ]
+    scope :not_record, lambda { |record|
+      where('uuid != ?', record.uuid.to_uuid).where(*(record.current_to.nil? ? ['current_to IS NULL'] : ['current_to=?', record.current_to]))
+    }
 
     # The original data information is stored here
     attr_accessor :data
-
-    # A few useful named scopes
-    scope :not_record, lambda { |record| where('dont_use_id != ?', record.dont_use_id) }
 
     # Maintain the flow of current_from and current_to.
     sequence_of_dates_over(:current_from, :current_to)
