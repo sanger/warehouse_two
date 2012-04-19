@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111214114129) do
+ActiveRecord::Schema.define(:version => 20120322141228) do
 
   create_table "aliquots", :primary_key => "dont_use_id", :force => true do |t|
     t.string   "uuid",                   :limit => 36, :null => false
@@ -221,6 +221,7 @@ ActiveRecord::Schema.define(:version => 20111214114129) do
     t.datetime "last_updated"
     t.datetime "created"
     t.datetime "inserted_at"
+    t.string   "bait_library_type"
   end
 
   add_index "billing_events", ["checked_at"], :name => "index_billing_events_on_checked_at"
