@@ -11,11 +11,11 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120421135754) do
+ActiveRecord::Schema.define(:version => 20120421194352) do
 
   create_table "aliquots", :id => false, :force => true do |t|
     t.binary   "uuid",                   :limit => 16, :null => false
-    t.integer  "internal_id"
+    t.integer  "internal_id",                          :null => false
     t.binary   "receptacle_uuid",        :limit => 16
     t.integer  "receptacle_internal_id"
     t.binary   "study_uuid",             :limit => 16
@@ -32,8 +32,8 @@ ActiveRecord::Schema.define(:version => 20120421135754) do
     t.string   "library_type"
     t.integer  "insert_size_from"
     t.integer  "insert_size_to"
-    t.boolean  "is_current"
-    t.datetime "checked_at"
+    t.boolean  "is_current",                           :null => false
+    t.datetime "checked_at",                           :null => false
     t.datetime "last_updated"
     t.datetime "created"
     t.datetime "inserted_at"
@@ -42,19 +42,16 @@ ActiveRecord::Schema.define(:version => 20120421135754) do
     t.datetime "current_to"
   end
 
-  add_index "aliquots", ["current_to", "uuid", "current_from"], :name => "primary_partitioning_key", :unique => true
-  add_index "aliquots", ["receptacle_uuid", "sample_uuid", "current_to", "current_from"], :name => "receptacle_uuid_and_sample_uuid_and_current_idx"
-  add_index "aliquots", ["sample_uuid", "receptacle_uuid", "current_to", "current_from"], :name => "sample_uuid_and_receptacle_uuid_and_current_idx"
-  add_index "aliquots", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
+  add_index "aliquots", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx", :unique => true
 
   create_table "asset_audits", :id => false, :force => true do |t|
     t.binary   "uuid",                 :limit => 16, :null => false
-    t.integer  "internal_id"
+    t.integer  "internal_id",                        :null => false
     t.string   "key"
     t.string   "message"
     t.string   "created_by"
-    t.boolean  "is_current"
-    t.datetime "checked_at"
+    t.boolean  "is_current",                         :null => false
+    t.datetime "checked_at",                         :null => false
     t.datetime "last_updated"
     t.datetime "created"
     t.string   "asset_barcode"
@@ -67,8 +64,7 @@ ActiveRecord::Schema.define(:version => 20120421135754) do
     t.datetime "current_to"
   end
 
-  add_index "asset_audits", ["current_to", "uuid", "current_from"], :name => "primary_partitioning_key", :unique => true
-  add_index "asset_audits", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
+  add_index "asset_audits", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx", :unique => true
 
   create_table "asset_freezers", :primary_key => "dont_use_id", :force => true do |t|
     t.binary   "uuid",           :limit => 16, :null => false
@@ -108,13 +104,11 @@ ActiveRecord::Schema.define(:version => 20120421135754) do
     t.datetime "current_to"
   end
 
-  add_index "asset_links", ["ancestor_uuid", "descendant_uuid", "current_to", "current_from"], :name => "ancestor_uuid_and_descendant_uuid_and_current_idx"
-  add_index "asset_links", ["current_to", "uuid", "current_from"], :name => "primary_partitioning_key", :unique => true
-  add_index "asset_links", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
+  add_index "asset_links", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx", :unique => true
 
   create_table "batch_requests", :id => false, :force => true do |t|
     t.binary   "uuid",                     :limit => 16, :null => false
-    t.integer  "internal_id"
+    t.integer  "internal_id",                            :null => false
     t.binary   "batch_uuid",               :limit => 16
     t.integer  "batch_internal_id"
     t.binary   "request_uuid",             :limit => 16
@@ -126,8 +120,8 @@ ActiveRecord::Schema.define(:version => 20120421135754) do
     t.binary   "target_asset_uuid",        :limit => 16
     t.integer  "target_asset_internal_id"
     t.string   "target_asset_name"
-    t.boolean  "is_current"
-    t.datetime "checked_at"
+    t.boolean  "is_current",                             :null => false
+    t.datetime "checked_at",                             :null => false
     t.datetime "last_updated"
     t.datetime "created"
     t.datetime "inserted_at"
@@ -136,12 +130,11 @@ ActiveRecord::Schema.define(:version => 20120421135754) do
     t.datetime "current_to"
   end
 
-  add_index "batch_requests", ["current_to", "uuid", "current_from"], :name => "primary_partitioning_key", :unique => true
-  add_index "batch_requests", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
+  add_index "batch_requests", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx", :unique => true
 
   create_table "batches", :id => false, :force => true do |t|
     t.binary   "uuid",                 :limit => 16, :null => false
-    t.integer  "internal_id"
+    t.integer  "internal_id",                        :null => false
     t.string   "created_by",           :limit => 30
     t.string   "assigned_to",          :limit => 30
     t.string   "pipeline_name"
@@ -150,8 +143,8 @@ ActiveRecord::Schema.define(:version => 20120421135754) do
     t.string   "state",                :limit => 50
     t.string   "qc_state",             :limit => 50
     t.string   "production_state",     :limit => 50
-    t.boolean  "is_current"
-    t.datetime "checked_at"
+    t.boolean  "is_current",                         :null => false
+    t.datetime "checked_at",                         :null => false
     t.datetime "last_updated"
     t.datetime "created"
     t.datetime "inserted_at"
@@ -160,12 +153,11 @@ ActiveRecord::Schema.define(:version => 20120421135754) do
     t.datetime "current_to"
   end
 
-  add_index "batches", ["current_to", "uuid", "current_from"], :name => "primary_partitioning_key", :unique => true
-  add_index "batches", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
+  add_index "batches", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx", :unique => true
 
   create_table "billing_events", :id => false, :force => true do |t|
     t.binary   "uuid",                :limit => 16, :null => false
-    t.integer  "internal_id"
+    t.integer  "internal_id",                       :null => false
     t.string   "reference"
     t.integer  "project_internal_id"
     t.binary   "project_uuid",        :limit => 16
@@ -181,9 +173,9 @@ ActiveRecord::Schema.define(:version => 20120421135754) do
     t.float    "quantity"
     t.string   "kind"
     t.string   "description"
-    t.boolean  "is_current"
+    t.boolean  "is_current",                        :null => false
     t.datetime "entry_date"
-    t.datetime "checked_at"
+    t.datetime "checked_at",                        :null => false
     t.datetime "last_updated"
     t.datetime "created"
     t.datetime "inserted_at"
@@ -192,13 +184,11 @@ ActiveRecord::Schema.define(:version => 20120421135754) do
     t.datetime "current_to"
   end
 
-  add_index "billing_events", ["current_to", "uuid", "current_from"], :name => "primary_partitioning_key", :unique => true
-  add_index "billing_events", ["project_uuid", "request_uuid", "current_to", "current_from"], :name => "project_uuid_and_request_uuid_and_current_idx"
-  add_index "billing_events", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
+  add_index "billing_events", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx", :unique => true
 
   create_table "current_aliquots", :id => false, :force => true do |t|
     t.binary   "uuid",                   :limit => 16, :null => false
-    t.integer  "internal_id"
+    t.integer  "internal_id",                          :null => false
     t.binary   "receptacle_uuid",        :limit => 16
     t.integer  "receptacle_internal_id"
     t.binary   "study_uuid",             :limit => 16
@@ -215,8 +205,8 @@ ActiveRecord::Schema.define(:version => 20120421135754) do
     t.string   "library_type"
     t.integer  "insert_size_from"
     t.integer  "insert_size_to"
-    t.boolean  "is_current"
-    t.datetime "checked_at"
+    t.boolean  "is_current",                           :null => false
+    t.datetime "checked_at",                           :null => false
     t.datetime "last_updated"
     t.datetime "created"
     t.datetime "inserted_at"
@@ -225,19 +215,17 @@ ActiveRecord::Schema.define(:version => 20120421135754) do
     t.datetime "current_to"
   end
 
-  add_index "current_aliquots", ["current_to", "uuid", "current_from"], :name => "primary_partitioning_key", :unique => true
-  add_index "current_aliquots", ["receptacle_uuid", "sample_uuid", "current_to", "current_from"], :name => "receptacle_uuid_and_sample_uuid_and_current_idx"
-  add_index "current_aliquots", ["sample_uuid", "receptacle_uuid", "current_to", "current_from"], :name => "sample_uuid_and_receptacle_uuid_and_current_idx"
-  add_index "current_aliquots", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
+  add_index "current_aliquots", ["internal_id"], :name => "internal_id_idx", :unique => true
+  add_index "current_aliquots", ["uuid"], :name => "uuid_idx", :unique => true
 
   create_table "current_asset_audits", :id => false, :force => true do |t|
     t.binary   "uuid",                 :limit => 16, :null => false
-    t.integer  "internal_id"
+    t.integer  "internal_id",                        :null => false
     t.string   "key"
     t.string   "message"
     t.string   "created_by"
-    t.boolean  "is_current"
-    t.datetime "checked_at"
+    t.boolean  "is_current",                         :null => false
+    t.datetime "checked_at",                         :null => false
     t.datetime "last_updated"
     t.datetime "created"
     t.string   "asset_barcode"
@@ -250,8 +238,8 @@ ActiveRecord::Schema.define(:version => 20120421135754) do
     t.datetime "current_to"
   end
 
-  add_index "current_asset_audits", ["current_to", "uuid", "current_from"], :name => "primary_partitioning_key", :unique => true
-  add_index "current_asset_audits", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
+  add_index "current_asset_audits", ["internal_id"], :name => "internal_id_idx", :unique => true
+  add_index "current_asset_audits", ["uuid"], :name => "uuid_idx", :unique => true
 
   create_table "current_asset_links", :id => false, :force => true do |t|
     t.binary   "uuid",                   :limit => 16, :null => false
@@ -271,13 +259,11 @@ ActiveRecord::Schema.define(:version => 20120421135754) do
     t.datetime "current_to"
   end
 
-  add_index "current_asset_links", ["ancestor_uuid", "descendant_uuid", "current_to", "current_from"], :name => "ancestor_uuid_and_descendant_uuid_and_current_idx"
-  add_index "current_asset_links", ["current_to", "uuid", "current_from"], :name => "primary_partitioning_key", :unique => true
-  add_index "current_asset_links", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
+  add_index "current_asset_links", ["uuid"], :name => "uuid_idx", :unique => true
 
   create_table "current_batch_requests", :id => false, :force => true do |t|
     t.binary   "uuid",                     :limit => 16, :null => false
-    t.integer  "internal_id"
+    t.integer  "internal_id",                            :null => false
     t.binary   "batch_uuid",               :limit => 16
     t.integer  "batch_internal_id"
     t.binary   "request_uuid",             :limit => 16
@@ -289,8 +275,8 @@ ActiveRecord::Schema.define(:version => 20120421135754) do
     t.binary   "target_asset_uuid",        :limit => 16
     t.integer  "target_asset_internal_id"
     t.string   "target_asset_name"
-    t.boolean  "is_current"
-    t.datetime "checked_at"
+    t.boolean  "is_current",                             :null => false
+    t.datetime "checked_at",                             :null => false
     t.datetime "last_updated"
     t.datetime "created"
     t.datetime "inserted_at"
@@ -299,12 +285,12 @@ ActiveRecord::Schema.define(:version => 20120421135754) do
     t.datetime "current_to"
   end
 
-  add_index "current_batch_requests", ["current_to", "uuid", "current_from"], :name => "primary_partitioning_key", :unique => true
-  add_index "current_batch_requests", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
+  add_index "current_batch_requests", ["internal_id"], :name => "internal_id_idx", :unique => true
+  add_index "current_batch_requests", ["uuid"], :name => "uuid_idx", :unique => true
 
   create_table "current_batches", :id => false, :force => true do |t|
     t.binary   "uuid",                 :limit => 16, :null => false
-    t.integer  "internal_id"
+    t.integer  "internal_id",                        :null => false
     t.string   "created_by",           :limit => 30
     t.string   "assigned_to",          :limit => 30
     t.string   "pipeline_name"
@@ -313,8 +299,8 @@ ActiveRecord::Schema.define(:version => 20120421135754) do
     t.string   "state",                :limit => 50
     t.string   "qc_state",             :limit => 50
     t.string   "production_state",     :limit => 50
-    t.boolean  "is_current"
-    t.datetime "checked_at"
+    t.boolean  "is_current",                         :null => false
+    t.datetime "checked_at",                         :null => false
     t.datetime "last_updated"
     t.datetime "created"
     t.datetime "inserted_at"
@@ -323,12 +309,12 @@ ActiveRecord::Schema.define(:version => 20120421135754) do
     t.datetime "current_to"
   end
 
-  add_index "current_batches", ["current_to", "uuid", "current_from"], :name => "primary_partitioning_key", :unique => true
-  add_index "current_batches", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
+  add_index "current_batches", ["internal_id"], :name => "internal_id_idx", :unique => true
+  add_index "current_batches", ["uuid"], :name => "uuid_idx", :unique => true
 
   create_table "current_billing_events", :id => false, :force => true do |t|
     t.binary   "uuid",                :limit => 16, :null => false
-    t.integer  "internal_id"
+    t.integer  "internal_id",                       :null => false
     t.string   "reference"
     t.integer  "project_internal_id"
     t.binary   "project_uuid",        :limit => 16
@@ -344,9 +330,9 @@ ActiveRecord::Schema.define(:version => 20120421135754) do
     t.float    "quantity"
     t.string   "kind"
     t.string   "description"
-    t.boolean  "is_current"
+    t.boolean  "is_current",                        :null => false
     t.datetime "entry_date"
-    t.datetime "checked_at"
+    t.datetime "checked_at",                        :null => false
     t.datetime "last_updated"
     t.datetime "created"
     t.datetime "inserted_at"
@@ -355,13 +341,12 @@ ActiveRecord::Schema.define(:version => 20120421135754) do
     t.datetime "current_to"
   end
 
-  add_index "current_billing_events", ["current_to", "uuid", "current_from"], :name => "primary_partitioning_key", :unique => true
-  add_index "current_billing_events", ["project_uuid", "request_uuid", "current_to", "current_from"], :name => "project_uuid_and_request_uuid_and_current_idx"
-  add_index "current_billing_events", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
+  add_index "current_billing_events", ["internal_id"], :name => "internal_id_idx", :unique => true
+  add_index "current_billing_events", ["uuid"], :name => "uuid_idx", :unique => true
 
   create_table "current_events", :id => false, :force => true do |t|
     t.binary   "uuid",               :limit => 16, :null => false
-    t.integer  "internal_id"
+    t.integer  "internal_id",                      :null => false
     t.integer  "source_internal_id"
     t.binary   "source_uuid",        :limit => 16
     t.string   "source_type"
@@ -374,8 +359,8 @@ ActiveRecord::Schema.define(:version => 20120421135754) do
     t.string   "created_by"
     t.string   "of_interest_to"
     t.string   "descriptor_key"
-    t.boolean  "is_current"
-    t.datetime "checked_at"
+    t.boolean  "is_current",                       :null => false
+    t.datetime "checked_at",                       :null => false
     t.datetime "last_updated"
     t.datetime "created"
     t.datetime "inserted_at"
@@ -384,12 +369,12 @@ ActiveRecord::Schema.define(:version => 20120421135754) do
     t.datetime "current_to"
   end
 
-  add_index "current_events", ["current_to", "uuid", "current_from"], :name => "primary_partitioning_key", :unique => true
-  add_index "current_events", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
+  add_index "current_events", ["internal_id"], :name => "internal_id_idx", :unique => true
+  add_index "current_events", ["uuid"], :name => "uuid_idx", :unique => true
 
   create_table "current_lanes", :id => false, :force => true do |t|
     t.binary   "uuid",                    :limit => 16, :null => false
-    t.integer  "internal_id"
+    t.integer  "internal_id",                           :null => false
     t.string   "name"
     t.string   "barcode"
     t.string   "barcode_prefix",          :limit => 2
@@ -397,9 +382,9 @@ ActiveRecord::Schema.define(:version => 20120421135754) do
     t.string   "state",                   :limit => 50
     t.string   "two_dimensional_barcode"
     t.boolean  "external_release"
-    t.boolean  "is_current"
+    t.boolean  "is_current",                            :null => false
     t.date     "scanned_in_date"
-    t.datetime "checked_at"
+    t.datetime "checked_at",                            :null => false
     t.datetime "last_updated"
     t.datetime "created"
     t.datetime "inserted_at"
@@ -408,12 +393,12 @@ ActiveRecord::Schema.define(:version => 20120421135754) do
     t.datetime "current_to"
   end
 
-  add_index "current_lanes", ["current_to", "uuid", "current_from"], :name => "primary_partitioning_key", :unique => true
-  add_index "current_lanes", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
+  add_index "current_lanes", ["internal_id"], :name => "internal_id_idx", :unique => true
+  add_index "current_lanes", ["uuid"], :name => "uuid_idx", :unique => true
 
   create_table "current_library_tubes", :id => false, :force => true do |t|
     t.binary   "uuid",                        :limit => 16,                                :null => false
-    t.integer  "internal_id"
+    t.integer  "internal_id",                                                              :null => false
     t.string   "name"
     t.string   "barcode"
     t.string   "barcode_prefix",              :limit => 2
@@ -437,9 +422,9 @@ ActiveRecord::Schema.define(:version => 20120421135754) do
     t.string   "fragment_size_required_from"
     t.string   "fragment_size_required_to"
     t.string   "sample_name"
-    t.boolean  "is_current"
+    t.boolean  "is_current",                                                               :null => false
     t.date     "scanned_in_date"
-    t.datetime "checked_at"
+    t.datetime "checked_at",                                                               :null => false
     t.datetime "last_updated"
     t.datetime "created"
     t.string   "public_name"
@@ -449,12 +434,12 @@ ActiveRecord::Schema.define(:version => 20120421135754) do
     t.datetime "current_to"
   end
 
-  add_index "current_library_tubes", ["current_to", "uuid", "current_from"], :name => "primary_partitioning_key", :unique => true
-  add_index "current_library_tubes", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
+  add_index "current_library_tubes", ["internal_id"], :name => "internal_id_idx", :unique => true
+  add_index "current_library_tubes", ["uuid"], :name => "uuid_idx", :unique => true
 
   create_table "current_multiplexed_library_tubes", :id => false, :force => true do |t|
     t.binary   "uuid",                    :limit => 16,                                :null => false
-    t.integer  "internal_id"
+    t.integer  "internal_id",                                                          :null => false
     t.string   "name"
     t.string   "barcode"
     t.string   "barcode_prefix",          :limit => 2
@@ -463,9 +448,9 @@ ActiveRecord::Schema.define(:version => 20120421135754) do
     t.string   "two_dimensional_barcode"
     t.decimal  "volume",                                :precision => 5,  :scale => 2
     t.decimal  "concentration",                         :precision => 10, :scale => 2
-    t.boolean  "is_current"
+    t.boolean  "is_current",                                                           :null => false
     t.date     "scanned_in_date"
-    t.datetime "checked_at"
+    t.datetime "checked_at",                                                           :null => false
     t.datetime "last_updated"
     t.datetime "created"
     t.string   "public_name"
@@ -475,14 +460,14 @@ ActiveRecord::Schema.define(:version => 20120421135754) do
     t.datetime "current_to"
   end
 
-  add_index "current_multiplexed_library_tubes", ["current_to", "uuid", "current_from"], :name => "primary_partitioning_key", :unique => true
-  add_index "current_multiplexed_library_tubes", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
+  add_index "current_multiplexed_library_tubes", ["internal_id"], :name => "internal_id_idx", :unique => true
+  add_index "current_multiplexed_library_tubes", ["uuid"], :name => "uuid_idx", :unique => true
 
   create_table "current_orders", :id => false, :force => true do |t|
     t.binary   "uuid",                        :limit => 16, :null => false
-    t.integer  "internal_id"
-    t.boolean  "is_current"
-    t.datetime "checked_at"
+    t.integer  "internal_id",                               :null => false
+    t.boolean  "is_current",                                :null => false
+    t.datetime "checked_at",                                :null => false
     t.datetime "last_updated"
     t.datetime "created"
     t.string   "created_by"
@@ -506,17 +491,15 @@ ActiveRecord::Schema.define(:version => 20120421135754) do
     t.datetime "current_to"
   end
 
-  add_index "current_orders", ["current_to", "uuid", "current_from"], :name => "primary_partitioning_key", :unique => true
-  add_index "current_orders", ["study_uuid", "current_to", "current_from", "project_uuid"], :name => "study_uuid_and_current_and_project_uuid_idx"
-  add_index "current_orders", ["study_uuid", "current_to", "project_uuid", "current_from"], :name => "study_uuid_and_current_to_and_project_uuid_and_current_from_idx"
-  add_index "current_orders", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
+  add_index "current_orders", ["internal_id"], :name => "internal_id_idx", :unique => true
+  add_index "current_orders", ["uuid"], :name => "uuid_idx", :unique => true
 
   create_table "current_plate_purposes", :id => false, :force => true do |t|
     t.binary   "uuid",         :limit => 16, :null => false
-    t.integer  "internal_id"
+    t.integer  "internal_id",                :null => false
     t.string   "name"
-    t.boolean  "is_current"
-    t.datetime "checked_at"
+    t.boolean  "is_current",                 :null => false
+    t.datetime "checked_at",                 :null => false
     t.datetime "last_updated"
     t.datetime "created"
     t.datetime "inserted_at"
@@ -525,18 +508,18 @@ ActiveRecord::Schema.define(:version => 20120421135754) do
     t.datetime "current_to"
   end
 
-  add_index "current_plate_purposes", ["current_to", "uuid", "current_from"], :name => "primary_partitioning_key", :unique => true
-  add_index "current_plate_purposes", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
+  add_index "current_plate_purposes", ["internal_id"], :name => "internal_id_idx", :unique => true
+  add_index "current_plate_purposes", ["uuid"], :name => "uuid_idx", :unique => true
 
   create_table "current_plates", :id => false, :force => true do |t|
     t.binary   "uuid",                      :limit => 16, :null => false
-    t.integer  "internal_id"
+    t.integer  "internal_id",                             :null => false
     t.string   "name"
     t.string   "barcode"
     t.string   "barcode_prefix",            :limit => 2
     t.integer  "plate_size"
-    t.boolean  "is_current"
-    t.datetime "checked_at"
+    t.boolean  "is_current",                              :null => false
+    t.datetime "checked_at",                              :null => false
     t.datetime "last_updated"
     t.datetime "created"
     t.string   "plate_purpose_name"
@@ -550,12 +533,12 @@ ActiveRecord::Schema.define(:version => 20120421135754) do
     t.datetime "current_to"
   end
 
-  add_index "current_plates", ["current_to", "uuid", "current_from"], :name => "primary_partitioning_key", :unique => true
-  add_index "current_plates", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
+  add_index "current_plates", ["internal_id"], :name => "internal_id_idx", :unique => true
+  add_index "current_plates", ["uuid"], :name => "uuid_idx", :unique => true
 
   create_table "current_projects", :id => false, :force => true do |t|
     t.binary   "uuid",                    :limit => 16, :null => false
-    t.integer  "internal_id"
+    t.integer  "internal_id",                           :null => false
     t.string   "name"
     t.string   "collaborators"
     t.text     "funding_comments"
@@ -567,8 +550,8 @@ ActiveRecord::Schema.define(:version => 20120421135754) do
     t.string   "project_manager"
     t.string   "budget_cost_centre"
     t.string   "state",                   :limit => 50
-    t.boolean  "is_current"
-    t.datetime "checked_at"
+    t.boolean  "is_current",                            :null => false
+    t.datetime "checked_at",                            :null => false
     t.datetime "last_updated"
     t.datetime "created"
     t.datetime "inserted_at"
@@ -577,19 +560,19 @@ ActiveRecord::Schema.define(:version => 20120421135754) do
     t.datetime "current_to"
   end
 
-  add_index "current_projects", ["current_to", "uuid", "current_from"], :name => "primary_partitioning_key", :unique => true
-  add_index "current_projects", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
+  add_index "current_projects", ["internal_id"], :name => "internal_id_idx", :unique => true
+  add_index "current_projects", ["uuid"], :name => "uuid_idx", :unique => true
 
   create_table "current_quotas", :id => false, :force => true do |t|
     t.binary   "uuid",                :limit => 16, :null => false
-    t.integer  "internal_id"
+    t.integer  "internal_id",                       :null => false
     t.integer  "quota_limit"
     t.string   "request_type"
     t.integer  "project_internal_id"
     t.binary   "project_uuid",        :limit => 16
     t.string   "project_name"
-    t.boolean  "is_current"
-    t.datetime "checked_at"
+    t.boolean  "is_current",                        :null => false
+    t.datetime "checked_at",                        :null => false
     t.datetime "last_updated"
     t.datetime "created"
     t.datetime "inserted_at"
@@ -598,13 +581,12 @@ ActiveRecord::Schema.define(:version => 20120421135754) do
     t.datetime "current_to"
   end
 
-  add_index "current_quotas", ["current_to", "uuid", "current_from"], :name => "primary_partitioning_key", :unique => true
-  add_index "current_quotas", ["project_uuid", "request_type", "current_to", "current_from"], :name => "project_uuid_and_request_type_and_current_idx"
-  add_index "current_quotas", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
+  add_index "current_quotas", ["internal_id"], :name => "internal_id_idx", :unique => true
+  add_index "current_quotas", ["uuid"], :name => "uuid_idx", :unique => true
 
   create_table "current_requests", :id => false, :force => true do |t|
     t.binary   "uuid",                                 :limit => 16, :null => false
-    t.integer  "internal_id"
+    t.integer  "internal_id",                                        :null => false
     t.string   "request_type"
     t.string   "fragment_size_from"
     t.string   "fragment_size_to"
@@ -638,8 +620,8 @@ ActiveRecord::Schema.define(:version => 20120421135754) do
     t.string   "target_asset_two_dimensional_barcode"
     t.binary   "target_asset_sample_uuid",             :limit => 16
     t.integer  "target_asset_sample_internal_id"
-    t.boolean  "is_current"
-    t.datetime "checked_at"
+    t.boolean  "is_current",                                         :null => false
+    t.datetime "checked_at",                                         :null => false
     t.datetime "last_updated"
     t.datetime "created"
     t.string   "state",                                :limit => 40
@@ -653,15 +635,12 @@ ActiveRecord::Schema.define(:version => 20120421135754) do
     t.datetime "current_to"
   end
 
-  add_index "current_requests", ["current_to", "uuid", "current_from"], :name => "primary_partitioning_key", :unique => true
-  add_index "current_requests", ["source_asset_uuid", "request_type", "current_to", "current_from"], :name => "source_asset_uuid_and_request_type_and_current_idx"
-  add_index "current_requests", ["submission_uuid", "current_to", "current_from"], :name => "submission_uuid_and_current_idx"
-  add_index "current_requests", ["target_asset_uuid", "request_type", "current_to", "current_from"], :name => "target_asset_uuid_and_request_type_and_current_idx"
-  add_index "current_requests", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
+  add_index "current_requests", ["internal_id"], :name => "internal_id_idx", :unique => true
+  add_index "current_requests", ["uuid"], :name => "uuid_idx", :unique => true
 
   create_table "current_sample_tubes", :id => false, :force => true do |t|
     t.binary   "uuid",                    :limit => 16,                                :null => false
-    t.integer  "internal_id"
+    t.integer  "internal_id",                                                          :null => false
     t.string   "name"
     t.string   "barcode"
     t.boolean  "closed"
@@ -673,8 +652,8 @@ ActiveRecord::Schema.define(:version => 20120421135754) do
     t.date     "scanned_in_date"
     t.decimal  "volume",                                :precision => 5,  :scale => 2
     t.decimal  "concentration",                         :precision => 10, :scale => 2
-    t.boolean  "is_current"
-    t.datetime "checked_at"
+    t.boolean  "is_current",                                                           :null => false
+    t.datetime "checked_at",                                                           :null => false
     t.datetime "last_updated"
     t.datetime "created"
     t.string   "barcode_prefix",          :limit => 2
@@ -684,12 +663,12 @@ ActiveRecord::Schema.define(:version => 20120421135754) do
     t.datetime "current_to"
   end
 
-  add_index "current_sample_tubes", ["current_to", "uuid", "current_from"], :name => "primary_partitioning_key", :unique => true
-  add_index "current_sample_tubes", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
+  add_index "current_sample_tubes", ["internal_id"], :name => "internal_id_idx", :unique => true
+  add_index "current_sample_tubes", ["uuid"], :name => "uuid_idx", :unique => true
 
   create_table "current_samples", :id => false, :force => true do |t|
     t.binary   "uuid",                       :limit => 16, :null => false
-    t.integer  "internal_id"
+    t.integer  "internal_id",                              :null => false
     t.string   "name"
     t.string   "reference_genome"
     t.string   "organism"
@@ -705,8 +684,8 @@ ActiveRecord::Schema.define(:version => 20120421135754) do
     t.string   "cohort"
     t.string   "country_of_origin"
     t.string   "geographical_region"
-    t.boolean  "is_current"
-    t.datetime "checked_at"
+    t.boolean  "is_current",                               :null => false
+    t.datetime "checked_at",                               :null => false
     t.datetime "last_updated"
     t.datetime "created"
     t.string   "sanger_sample_id"
@@ -723,13 +702,12 @@ ActiveRecord::Schema.define(:version => 20120421135754) do
     t.datetime "current_to"
   end
 
-  add_index "current_samples", ["current_to", "uuid", "current_from"], :name => "primary_partitioning_key", :unique => true
-  add_index "current_samples", ["internal_id", "current_to", "current_from"], :name => "internal_id_and_current_idx"
-  add_index "current_samples", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
+  add_index "current_samples", ["internal_id"], :name => "internal_id_idx", :unique => true
+  add_index "current_samples", ["uuid"], :name => "uuid_idx", :unique => true
 
   create_table "current_studies", :id => false, :force => true do |t|
     t.binary   "uuid",                           :limit => 16, :null => false
-    t.integer  "internal_id"
+    t.integer  "internal_id",                                  :null => false
     t.string   "name"
     t.string   "reference_genome"
     t.boolean  "ethically_approved"
@@ -740,8 +718,8 @@ ActiveRecord::Schema.define(:version => 20120421135754) do
     t.string   "abbreviation"
     t.string   "accession_number",               :limit => 50
     t.text     "description"
-    t.boolean  "is_current"
-    t.datetime "checked_at"
+    t.boolean  "is_current",                                   :null => false
+    t.datetime "checked_at",                                   :null => false
     t.datetime "last_updated"
     t.datetime "created"
     t.string   "contains_human_dna"
@@ -760,19 +738,18 @@ ActiveRecord::Schema.define(:version => 20120421135754) do
     t.datetime "current_to"
   end
 
-  add_index "current_studies", ["current_to", "uuid", "current_from"], :name => "primary_partitioning_key", :unique => true
-  add_index "current_studies", ["internal_id", "current_to", "current_from"], :name => "internal_id_and_current_idx"
-  add_index "current_studies", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
+  add_index "current_studies", ["internal_id"], :name => "internal_id_idx", :unique => true
+  add_index "current_studies", ["uuid"], :name => "uuid_idx", :unique => true
 
   create_table "current_study_samples", :id => false, :force => true do |t|
     t.binary   "uuid",               :limit => 16, :null => false
-    t.integer  "internal_id"
+    t.integer  "internal_id",                      :null => false
     t.integer  "sample_internal_id"
     t.binary   "sample_uuid",        :limit => 16
     t.integer  "study_internal_id"
     t.binary   "study_uuid",         :limit => 16
-    t.boolean  "is_current"
-    t.datetime "checked_at"
+    t.boolean  "is_current",                       :null => false
+    t.datetime "checked_at",                       :null => false
     t.datetime "last_updated"
     t.datetime "created"
     t.datetime "inserted_at"
@@ -781,15 +758,14 @@ ActiveRecord::Schema.define(:version => 20120421135754) do
     t.datetime "current_to"
   end
 
-  add_index "current_study_samples", ["current_to", "uuid", "current_from"], :name => "primary_partitioning_key", :unique => true
-  add_index "current_study_samples", ["sample_uuid", "study_uuid", "current_to", "current_from"], :name => "sample_uuid_and_study_uuid_and_current_idx"
-  add_index "current_study_samples", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
+  add_index "current_study_samples", ["internal_id"], :name => "internal_id_idx", :unique => true
+  add_index "current_study_samples", ["uuid"], :name => "uuid_idx", :unique => true
 
   create_table "current_submissions", :id => false, :force => true do |t|
     t.binary   "uuid",         :limit => 16, :null => false
-    t.integer  "internal_id"
-    t.boolean  "is_current"
-    t.datetime "checked_at"
+    t.integer  "internal_id",                :null => false
+    t.boolean  "is_current",                 :null => false
+    t.datetime "checked_at",                 :null => false
     t.datetime "last_updated"
     t.datetime "created"
     t.string   "created_by"
@@ -801,19 +777,19 @@ ActiveRecord::Schema.define(:version => 20120421135754) do
     t.datetime "current_to"
   end
 
-  add_index "current_submissions", ["current_to", "uuid", "current_from"], :name => "primary_partitioning_key", :unique => true
-  add_index "current_submissions", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
+  add_index "current_submissions", ["internal_id"], :name => "internal_id_idx", :unique => true
+  add_index "current_submissions", ["uuid"], :name => "uuid_idx", :unique => true
 
   create_table "current_tags", :id => false, :force => true do |t|
     t.binary   "uuid",                  :limit => 16, :null => false
-    t.integer  "internal_id"
+    t.integer  "internal_id",                         :null => false
     t.string   "expected_sequence"
     t.integer  "map_id"
     t.string   "tag_group_name"
     t.binary   "tag_group_uuid",        :limit => 16
     t.integer  "tag_group_internal_id"
-    t.boolean  "is_current"
-    t.datetime "checked_at"
+    t.boolean  "is_current",                          :null => false
+    t.datetime "checked_at",                          :null => false
     t.datetime "last_updated"
     t.datetime "created"
     t.datetime "inserted_at"
@@ -822,12 +798,12 @@ ActiveRecord::Schema.define(:version => 20120421135754) do
     t.datetime "current_to"
   end
 
-  add_index "current_tags", ["current_to", "uuid", "current_from"], :name => "primary_partitioning_key", :unique => true
-  add_index "current_tags", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
+  add_index "current_tags", ["internal_id"], :name => "internal_id_idx", :unique => true
+  add_index "current_tags", ["uuid"], :name => "uuid_idx", :unique => true
 
   create_table "current_wells", :id => false, :force => true do |t|
     t.binary   "uuid",                    :limit => 16,                                :null => false
-    t.integer  "internal_id"
+    t.integer  "internal_id",                                                          :null => false
     t.string   "name"
     t.string   "map",                     :limit => 5
     t.string   "plate_barcode"
@@ -842,8 +818,8 @@ ActiveRecord::Schema.define(:version => 20120421135754) do
     t.float    "requested_volume"
     t.float    "picked_volume"
     t.string   "pico_pass"
-    t.boolean  "is_current"
-    t.datetime "checked_at"
+    t.boolean  "is_current",                                                           :null => false
+    t.datetime "checked_at",                                                           :null => false
     t.datetime "last_updated"
     t.datetime "created"
     t.binary   "plate_uuid",              :limit => 16
@@ -858,8 +834,8 @@ ActiveRecord::Schema.define(:version => 20120421135754) do
     t.datetime "current_to"
   end
 
-  add_index "current_wells", ["current_to", "uuid", "current_from"], :name => "primary_partitioning_key", :unique => true
-  add_index "current_wells", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
+  add_index "current_wells", ["internal_id"], :name => "internal_id_idx", :unique => true
+  add_index "current_wells", ["uuid"], :name => "uuid_idx", :unique => true
 
   create_table "delayed_jobs", :force => true do |t|
     t.integer  "priority",   :default => 0
@@ -878,7 +854,7 @@ ActiveRecord::Schema.define(:version => 20120421135754) do
 
   create_table "events", :id => false, :force => true do |t|
     t.binary   "uuid",               :limit => 16, :null => false
-    t.integer  "internal_id"
+    t.integer  "internal_id",                      :null => false
     t.integer  "source_internal_id"
     t.binary   "source_uuid",        :limit => 16
     t.string   "source_type"
@@ -891,8 +867,8 @@ ActiveRecord::Schema.define(:version => 20120421135754) do
     t.string   "created_by"
     t.string   "of_interest_to"
     t.string   "descriptor_key"
-    t.boolean  "is_current"
-    t.datetime "checked_at"
+    t.boolean  "is_current",                       :null => false
+    t.datetime "checked_at",                       :null => false
     t.datetime "last_updated"
     t.datetime "created"
     t.datetime "inserted_at"
@@ -901,12 +877,11 @@ ActiveRecord::Schema.define(:version => 20120421135754) do
     t.datetime "current_to"
   end
 
-  add_index "events", ["current_to", "uuid", "current_from"], :name => "primary_partitioning_key", :unique => true
-  add_index "events", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
+  add_index "events", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx", :unique => true
 
   create_table "lanes", :id => false, :force => true do |t|
     t.binary   "uuid",                    :limit => 16, :null => false
-    t.integer  "internal_id"
+    t.integer  "internal_id",                           :null => false
     t.string   "name"
     t.string   "barcode"
     t.string   "barcode_prefix",          :limit => 2
@@ -914,9 +889,9 @@ ActiveRecord::Schema.define(:version => 20120421135754) do
     t.string   "state",                   :limit => 50
     t.string   "two_dimensional_barcode"
     t.boolean  "external_release"
-    t.boolean  "is_current"
+    t.boolean  "is_current",                            :null => false
     t.date     "scanned_in_date"
-    t.datetime "checked_at"
+    t.datetime "checked_at",                            :null => false
     t.datetime "last_updated"
     t.datetime "created"
     t.datetime "inserted_at"
@@ -925,12 +900,11 @@ ActiveRecord::Schema.define(:version => 20120421135754) do
     t.datetime "current_to"
   end
 
-  add_index "lanes", ["current_to", "uuid", "current_from"], :name => "primary_partitioning_key", :unique => true
-  add_index "lanes", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
+  add_index "lanes", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx", :unique => true
 
   create_table "library_tubes", :id => false, :force => true do |t|
     t.binary   "uuid",                        :limit => 16,                                :null => false
-    t.integer  "internal_id"
+    t.integer  "internal_id",                                                              :null => false
     t.string   "name"
     t.string   "barcode"
     t.string   "barcode_prefix",              :limit => 2
@@ -954,9 +928,9 @@ ActiveRecord::Schema.define(:version => 20120421135754) do
     t.string   "fragment_size_required_from"
     t.string   "fragment_size_required_to"
     t.string   "sample_name"
-    t.boolean  "is_current"
+    t.boolean  "is_current",                                                               :null => false
     t.date     "scanned_in_date"
-    t.datetime "checked_at"
+    t.datetime "checked_at",                                                               :null => false
     t.datetime "last_updated"
     t.datetime "created"
     t.string   "public_name"
@@ -966,12 +940,11 @@ ActiveRecord::Schema.define(:version => 20120421135754) do
     t.datetime "current_to"
   end
 
-  add_index "library_tubes", ["current_to", "uuid", "current_from"], :name => "primary_partitioning_key", :unique => true
-  add_index "library_tubes", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
+  add_index "library_tubes", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx", :unique => true
 
   create_table "multiplexed_library_tubes", :id => false, :force => true do |t|
     t.binary   "uuid",                    :limit => 16,                                :null => false
-    t.integer  "internal_id"
+    t.integer  "internal_id",                                                          :null => false
     t.string   "name"
     t.string   "barcode"
     t.string   "barcode_prefix",          :limit => 2
@@ -980,9 +953,9 @@ ActiveRecord::Schema.define(:version => 20120421135754) do
     t.string   "two_dimensional_barcode"
     t.decimal  "volume",                                :precision => 5,  :scale => 2
     t.decimal  "concentration",                         :precision => 10, :scale => 2
-    t.boolean  "is_current"
+    t.boolean  "is_current",                                                           :null => false
     t.date     "scanned_in_date"
-    t.datetime "checked_at"
+    t.datetime "checked_at",                                                           :null => false
     t.datetime "last_updated"
     t.datetime "created"
     t.string   "public_name"
@@ -992,14 +965,13 @@ ActiveRecord::Schema.define(:version => 20120421135754) do
     t.datetime "current_to"
   end
 
-  add_index "multiplexed_library_tubes", ["current_to", "uuid", "current_from"], :name => "primary_partitioning_key", :unique => true
-  add_index "multiplexed_library_tubes", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
+  add_index "multiplexed_library_tubes", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx", :unique => true
 
   create_table "orders", :id => false, :force => true do |t|
     t.binary   "uuid",                        :limit => 16, :null => false
-    t.integer  "internal_id"
-    t.boolean  "is_current"
-    t.datetime "checked_at"
+    t.integer  "internal_id",                               :null => false
+    t.boolean  "is_current",                                :null => false
+    t.datetime "checked_at",                                :null => false
     t.datetime "last_updated"
     t.datetime "created"
     t.string   "created_by"
@@ -1023,17 +995,14 @@ ActiveRecord::Schema.define(:version => 20120421135754) do
     t.datetime "current_to"
   end
 
-  add_index "orders", ["current_to", "uuid", "current_from"], :name => "primary_partitioning_key", :unique => true
-  add_index "orders", ["study_uuid", "current_to", "current_from", "project_uuid"], :name => "study_uuid_and_current_and_project_uuid_idx"
-  add_index "orders", ["study_uuid", "current_to", "project_uuid", "current_from"], :name => "study_uuid_and_current_to_and_project_uuid_and_current_from_idx"
-  add_index "orders", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
+  add_index "orders", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx", :unique => true
 
   create_table "plate_purposes", :id => false, :force => true do |t|
     t.binary   "uuid",         :limit => 16, :null => false
-    t.integer  "internal_id"
+    t.integer  "internal_id",                :null => false
     t.string   "name"
-    t.boolean  "is_current"
-    t.datetime "checked_at"
+    t.boolean  "is_current",                 :null => false
+    t.datetime "checked_at",                 :null => false
     t.datetime "last_updated"
     t.datetime "created"
     t.datetime "inserted_at"
@@ -1042,18 +1011,17 @@ ActiveRecord::Schema.define(:version => 20120421135754) do
     t.datetime "current_to"
   end
 
-  add_index "plate_purposes", ["current_to", "uuid", "current_from"], :name => "primary_partitioning_key", :unique => true
-  add_index "plate_purposes", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
+  add_index "plate_purposes", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx", :unique => true
 
   create_table "plates", :id => false, :force => true do |t|
     t.binary   "uuid",                      :limit => 16, :null => false
-    t.integer  "internal_id"
+    t.integer  "internal_id",                             :null => false
     t.string   "name"
     t.string   "barcode"
     t.string   "barcode_prefix",            :limit => 2
     t.integer  "plate_size"
-    t.boolean  "is_current"
-    t.datetime "checked_at"
+    t.boolean  "is_current",                              :null => false
+    t.datetime "checked_at",                              :null => false
     t.datetime "last_updated"
     t.datetime "created"
     t.string   "plate_purpose_name"
@@ -1067,12 +1035,11 @@ ActiveRecord::Schema.define(:version => 20120421135754) do
     t.datetime "current_to"
   end
 
-  add_index "plates", ["current_to", "uuid", "current_from"], :name => "primary_partitioning_key", :unique => true
-  add_index "plates", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
+  add_index "plates", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx", :unique => true
 
   create_table "projects", :id => false, :force => true do |t|
     t.binary   "uuid",                    :limit => 16, :null => false
-    t.integer  "internal_id"
+    t.integer  "internal_id",                           :null => false
     t.string   "name"
     t.string   "collaborators"
     t.text     "funding_comments"
@@ -1084,8 +1051,8 @@ ActiveRecord::Schema.define(:version => 20120421135754) do
     t.string   "project_manager"
     t.string   "budget_cost_centre"
     t.string   "state",                   :limit => 50
-    t.boolean  "is_current"
-    t.datetime "checked_at"
+    t.boolean  "is_current",                            :null => false
+    t.datetime "checked_at",                            :null => false
     t.datetime "last_updated"
     t.datetime "created"
     t.datetime "inserted_at"
@@ -1094,19 +1061,18 @@ ActiveRecord::Schema.define(:version => 20120421135754) do
     t.datetime "current_to"
   end
 
-  add_index "projects", ["current_to", "uuid", "current_from"], :name => "primary_partitioning_key", :unique => true
-  add_index "projects", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
+  add_index "projects", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx", :unique => true
 
   create_table "quotas", :id => false, :force => true do |t|
     t.binary   "uuid",                :limit => 16, :null => false
-    t.integer  "internal_id"
+    t.integer  "internal_id",                       :null => false
     t.integer  "quota_limit"
     t.string   "request_type"
     t.integer  "project_internal_id"
     t.binary   "project_uuid",        :limit => 16
     t.string   "project_name"
-    t.boolean  "is_current"
-    t.datetime "checked_at"
+    t.boolean  "is_current",                        :null => false
+    t.datetime "checked_at",                        :null => false
     t.datetime "last_updated"
     t.datetime "created"
     t.datetime "inserted_at"
@@ -1115,13 +1081,11 @@ ActiveRecord::Schema.define(:version => 20120421135754) do
     t.datetime "current_to"
   end
 
-  add_index "quotas", ["current_to", "uuid", "current_from"], :name => "primary_partitioning_key", :unique => true
-  add_index "quotas", ["project_uuid", "request_type", "current_to", "current_from"], :name => "project_uuid_and_request_type_and_current_idx"
-  add_index "quotas", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
+  add_index "quotas", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx", :unique => true
 
   create_table "requests", :id => false, :force => true do |t|
     t.binary   "uuid",                                 :limit => 16, :null => false
-    t.integer  "internal_id"
+    t.integer  "internal_id",                                        :null => false
     t.string   "request_type"
     t.string   "fragment_size_from"
     t.string   "fragment_size_to"
@@ -1155,8 +1119,8 @@ ActiveRecord::Schema.define(:version => 20120421135754) do
     t.string   "target_asset_two_dimensional_barcode"
     t.binary   "target_asset_sample_uuid",             :limit => 16
     t.integer  "target_asset_sample_internal_id"
-    t.boolean  "is_current"
-    t.datetime "checked_at"
+    t.boolean  "is_current",                                         :null => false
+    t.datetime "checked_at",                                         :null => false
     t.datetime "last_updated"
     t.datetime "created"
     t.string   "state",                                :limit => 40
@@ -1170,15 +1134,11 @@ ActiveRecord::Schema.define(:version => 20120421135754) do
     t.datetime "current_to"
   end
 
-  add_index "requests", ["current_to", "uuid", "current_from"], :name => "primary_partitioning_key", :unique => true
-  add_index "requests", ["source_asset_uuid", "request_type", "current_to", "current_from"], :name => "source_asset_uuid_and_request_type_and_current_idx"
-  add_index "requests", ["submission_uuid", "current_to", "current_from"], :name => "submission_uuid_and_current_idx"
-  add_index "requests", ["target_asset_uuid", "request_type", "current_to", "current_from"], :name => "target_asset_uuid_and_request_type_and_current_idx"
-  add_index "requests", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
+  add_index "requests", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx", :unique => true
 
   create_table "sample_tubes", :id => false, :force => true do |t|
     t.binary   "uuid",                    :limit => 16,                                :null => false
-    t.integer  "internal_id"
+    t.integer  "internal_id",                                                          :null => false
     t.string   "name"
     t.string   "barcode"
     t.boolean  "closed"
@@ -1190,8 +1150,8 @@ ActiveRecord::Schema.define(:version => 20120421135754) do
     t.date     "scanned_in_date"
     t.decimal  "volume",                                :precision => 5,  :scale => 2
     t.decimal  "concentration",                         :precision => 10, :scale => 2
-    t.boolean  "is_current"
-    t.datetime "checked_at"
+    t.boolean  "is_current",                                                           :null => false
+    t.datetime "checked_at",                                                           :null => false
     t.datetime "last_updated"
     t.datetime "created"
     t.string   "barcode_prefix",          :limit => 2
@@ -1201,12 +1161,11 @@ ActiveRecord::Schema.define(:version => 20120421135754) do
     t.datetime "current_to"
   end
 
-  add_index "sample_tubes", ["current_to", "uuid", "current_from"], :name => "primary_partitioning_key", :unique => true
-  add_index "sample_tubes", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
+  add_index "sample_tubes", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx", :unique => true
 
   create_table "samples", :id => false, :force => true do |t|
     t.binary   "uuid",                       :limit => 16, :null => false
-    t.integer  "internal_id"
+    t.integer  "internal_id",                              :null => false
     t.string   "name"
     t.string   "reference_genome"
     t.string   "organism"
@@ -1222,8 +1181,8 @@ ActiveRecord::Schema.define(:version => 20120421135754) do
     t.string   "cohort"
     t.string   "country_of_origin"
     t.string   "geographical_region"
-    t.boolean  "is_current"
-    t.datetime "checked_at"
+    t.boolean  "is_current",                               :null => false
+    t.datetime "checked_at",                               :null => false
     t.datetime "last_updated"
     t.datetime "created"
     t.string   "sanger_sample_id"
@@ -1240,13 +1199,11 @@ ActiveRecord::Schema.define(:version => 20120421135754) do
     t.datetime "current_to"
   end
 
-  add_index "samples", ["current_to", "uuid", "current_from"], :name => "primary_partitioning_key", :unique => true
-  add_index "samples", ["internal_id", "current_to", "current_from"], :name => "internal_id_and_current_idx"
-  add_index "samples", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
+  add_index "samples", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx", :unique => true
 
   create_table "studies", :id => false, :force => true do |t|
     t.binary   "uuid",                           :limit => 16, :null => false
-    t.integer  "internal_id"
+    t.integer  "internal_id",                                  :null => false
     t.string   "name"
     t.string   "reference_genome"
     t.boolean  "ethically_approved"
@@ -1257,8 +1214,8 @@ ActiveRecord::Schema.define(:version => 20120421135754) do
     t.string   "abbreviation"
     t.string   "accession_number",               :limit => 50
     t.text     "description"
-    t.boolean  "is_current"
-    t.datetime "checked_at"
+    t.boolean  "is_current",                                   :null => false
+    t.datetime "checked_at",                                   :null => false
     t.datetime "last_updated"
     t.datetime "created"
     t.string   "contains_human_dna"
@@ -1277,19 +1234,17 @@ ActiveRecord::Schema.define(:version => 20120421135754) do
     t.datetime "current_to"
   end
 
-  add_index "studies", ["current_to", "uuid", "current_from"], :name => "primary_partitioning_key", :unique => true
-  add_index "studies", ["internal_id", "current_to", "current_from"], :name => "internal_id_and_current_idx"
-  add_index "studies", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
+  add_index "studies", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx", :unique => true
 
   create_table "study_samples", :id => false, :force => true do |t|
     t.binary   "uuid",               :limit => 16, :null => false
-    t.integer  "internal_id"
+    t.integer  "internal_id",                      :null => false
     t.integer  "sample_internal_id"
     t.binary   "sample_uuid",        :limit => 16
     t.integer  "study_internal_id"
     t.binary   "study_uuid",         :limit => 16
-    t.boolean  "is_current"
-    t.datetime "checked_at"
+    t.boolean  "is_current",                       :null => false
+    t.datetime "checked_at",                       :null => false
     t.datetime "last_updated"
     t.datetime "created"
     t.datetime "inserted_at"
@@ -1298,15 +1253,13 @@ ActiveRecord::Schema.define(:version => 20120421135754) do
     t.datetime "current_to"
   end
 
-  add_index "study_samples", ["current_to", "uuid", "current_from"], :name => "primary_partitioning_key", :unique => true
-  add_index "study_samples", ["sample_uuid", "study_uuid", "current_to", "current_from"], :name => "sample_uuid_and_study_uuid_and_current_idx"
-  add_index "study_samples", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
+  add_index "study_samples", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx", :unique => true
 
   create_table "submissions", :id => false, :force => true do |t|
     t.binary   "uuid",         :limit => 16, :null => false
-    t.integer  "internal_id"
-    t.boolean  "is_current"
-    t.datetime "checked_at"
+    t.integer  "internal_id",                :null => false
+    t.boolean  "is_current",                 :null => false
+    t.datetime "checked_at",                 :null => false
     t.datetime "last_updated"
     t.datetime "created"
     t.string   "created_by"
@@ -1318,8 +1271,7 @@ ActiveRecord::Schema.define(:version => 20120421135754) do
     t.datetime "current_to"
   end
 
-  add_index "submissions", ["current_to", "uuid", "current_from"], :name => "primary_partitioning_key", :unique => true
-  add_index "submissions", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
+  add_index "submissions", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx", :unique => true
 
   create_table "submitted_assets", :primary_key => "dont_use_id", :force => true do |t|
     t.binary   "order_uuid", :limit => 16
@@ -1331,14 +1283,14 @@ ActiveRecord::Schema.define(:version => 20120421135754) do
 
   create_table "tags", :id => false, :force => true do |t|
     t.binary   "uuid",                  :limit => 16, :null => false
-    t.integer  "internal_id"
+    t.integer  "internal_id",                         :null => false
     t.string   "expected_sequence"
     t.integer  "map_id"
     t.string   "tag_group_name"
     t.binary   "tag_group_uuid",        :limit => 16
     t.integer  "tag_group_internal_id"
-    t.boolean  "is_current"
-    t.datetime "checked_at"
+    t.boolean  "is_current",                          :null => false
+    t.datetime "checked_at",                          :null => false
     t.datetime "last_updated"
     t.datetime "created"
     t.datetime "inserted_at"
@@ -1347,12 +1299,11 @@ ActiveRecord::Schema.define(:version => 20120421135754) do
     t.datetime "current_to"
   end
 
-  add_index "tags", ["current_to", "uuid", "current_from"], :name => "primary_partitioning_key", :unique => true
-  add_index "tags", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
+  add_index "tags", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx", :unique => true
 
   create_table "wells", :id => false, :force => true do |t|
     t.binary   "uuid",                    :limit => 16,                                :null => false
-    t.integer  "internal_id"
+    t.integer  "internal_id",                                                          :null => false
     t.string   "name"
     t.string   "map",                     :limit => 5
     t.string   "plate_barcode"
@@ -1367,8 +1318,8 @@ ActiveRecord::Schema.define(:version => 20120421135754) do
     t.float    "requested_volume"
     t.float    "picked_volume"
     t.string   "pico_pass"
-    t.boolean  "is_current"
-    t.datetime "checked_at"
+    t.boolean  "is_current",                                                           :null => false
+    t.datetime "checked_at",                                                           :null => false
     t.datetime "last_updated"
     t.datetime "created"
     t.binary   "plate_uuid",              :limit => 16
@@ -1383,8 +1334,7 @@ ActiveRecord::Schema.define(:version => 20120421135754) do
     t.datetime "current_to"
   end
 
-  add_index "wells", ["current_to", "uuid", "current_from"], :name => "primary_partitioning_key", :unique => true
-  add_index "wells", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
+  add_index "wells", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx", :unique => true
 
   create_view "uuid_objects", "(select `aliquots`.`uuid` AS `uuid`,hex(`aliquots`.`uuid`) AS `decoded_uuid`,`aliquots`.`checked_at` AS `object_name`,`aliquots`.`last_updated` AS `internal_id`,`aliquots`.`created` AS `name`,0 AS `checked_at`,NULL AS `created`,NULL AS `last_updated`,'aliquots' AS `deleted` from `aliquots` where ((`aliquots`.`is_current` = 1) and (`aliquots`.`uuid` is not null))) union (select `asset_audits`.`uuid` AS `uuid`,hex(`asset_audits`.`uuid`) AS `decoded_uuid`,`asset_audits`.`checked_at` AS `checked_at`,`asset_audits`.`last_updated` AS `last_updated`,`asset_audits`.`created` AS `created`,0 AS `deleted`,NULL AS `name`,NULL AS `internal_id`,'asset_audits' AS `object_name` from `asset_audits` where ((`asset_audits`.`is_current` = 1) and (`asset_audits`.`uuid` is not null))) union (select `asset_freezers`.`uuid` AS `uuid`,hex(`asset_freezers`.`uuid`) AS `decoded_uuid`,`asset_freezers`.`checked_at` AS `checked_at`,`asset_freezers`.`last_updated` AS `last_updated`,`asset_freezers`.`created` AS `created`,0 AS `deleted`,`asset_freezers`.`name` AS `name`,NULL AS `internal_id`,'asset_freezers' AS `object_name` from `asset_freezers` where ((`asset_freezers`.`is_current` = 1) and (`asset_freezers`.`uuid` is not null))) union (select `asset_links`.`uuid` AS `uuid`,hex(`asset_links`.`uuid`) AS `decoded_uuid`,`asset_links`.`checked_at` AS `checked_at`,`asset_links`.`last_updated` AS `last_updated`,`asset_links`.`created` AS `created`,0 AS `deleted`,NULL AS `name`,NULL AS `internal_id`,'asset_links' AS `object_name` from `asset_links` where ((`asset_links`.`is_current` = 1) and (`asset_links`.`uuid` is not null))) union (select `batch_requests`.`uuid` AS `uuid`,hex(`batch_requests`.`uuid`) AS `decoded_uuid`,`batch_requests`.`checked_at` AS `checked_at`,`batch_requests`.`last_updated` AS `last_updated`,`batch_requests`.`created` AS `created`,0 AS `deleted`,NULL AS `name`,NULL AS `internal_id`,'batch_requests' AS `object_name` from `batch_requests` where ((`batch_requests`.`is_current` = 1) and (`batch_requests`.`uuid` is not null))) union (select `batches`.`uuid` AS `uuid`,hex(`batches`.`uuid`) AS `decoded_uuid`,`batches`.`checked_at` AS `checked_at`,`batches`.`last_updated` AS `last_updated`,`batches`.`created` AS `created`,0 AS `deleted`,NULL AS `name`,NULL AS `internal_id`,'batches' AS `object_name` from `batches` where ((`batches`.`is_current` = 1) and (`batches`.`uuid` is not null))) union (select `billing_events`.`uuid` AS `uuid`,hex(`billing_events`.`uuid`) AS `decoded_uuid`,`billing_events`.`checked_at` AS `checked_at`,`billing_events`.`last_updated` AS `last_updated`,`billing_events`.`created` AS `created`,0 AS `deleted`,NULL AS `name`,NULL AS `internal_id`,'billing_events' AS `object_name` from `billing_events` where ((`billing_events`.`is_current` = 1) and (`billing_events`.`uuid` is not null))) union (select `events`.`uuid` AS `uuid`,hex(`events`.`uuid`) AS `decoded_uuid`,`events`.`checked_at` AS `checked_at`,`events`.`last_updated` AS `last_updated`,`events`.`created` AS `created`,0 AS `deleted`,NULL AS `name`,NULL AS `internal_id`,'events' AS `object_name` from `events` where ((`events`.`is_current` = 1) and (`events`.`uuid` is not null))) union (select `lanes`.`uuid` AS `uuid`,hex(`lanes`.`uuid`) AS `decoded_uuid`,`lanes`.`checked_at` AS `checked_at`,`lanes`.`last_updated` AS `last_updated`,`lanes`.`created` AS `created`,0 AS `deleted`,`lanes`.`name` AS `name`,`lanes`.`internal_id` AS `internal_id`,'lanes' AS `object_name` from `lanes` where ((`lanes`.`is_current` = 1) and (`lanes`.`uuid` is not null))) union (select `library_tubes`.`uuid` AS `uuid`,hex(`library_tubes`.`uuid`) AS `decoded_uuid`,`library_tubes`.`checked_at` AS `checked_at`,`library_tubes`.`last_updated` AS `last_updated`,`library_tubes`.`created` AS `created`,0 AS `deleted`,`library_tubes`.`name` AS `name`,`library_tubes`.`internal_id` AS `internal_id`,'library_tubes' AS `object_name` from `library_tubes` where ((`library_tubes`.`is_current` = 1) and (`library_tubes`.`uuid` is not null))) union (select `multiplexed_library_tubes`.`uuid` AS `uuid`,hex(`multiplexed_library_tubes`.`uuid`) AS `decoded_uuid`,`multiplexed_library_tubes`.`checked_at` AS `checked_at`,`multiplexed_library_tubes`.`last_updated` AS `last_updated`,`multiplexed_library_tubes`.`created` AS `created`,0 AS `deleted`,`multiplexed_library_tubes`.`name` AS `name`,`multiplexed_library_tubes`.`internal_id` AS `internal_id`,'multiplexed_library_tubes' AS `object_name` from `multiplexed_library_tubes` where ((`multiplexed_library_tubes`.`is_current` = 1) and (`multiplexed_library_tubes`.`uuid` is not null))) union (select `plate_purposes`.`uuid` AS `uuid`,hex(`plate_purposes`.`uuid`) AS `decoded_uuid`,`plate_purposes`.`checked_at` AS `checked_at`,`plate_purposes`.`last_updated` AS `last_updated`,`plate_purposes`.`created` AS `created`,0 AS `deleted`,`plate_purposes`.`name` AS `name`,NULL AS `internal_id`,'plate_purposes' AS `object_name` from `plate_purposes` where ((`plate_purposes`.`is_current` = 1) and (`plate_purposes`.`uuid` is not null))) union (select `plates`.`uuid` AS `uuid`,hex(`plates`.`uuid`) AS `decoded_uuid`,`plates`.`checked_at` AS `checked_at`,`plates`.`last_updated` AS `last_updated`,`plates`.`created` AS `created`,0 AS `deleted`,`plates`.`name` AS `name`,`plates`.`internal_id` AS `internal_id`,'plates' AS `object_name` from `plates` where ((`plates`.`is_current` = 1) and (`plates`.`uuid` is not null))) union (select `projects`.`uuid` AS `uuid`,hex(`projects`.`uuid`) AS `decoded_uuid`,`projects`.`checked_at` AS `checked_at`,`projects`.`last_updated` AS `last_updated`,`projects`.`created` AS `created`,0 AS `deleted`,`projects`.`name` AS `name`,`projects`.`internal_id` AS `internal_id`,'projects' AS `object_name` from `projects` where ((`projects`.`is_current` = 1) and (`projects`.`uuid` is not null))) union (select `quotas`.`uuid` AS `uuid`,hex(`quotas`.`uuid`) AS `decoded_uuid`,`quotas`.`checked_at` AS `checked_at`,`quotas`.`last_updated` AS `last_updated`,`quotas`.`created` AS `created`,0 AS `deleted`,NULL AS `name`,NULL AS `internal_id`,'quotas' AS `object_name` from `quotas` where ((`quotas`.`is_current` = 1) and (`quotas`.`uuid` is not null))) union (select `requests`.`uuid` AS `uuid`,hex(`requests`.`uuid`) AS `decoded_uuid`,`requests`.`checked_at` AS `checked_at`,`requests`.`last_updated` AS `last_updated`,`requests`.`created` AS `created`,0 AS `deleted`,NULL AS `name`,`requests`.`internal_id` AS `internal_id`,'requests' AS `object_name` from `requests` where ((`requests`.`is_current` = 1) and (`requests`.`uuid` is not null))) union (select `sample_tubes`.`uuid` AS `uuid`,hex(`sample_tubes`.`uuid`) AS `decoded_uuid`,`sample_tubes`.`checked_at` AS `checked_at`,`sample_tubes`.`last_updated` AS `last_updated`,`sample_tubes`.`created` AS `created`,0 AS `deleted`,`sample_tubes`.`name` AS `name`,`sample_tubes`.`internal_id` AS `internal_id`,'sample_tubes' AS `object_name` from `sample_tubes` where ((`sample_tubes`.`is_current` = 1) and (`sample_tubes`.`uuid` is not null))) union (select `samples`.`uuid` AS `uuid`,hex(`samples`.`uuid`) AS `decoded_uuid`,`samples`.`checked_at` AS `checked_at`,`samples`.`last_updated` AS `last_updated`,`samples`.`created` AS `created`,0 AS `deleted`,`samples`.`name` AS `name`,`samples`.`internal_id` AS `internal_id`,'samples' AS `object_name` from `samples` where ((`samples`.`is_current` = 1) and (`samples`.`uuid` is not null))) union (select `studies`.`uuid` AS `uuid`,hex(`studies`.`uuid`) AS `decoded_uuid`,`studies`.`checked_at` AS `checked_at`,`studies`.`last_updated` AS `last_updated`,`studies`.`created` AS `created`,0 AS `deleted`,`studies`.`name` AS `name`,`studies`.`internal_id` AS `internal_id`,'studies' AS `object_name` from `studies` where ((`studies`.`is_current` = 1) and (`studies`.`uuid` is not null))) union (select `submissions`.`uuid` AS `uuid`,hex(`submissions`.`uuid`) AS `decoded_uuid`,`submissions`.`checked_at` AS `checked_at`,`submissions`.`last_updated` AS `last_updated`,`submissions`.`created` AS `created`,0 AS `deleted`,NULL AS `name`,`submissions`.`internal_id` AS `internal_id`,'submissions' AS `object_name` from `submissions` where ((`submissions`.`is_current` = 1) and (`submissions`.`uuid` is not null))) union (select `tags`.`uuid` AS `uuid`,hex(`tags`.`uuid`) AS `decoded_uuid`,`tags`.`checked_at` AS `checked_at`,`tags`.`last_updated` AS `last_updated`,`tags`.`created` AS `created`,0 AS `deleted`,NULL AS `name`,NULL AS `internal_id`,'tags' AS `object_name` from `tags` where ((`tags`.`is_current` = 1) and (`tags`.`uuid` is not null))) union (select `wells`.`uuid` AS `uuid`,hex(`wells`.`uuid`) AS `decoded_uuid`,`wells`.`checked_at` AS `checked_at`,`wells`.`last_updated` AS `last_updated`,`wells`.`created` AS `created`,0 AS `deleted`,`wells`.`name` AS `name`,`wells`.`internal_id` AS `internal_id`,'wells' AS `object_name` from `wells` where ((`wells`.`is_current` = 1) and (`wells`.`uuid` is not null)))", :force => true do |v|
     v.column :uuid
