@@ -3,7 +3,6 @@ module UuidViewHelper
     # TABLE                             =>   name?  id?
     :aliquots                           => [ false, false ],
     :asset_audits                       => [ false, false ],
-    :asset_freezers                     => [ true,  false ],
     :asset_links                        => [ false, false ],
     :batch_requests                     => [ false, false ],
     :batches                            => [ false, false ],
@@ -31,7 +30,7 @@ module UuidViewHelper
       columns << (has_name        ? :name        : 'NULL AS name')
       columns << (has_internal_id ? :internal_id : 'NULL AS internal_id')
       columns << "#{table.to_s.inspect} AS object_name"
-      "SELECT #{columns.join(',')} FROM #{table} WHERE is_current=TRUE AND uuid IS NOT NULL"
+      "SELECT #{columns.join(',')} FROM current_#{table}"
     end
 
     create_view :uuid_objects, "(#{selects.join(') UNION (')})" do |view|
