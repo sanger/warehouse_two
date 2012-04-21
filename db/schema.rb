@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120421090554) do
+ActiveRecord::Schema.define(:version => 20120421092048) do
 
   create_table "aliquots", :id => false, :force => true do |t|
     t.binary   "uuid",                   :limit => 16, :null => false
@@ -264,7 +264,7 @@ ActiveRecord::Schema.define(:version => 20120421090554) do
   add_index "lanes", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
 
   create_table "library_tubes", :id => false, :force => true do |t|
-    t.binary   "uuid",                        :limit => 16,                               :null => false
+    t.binary   "uuid",                        :limit => 16,                                :null => false
     t.integer  "internal_id"
     t.string   "name"
     t.string   "barcode"
@@ -274,8 +274,8 @@ ActiveRecord::Schema.define(:version => 20120421090554) do
     t.string   "two_dimensional_barcode"
     t.binary   "sample_uuid",                 :limit => 16
     t.integer  "sample_internal_id"
-    t.decimal  "volume",                                    :precision => 5, :scale => 2
-    t.decimal  "concentration",                             :precision => 5, :scale => 2
+    t.decimal  "volume",                                    :precision => 5,  :scale => 2
+    t.decimal  "concentration",                             :precision => 10, :scale => 2
     t.binary   "tag_uuid",                    :limit => 16
     t.integer  "tag_internal_id"
     t.string   "expected_sequence"
@@ -297,7 +297,7 @@ ActiveRecord::Schema.define(:version => 20120421090554) do
     t.string   "public_name"
     t.datetime "inserted_at"
     t.datetime "deleted_at"
-    t.datetime "current_from",                                                            :null => false
+    t.datetime "current_from",                                                             :null => false
     t.datetime "current_to"
   end
 
@@ -305,7 +305,7 @@ ActiveRecord::Schema.define(:version => 20120421090554) do
   add_index "library_tubes", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
 
   create_table "multiplexed_library_tubes", :id => false, :force => true do |t|
-    t.binary   "uuid",                    :limit => 16,                               :null => false
+    t.binary   "uuid",                    :limit => 16,                                :null => false
     t.integer  "internal_id"
     t.string   "name"
     t.string   "barcode"
@@ -313,8 +313,8 @@ ActiveRecord::Schema.define(:version => 20120421090554) do
     t.boolean  "closed"
     t.string   "state",                   :limit => 50
     t.string   "two_dimensional_barcode"
-    t.decimal  "volume",                                :precision => 5, :scale => 2
-    t.decimal  "concentration",                         :precision => 5, :scale => 2
+    t.decimal  "volume",                                :precision => 5,  :scale => 2
+    t.decimal  "concentration",                         :precision => 10, :scale => 2
     t.boolean  "is_current"
     t.date     "scanned_in_date"
     t.datetime "checked_at"
@@ -323,7 +323,7 @@ ActiveRecord::Schema.define(:version => 20120421090554) do
     t.string   "public_name"
     t.datetime "inserted_at"
     t.datetime "deleted_at"
-    t.datetime "current_from",                                                        :null => false
+    t.datetime "current_from",                                                         :null => false
     t.datetime "current_to"
   end
 
@@ -512,7 +512,7 @@ ActiveRecord::Schema.define(:version => 20120421090554) do
   add_index "requests", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
 
   create_table "sample_tubes", :id => false, :force => true do |t|
-    t.binary   "uuid",                    :limit => 16,                               :null => false
+    t.binary   "uuid",                    :limit => 16,                                :null => false
     t.integer  "internal_id"
     t.string   "name"
     t.string   "barcode"
@@ -523,8 +523,8 @@ ActiveRecord::Schema.define(:version => 20120421090554) do
     t.integer  "sample_internal_id"
     t.string   "sample_name"
     t.date     "scanned_in_date"
-    t.decimal  "volume",                                :precision => 5, :scale => 2
-    t.decimal  "concentration",                         :precision => 5, :scale => 2
+    t.decimal  "volume",                                :precision => 5,  :scale => 2
+    t.decimal  "concentration",                         :precision => 10, :scale => 2
     t.boolean  "is_current"
     t.datetime "checked_at"
     t.datetime "last_updated"
@@ -532,7 +532,7 @@ ActiveRecord::Schema.define(:version => 20120421090554) do
     t.string   "barcode_prefix",          :limit => 2
     t.datetime "inserted_at"
     t.datetime "deleted_at"
-    t.datetime "current_from",                                                        :null => false
+    t.datetime "current_from",                                                         :null => false
     t.datetime "current_to"
   end
 
@@ -686,7 +686,7 @@ ActiveRecord::Schema.define(:version => 20120421090554) do
   add_index "tags", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
 
   create_table "wells", :id => false, :force => true do |t|
-    t.binary   "uuid",                    :limit => 16,                               :null => false
+    t.binary   "uuid",                    :limit => 16,                                :null => false
     t.integer  "internal_id"
     t.string   "name"
     t.string   "map",                     :limit => 5
@@ -696,7 +696,7 @@ ActiveRecord::Schema.define(:version => 20120421090554) do
     t.integer  "sample_internal_id"
     t.string   "sample_name"
     t.string   "gel_pass"
-    t.float    "concentration"
+    t.decimal  "concentration",                         :precision => 10, :scale => 2
     t.float    "current_volume"
     t.float    "buffer_volume"
     t.float    "requested_volume"
@@ -707,14 +707,14 @@ ActiveRecord::Schema.define(:version => 20120421090554) do
     t.datetime "last_updated"
     t.datetime "created"
     t.binary   "plate_uuid",              :limit => 16
-    t.decimal  "measured_volume",                       :precision => 5, :scale => 2
+    t.decimal  "measured_volume",                       :precision => 5,  :scale => 2
     t.integer  "sequenom_count"
     t.string   "gender_markers",          :limit => 40
     t.string   "genotyping_status"
     t.string   "genotyping_snp_plate_id"
     t.datetime "inserted_at"
     t.datetime "deleted_at"
-    t.datetime "current_from",                                                        :null => false
+    t.datetime "current_from",                                                         :null => false
     t.datetime "current_to"
   end
 
