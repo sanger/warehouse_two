@@ -1,4 +1,2 @@
-class PulldownMultiplexedLibraryTube < ActiveRecord::Base
-  include ResourceTools
-  include Labware
+class PulldownMultiplexedLibraryTube < MultiplexedLibraryTube
 end
