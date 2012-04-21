@@ -15,6 +15,14 @@ GIT
       activerecord (~> 3.2.0)
       activesupport (~> 3.2.0)
 
+GIT
+  remote: git+ssh://git@github.com/sanger/activerecord-triggers.git
+  revision: 83e21ed4e0a3e9050dcfbced1745c5cb3c098cbc
+  specs:
+    activerecord-triggers (0.0.1)
+      activerecord (~> 3.2.0)
+      activesupport (~> 3.2.0)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -154,6 +162,7 @@ PLATFORMS
 
 DEPENDENCIES
   activerecord-partitioning!
+  activerecord-triggers!
   amqp (~> 0.9.2)
   cbrunnkvist-psd_logger
   composite_primary_keys (~> 5.0.4)

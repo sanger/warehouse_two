@@ -10,6 +10,7 @@ gem "rest-client"
 # We have to use composite primary keys because of the table partitioning
 gem "composite_primary_keys", "~> 5.0.4"
 gem "activerecord-partitioning", :git => "git+ssh://git@github.com/sanger/activerecord-partitioning.git"
+gem "activerecord-triggers", :git => "git+ssh://git@github.com/sanger/activerecord-triggers.git"
 
 # Need a branched verion of the rails_sql_views gem to support MySQL2 and ActiveRecord 3.
 gem "rails_sql_views", :git => "git+ssh://git@github.com/anathematic/rails_sql_views.git"
