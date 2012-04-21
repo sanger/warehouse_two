@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120421194352) do
+ActiveRecord::Schema.define(:version => 20120421201155) do
 
   create_table "aliquots", :id => false, :force => true do |t|
     t.binary   "uuid",                   :limit => 16, :null => false
@@ -836,21 +836,6 @@ ActiveRecord::Schema.define(:version => 20120421194352) do
 
   add_index "current_wells", ["internal_id"], :name => "internal_id_idx", :unique => true
   add_index "current_wells", ["uuid"], :name => "uuid_idx", :unique => true
-
-  create_table "delayed_jobs", :force => true do |t|
-    t.integer  "priority",   :default => 0
-    t.integer  "attempts",   :default => 0
-    t.text     "handler"
-    t.text     "last_error"
-    t.datetime "run_at"
-    t.datetime "locked_at"
-    t.datetime "failed_at"
-    t.string   "locked_by"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
 
   create_table "events", :id => false, :force => true do |t|
     t.binary   "uuid",               :limit => 16, :null => false
