@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120411132239) do
+ActiveRecord::Schema.define(:version => 20120421084334) do
 
   create_table "aliquots", :id => false, :force => true do |t|
     t.binary   "uuid",                   :limit => 16, :null => false
@@ -47,8 +47,6 @@ ActiveRecord::Schema.define(:version => 20120411132239) do
   add_index "aliquots", ["sample_uuid", "receptacle_uuid", "current_to", "current_from"], :name => "sample_uuid_and_receptacle_uuid_and_current_idx"
   add_index "aliquots", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
 
-  partition_table("aliquots", "PARTITION BY LIST (year(current_to)) (PARTITION current VALUES IN (NULL) ENGINE = InnoDB, PARTITION historic VALUES IN (2010,2011,2012) ENGINE = InnoDB)")
-
   create_table "asset_audits", :id => false, :force => true do |t|
     t.binary   "uuid",                 :limit => 16, :null => false
     t.integer  "internal_id"
@@ -71,8 +69,6 @@ ActiveRecord::Schema.define(:version => 20120411132239) do
 
   add_index "asset_audits", ["current_to", "uuid", "current_from"], :name => "primary_partitioning_key", :unique => true
   add_index "asset_audits", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
-
-  partition_table("asset_audits", "PARTITION BY LIST (year(current_to)) (PARTITION current VALUES IN (NULL) ENGINE = InnoDB, PARTITION historic VALUES IN (2010,2011,2012) ENGINE = InnoDB)")
 
   create_table "asset_freezers", :primary_key => "dont_use_id", :force => true do |t|
     t.binary   "uuid",           :limit => 16, :null => false
@@ -116,8 +112,6 @@ ActiveRecord::Schema.define(:version => 20120411132239) do
   add_index "asset_links", ["current_to", "uuid", "current_from"], :name => "primary_partitioning_key", :unique => true
   add_index "asset_links", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
 
-  partition_table("asset_links", "PARTITION BY LIST (year(current_to)) (PARTITION current VALUES IN (NULL) ENGINE = InnoDB, PARTITION historic VALUES IN (2010,2011,2012) ENGINE = InnoDB)")
-
   create_table "batch_requests", :id => false, :force => true do |t|
     t.binary   "uuid",                     :limit => 16, :null => false
     t.integer  "internal_id"
@@ -145,8 +139,6 @@ ActiveRecord::Schema.define(:version => 20120411132239) do
   add_index "batch_requests", ["current_to", "uuid", "current_from"], :name => "primary_partitioning_key", :unique => true
   add_index "batch_requests", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
 
-  partition_table("batch_requests", "PARTITION BY LIST (year(current_to)) (PARTITION current VALUES IN (NULL) ENGINE = InnoDB, PARTITION historic VALUES IN (2010,2011,2012) ENGINE = InnoDB)")
-
   create_table "batches", :id => false, :force => true do |t|
     t.binary   "uuid",                 :limit => 16, :null => false
     t.integer  "internal_id"
@@ -170,8 +162,6 @@ ActiveRecord::Schema.define(:version => 20120411132239) do
 
   add_index "batches", ["current_to", "uuid", "current_from"], :name => "primary_partitioning_key", :unique => true
   add_index "batches", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
-
-  partition_table("batches", "PARTITION BY LIST (year(current_to)) (PARTITION current VALUES IN (NULL) ENGINE = InnoDB, PARTITION historic VALUES IN (2010,2011,2012) ENGINE = InnoDB)")
 
   create_table "billing_events", :id => false, :force => true do |t|
     t.binary   "uuid",                :limit => 16, :null => false
@@ -205,8 +195,6 @@ ActiveRecord::Schema.define(:version => 20120411132239) do
   add_index "billing_events", ["current_to", "uuid", "current_from"], :name => "primary_partitioning_key", :unique => true
   add_index "billing_events", ["project_uuid", "request_uuid", "current_to", "current_from"], :name => "project_uuid_and_request_uuid_and_current_idx"
   add_index "billing_events", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
-
-  partition_table("billing_events", "PARTITION BY LIST (year(current_to)) (PARTITION current VALUES IN (NULL) ENGINE = InnoDB, PARTITION historic VALUES IN (2010,2011,2012) ENGINE = InnoDB)")
 
   create_table "delayed_jobs", :force => true do |t|
     t.integer  "priority",   :default => 0
@@ -251,8 +239,6 @@ ActiveRecord::Schema.define(:version => 20120411132239) do
   add_index "events", ["current_to", "uuid", "current_from"], :name => "primary_partitioning_key", :unique => true
   add_index "events", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
 
-  partition_table("events", "PARTITION BY LIST (year(current_to)) (PARTITION current VALUES IN (NULL) ENGINE = InnoDB, PARTITION historic VALUES IN (2010,2011,2012) ENGINE = InnoDB)")
-
   create_table "lanes", :id => false, :force => true do |t|
     t.binary   "uuid",                    :limit => 16, :null => false
     t.integer  "internal_id"
@@ -276,8 +262,6 @@ ActiveRecord::Schema.define(:version => 20120411132239) do
 
   add_index "lanes", ["current_to", "uuid", "current_from"], :name => "primary_partitioning_key", :unique => true
   add_index "lanes", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
-
-  partition_table("lanes", "PARTITION BY LIST (year(current_to)) (PARTITION current VALUES IN (NULL) ENGINE = InnoDB, PARTITION historic VALUES IN (2010,2011,2012) ENGINE = InnoDB)")
 
   create_table "library_tubes", :id => false, :force => true do |t|
     t.binary   "uuid",                        :limit => 16,                               :null => false
@@ -320,8 +304,6 @@ ActiveRecord::Schema.define(:version => 20120411132239) do
   add_index "library_tubes", ["current_to", "uuid", "current_from"], :name => "primary_partitioning_key", :unique => true
   add_index "library_tubes", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
 
-  partition_table("library_tubes", "PARTITION BY LIST (year(current_to)) (PARTITION current VALUES IN (NULL) ENGINE = InnoDB, PARTITION historic VALUES IN (2010,2011,2012) ENGINE = InnoDB)")
-
   create_table "multiplexed_library_tubes", :id => false, :force => true do |t|
     t.binary   "uuid",                    :limit => 16,                               :null => false
     t.integer  "internal_id"
@@ -347,8 +329,6 @@ ActiveRecord::Schema.define(:version => 20120411132239) do
 
   add_index "multiplexed_library_tubes", ["current_to", "uuid", "current_from"], :name => "primary_partitioning_key", :unique => true
   add_index "multiplexed_library_tubes", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
-
-  partition_table("multiplexed_library_tubes", "PARTITION BY LIST (year(current_to)) (PARTITION current VALUES IN (NULL) ENGINE = InnoDB, PARTITION historic VALUES IN (2010,2011,2012) ENGINE = InnoDB)")
 
   create_table "orders", :id => false, :force => true do |t|
     t.binary   "uuid",                        :limit => 16, :null => false
@@ -383,8 +363,6 @@ ActiveRecord::Schema.define(:version => 20120411132239) do
   add_index "orders", ["study_uuid", "current_to", "project_uuid", "current_from"], :name => "study_uuid_and_current_to_and_project_uuid_and_current_from_idx"
   add_index "orders", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
 
-  partition_table("orders", "PARTITION BY LIST (year(current_to)) (PARTITION current VALUES IN (NULL) ENGINE = InnoDB, PARTITION historic VALUES IN (2010,2011,2012) ENGINE = InnoDB)")
-
   create_table "plate_purposes", :id => false, :force => true do |t|
     t.binary   "uuid",         :limit => 16, :null => false
     t.integer  "internal_id"
@@ -401,8 +379,6 @@ ActiveRecord::Schema.define(:version => 20120411132239) do
 
   add_index "plate_purposes", ["current_to", "uuid", "current_from"], :name => "primary_partitioning_key", :unique => true
   add_index "plate_purposes", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
-
-  partition_table("plate_purposes", "PARTITION BY LIST (year(current_to)) (PARTITION current VALUES IN (NULL) ENGINE = InnoDB, PARTITION historic VALUES IN (2010,2011,2012) ENGINE = InnoDB)")
 
   create_table "plates", :id => false, :force => true do |t|
     t.binary   "uuid",                      :limit => 16, :null => false
@@ -428,8 +404,6 @@ ActiveRecord::Schema.define(:version => 20120411132239) do
 
   add_index "plates", ["current_to", "uuid", "current_from"], :name => "primary_partitioning_key", :unique => true
   add_index "plates", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
-
-  partition_table("plates", "PARTITION BY LIST (year(current_to)) (PARTITION current VALUES IN (NULL) ENGINE = InnoDB, PARTITION historic VALUES IN (2010,2011,2012) ENGINE = InnoDB)")
 
   create_table "projects", :id => false, :force => true do |t|
     t.binary   "uuid",                    :limit => 16, :null => false
@@ -458,8 +432,6 @@ ActiveRecord::Schema.define(:version => 20120411132239) do
   add_index "projects", ["current_to", "uuid", "current_from"], :name => "primary_partitioning_key", :unique => true
   add_index "projects", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
 
-  partition_table("projects", "PARTITION BY LIST (year(current_to)) (PARTITION current VALUES IN (NULL) ENGINE = InnoDB, PARTITION historic VALUES IN (2010,2011,2012) ENGINE = InnoDB)")
-
   create_table "pulldown_multiplexed_library_tubes", :id => false, :force => true do |t|
     t.binary   "uuid",                    :limit => 16,                               :null => false
     t.integer  "internal_id"
@@ -486,8 +458,6 @@ ActiveRecord::Schema.define(:version => 20120411132239) do
   add_index "pulldown_multiplexed_library_tubes", ["current_to", "uuid", "current_from"], :name => "primary_partitioning_key", :unique => true
   add_index "pulldown_multiplexed_library_tubes", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
 
-  partition_table("pulldown_multiplexed_library_tubes", "PARTITION BY LIST (year(current_to)) (PARTITION current VALUES IN (NULL) ENGINE = InnoDB, PARTITION historic VALUES IN (2010,2011,2012) ENGINE = InnoDB)")
-
   create_table "quotas", :id => false, :force => true do |t|
     t.binary   "uuid",                :limit => 16, :null => false
     t.integer  "internal_id"
@@ -509,8 +479,6 @@ ActiveRecord::Schema.define(:version => 20120411132239) do
   add_index "quotas", ["current_to", "uuid", "current_from"], :name => "primary_partitioning_key", :unique => true
   add_index "quotas", ["project_uuid", "request_type", "current_to", "current_from"], :name => "project_uuid_and_request_type_and_current_idx"
   add_index "quotas", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
-
-  partition_table("quotas", "PARTITION BY LIST (year(current_to)) (PARTITION current VALUES IN (NULL) ENGINE = InnoDB, PARTITION historic VALUES IN (2010,2011,2012) ENGINE = InnoDB)")
 
   create_table "requests", :id => false, :force => true do |t|
     t.binary   "uuid",                                 :limit => 16, :null => false
@@ -569,8 +537,6 @@ ActiveRecord::Schema.define(:version => 20120411132239) do
   add_index "requests", ["target_asset_uuid", "request_type", "current_to", "current_from"], :name => "target_asset_uuid_and_request_type_and_current_idx"
   add_index "requests", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
 
-  partition_table("requests", "PARTITION BY LIST (year(current_to)) (PARTITION current VALUES IN (NULL) ENGINE = InnoDB, PARTITION historic VALUES IN (2010,2011,2012) ENGINE = InnoDB)")
-
   create_table "sample_tubes", :id => false, :force => true do |t|
     t.binary   "uuid",                    :limit => 16,                               :null => false
     t.integer  "internal_id"
@@ -598,8 +564,6 @@ ActiveRecord::Schema.define(:version => 20120411132239) do
 
   add_index "sample_tubes", ["current_to", "uuid", "current_from"], :name => "primary_partitioning_key", :unique => true
   add_index "sample_tubes", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
-
-  partition_table("sample_tubes", "PARTITION BY LIST (year(current_to)) (PARTITION current VALUES IN (NULL) ENGINE = InnoDB, PARTITION historic VALUES IN (2010,2011,2012) ENGINE = InnoDB)")
 
   create_table "samples", :id => false, :force => true do |t|
     t.binary   "uuid",                       :limit => 16, :null => false
@@ -641,8 +605,6 @@ ActiveRecord::Schema.define(:version => 20120411132239) do
   add_index "samples", ["internal_id", "current_to", "current_from"], :name => "internal_id_and_current_idx"
   add_index "samples", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
 
-  partition_table("samples", "PARTITION BY LIST (year(current_to)) (PARTITION current VALUES IN (NULL) ENGINE = InnoDB, PARTITION historic VALUES IN (2010,2011,2012) ENGINE = InnoDB)")
-
   create_table "studies", :id => false, :force => true do |t|
     t.binary   "uuid",                           :limit => 16, :null => false
     t.integer  "internal_id"
@@ -680,8 +642,6 @@ ActiveRecord::Schema.define(:version => 20120411132239) do
   add_index "studies", ["internal_id", "current_to", "current_from"], :name => "internal_id_and_current_idx"
   add_index "studies", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
 
-  partition_table("studies", "PARTITION BY LIST (year(current_to)) (PARTITION current VALUES IN (NULL) ENGINE = InnoDB, PARTITION historic VALUES IN (2010,2011,2012) ENGINE = InnoDB)")
-
   create_table "study_samples", :id => false, :force => true do |t|
     t.binary   "uuid",               :limit => 16, :null => false
     t.integer  "internal_id"
@@ -703,8 +663,6 @@ ActiveRecord::Schema.define(:version => 20120411132239) do
   add_index "study_samples", ["sample_uuid", "study_uuid", "current_to", "current_from"], :name => "sample_uuid_and_study_uuid_and_current_idx"
   add_index "study_samples", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
 
-  partition_table("study_samples", "PARTITION BY LIST (year(current_to)) (PARTITION current VALUES IN (NULL) ENGINE = InnoDB, PARTITION historic VALUES IN (2010,2011,2012) ENGINE = InnoDB)")
-
   create_table "submissions", :id => false, :force => true do |t|
     t.binary   "uuid",         :limit => 16, :null => false
     t.integer  "internal_id"
@@ -723,8 +681,6 @@ ActiveRecord::Schema.define(:version => 20120411132239) do
 
   add_index "submissions", ["current_to", "uuid", "current_from"], :name => "primary_partitioning_key", :unique => true
   add_index "submissions", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
-
-  partition_table("submissions", "PARTITION BY LIST (year(current_to)) (PARTITION current VALUES IN (NULL) ENGINE = InnoDB, PARTITION historic VALUES IN (2010,2011,2012) ENGINE = InnoDB)")
 
   create_table "submitted_assets", :primary_key => "dont_use_id", :force => true do |t|
     t.binary   "order_uuid", :limit => 16
@@ -754,8 +710,6 @@ ActiveRecord::Schema.define(:version => 20120411132239) do
 
   add_index "tags", ["current_to", "uuid", "current_from"], :name => "primary_partitioning_key", :unique => true
   add_index "tags", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
-
-  partition_table("tags", "PARTITION BY LIST (year(current_to)) (PARTITION current VALUES IN (NULL) ENGINE = InnoDB, PARTITION historic VALUES IN (2010,2011,2012) ENGINE = InnoDB)")
 
   create_table "wells", :id => false, :force => true do |t|
     t.binary   "uuid",                    :limit => 16,                               :null => false
@@ -792,8 +746,6 @@ ActiveRecord::Schema.define(:version => 20120411132239) do
 
   add_index "wells", ["current_to", "uuid", "current_from"], :name => "primary_partitioning_key", :unique => true
   add_index "wells", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx"
-
-  partition_table("wells", "PARTITION BY LIST (year(current_to)) (PARTITION current VALUES IN (NULL) ENGINE = InnoDB, PARTITION historic VALUES IN (2010,2011,2012) ENGINE = InnoDB)")
 
   create_view "current_aliquots", "select `aliquots`.`uuid` AS `uuid`,`aliquots`.`internal_id` AS `internal_id`,`aliquots`.`receptacle_uuid` AS `receptacle_uuid`,`aliquots`.`receptacle_internal_id` AS `receptacle_internal_id`,`aliquots`.`study_uuid` AS `study_uuid`,`aliquots`.`study_internal_id` AS `study_internal_id`,`aliquots`.`project_uuid` AS `project_uuid`,`aliquots`.`project_internal_id` AS `project_internal_id`,`aliquots`.`library_uuid` AS `library_uuid`,`aliquots`.`library_internal_id` AS `library_internal_id`,`aliquots`.`sample_uuid` AS `sample_uuid`,`aliquots`.`sample_internal_id` AS `sample_internal_id`,`aliquots`.`tag_uuid` AS `tag_uuid`,`aliquots`.`tag_internal_id` AS `tag_internal_id`,`aliquots`.`receptacle_type` AS `receptacle_type`,`aliquots`.`library_type` AS `library_type`,`aliquots`.`insert_size_from` AS `insert_size_from`,`aliquots`.`insert_size_to` AS `insert_size_to`,`aliquots`.`is_current` AS `is_current`,`aliquots`.`checked_at` AS `checked_at`,`aliquots`.`last_updated` AS `last_updated`,`aliquots`.`created` AS `created`,`aliquots`.`inserted_at` AS `inserted_at`,`aliquots`.`deleted_at` AS `deleted_at`,`aliquots`.`current_from` AS `current_from`,`aliquots`.`current_to` AS `current_to` from `aliquots` where isnull(`aliquots`.`current_to`)", :force => true do |v|
     v.column :uuid
