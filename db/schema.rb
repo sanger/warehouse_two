@@ -11,35 +11,39 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120424105423) do
+ActiveRecord::Schema.define(:version => 20120424141311) do
 
   create_table "aliquots", :id => false, :force => true do |t|
-    t.binary   "uuid",                   :limit => 16, :null => false
-    t.integer  "internal_id",                          :null => false
-    t.binary   "receptacle_uuid",        :limit => 16
+    t.binary   "uuid",                     :limit => 16, :null => false
+    t.integer  "internal_id",                            :null => false
+    t.binary   "receptacle_uuid",          :limit => 16
     t.integer  "receptacle_internal_id"
-    t.binary   "study_uuid",             :limit => 16
+    t.binary   "study_uuid",               :limit => 16
     t.integer  "study_internal_id"
-    t.binary   "project_uuid",           :limit => 16
+    t.binary   "project_uuid",             :limit => 16
     t.integer  "project_internal_id"
-    t.binary   "library_uuid",           :limit => 16
+    t.binary   "library_uuid",             :limit => 16
     t.integer  "library_internal_id"
-    t.binary   "sample_uuid",            :limit => 16
+    t.binary   "sample_uuid",              :limit => 16
     t.integer  "sample_internal_id"
-    t.binary   "tag_uuid",               :limit => 16
+    t.binary   "tag_uuid",                 :limit => 16
     t.integer  "tag_internal_id"
     t.string   "receptacle_type"
     t.string   "library_type"
     t.integer  "insert_size_from"
     t.integer  "insert_size_to"
-    t.boolean  "is_current",                           :null => false
-    t.datetime "checked_at",                           :null => false
+    t.boolean  "is_current",                             :null => false
+    t.datetime "checked_at",                             :null => false
     t.datetime "last_updated"
     t.datetime "created"
     t.datetime "inserted_at"
     t.datetime "deleted_at"
-    t.datetime "current_from",                         :null => false
+    t.datetime "current_from",                           :null => false
     t.datetime "current_to"
+    t.string   "bait_name"
+    t.string   "bait_target_species"
+    t.string   "bait_supplier_identifier"
+    t.string   "bait_supplier_name"
   end
 
   add_index "aliquots", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx", :unique => true
@@ -187,32 +191,36 @@ ActiveRecord::Schema.define(:version => 20120424105423) do
   add_index "billing_events", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx", :unique => true
 
   create_table "current_aliquots", :id => false, :force => true do |t|
-    t.binary   "uuid",                   :limit => 16, :null => false
-    t.integer  "internal_id",                          :null => false
-    t.binary   "receptacle_uuid",        :limit => 16
+    t.binary   "uuid",                     :limit => 16, :null => false
+    t.integer  "internal_id",                            :null => false
+    t.binary   "receptacle_uuid",          :limit => 16
     t.integer  "receptacle_internal_id"
-    t.binary   "study_uuid",             :limit => 16
+    t.binary   "study_uuid",               :limit => 16
     t.integer  "study_internal_id"
-    t.binary   "project_uuid",           :limit => 16
+    t.binary   "project_uuid",             :limit => 16
     t.integer  "project_internal_id"
-    t.binary   "library_uuid",           :limit => 16
+    t.binary   "library_uuid",             :limit => 16
     t.integer  "library_internal_id"
-    t.binary   "sample_uuid",            :limit => 16
+    t.binary   "sample_uuid",              :limit => 16
     t.integer  "sample_internal_id"
-    t.binary   "tag_uuid",               :limit => 16
+    t.binary   "tag_uuid",                 :limit => 16
     t.integer  "tag_internal_id"
     t.string   "receptacle_type"
     t.string   "library_type"
     t.integer  "insert_size_from"
     t.integer  "insert_size_to"
-    t.boolean  "is_current",                           :null => false
-    t.datetime "checked_at",                           :null => false
+    t.boolean  "is_current",                             :null => false
+    t.datetime "checked_at",                             :null => false
     t.datetime "last_updated"
     t.datetime "created"
     t.datetime "inserted_at"
     t.datetime "deleted_at"
-    t.datetime "current_from",                         :null => false
+    t.datetime "current_from",                           :null => false
     t.datetime "current_to"
+    t.string   "bait_name"
+    t.string   "bait_target_species"
+    t.string   "bait_supplier_identifier"
+    t.string   "bait_supplier_name"
   end
 
   add_index "current_aliquots", ["internal_id"], :name => "internal_id_idx", :unique => true
