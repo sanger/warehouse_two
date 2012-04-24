@@ -9,6 +9,8 @@ describe Study do
     :samples
   ]
 
+  it_behaves_like 'associated with roles'
+
   let(:json) do
     {
       :uuid => "11111111-2222-3333-4444-555555555555",

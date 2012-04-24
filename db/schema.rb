@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120424075525) do
+ActiveRecord::Schema.define(:version => 20120424105423) do
 
   create_table "aliquots", :id => false, :force => true do |t|
     t.binary   "uuid",                   :limit => 16, :null => false
@@ -1025,6 +1025,15 @@ ActiveRecord::Schema.define(:version => 20120424075525) do
 
   add_index "plates", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx", :unique => true
 
+  create_table "project_users", :force => true do |t|
+    t.integer "project_internal_id", :null => false
+    t.integer "project_uuid",        :null => false
+    t.string  "role",                :null => false
+    t.string  "login",               :null => false
+    t.string  "email"
+    t.string  "name"
+  end
+
   create_table "projects", :id => false, :force => true do |t|
     t.binary   "uuid",                    :limit => 16, :null => false
     t.integer  "internal_id",                           :null => false
@@ -1245,6 +1254,15 @@ ActiveRecord::Schema.define(:version => 20120424075525) do
   end
 
   add_index "study_samples", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx", :unique => true
+
+  create_table "study_users", :force => true do |t|
+    t.integer "study_internal_id", :null => false
+    t.integer "study_uuid",        :null => false
+    t.string  "role",              :null => false
+    t.string  "login",             :null => false
+    t.string  "email"
+    t.string  "name"
+  end
 
   create_table "submissions", :id => false, :force => true do |t|
     t.binary   "uuid",         :limit => 16, :null => false

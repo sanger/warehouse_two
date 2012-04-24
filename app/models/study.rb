@@ -1,5 +1,6 @@
 class Study < ActiveRecord::Base
   include ResourceTools
+  extend AssociatedWithRoles
 
   json do
     ignore(
