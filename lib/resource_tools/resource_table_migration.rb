@@ -11,4 +11,10 @@ module ResourceTools::ResourceTableMigration
     connection.columns(table).any? { |c| column.to_s == c.name.to_s }
   end
   private :has_column?
+
+  def change_resource_table(name, options = {}, &block)
+    change_table(name, options, &block)
+    change_table("current_#{name}", options, &block)
+  end
+  private :change_resource_table
 end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120421202320) do
+ActiveRecord::Schema.define(:version => 20120424075525) do
 
   create_table "aliquots", :id => false, :force => true do |t|
     t.binary   "uuid",                   :limit => 16, :null => false
@@ -736,6 +736,9 @@ ActiveRecord::Schema.define(:version => 20120421202320) do
     t.datetime "deleted_at"
     t.datetime "current_from",                                 :null => false
     t.datetime "current_to"
+    t.string   "data_release_timing"
+    t.string   "data_release_delay_period"
+    t.string   "data_release_delay_reason"
   end
 
   add_index "current_studies", ["internal_id"], :name => "internal_id_idx", :unique => true
@@ -1217,6 +1220,9 @@ ActiveRecord::Schema.define(:version => 20120421202320) do
     t.datetime "deleted_at"
     t.datetime "current_from",                                 :null => false
     t.datetime "current_to"
+    t.string   "data_release_timing"
+    t.string   "data_release_delay_period"
+    t.string   "data_release_delay_reason"
   end
 
   add_index "studies", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx", :unique => true
