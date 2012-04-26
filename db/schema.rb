@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120424141311) do
+ActiveRecord::Schema.define(:version => 20120425071317) do
 
   create_table "aliquots", :id => false, :force => true do |t|
     t.binary   "uuid",                     :limit => 16, :null => false
@@ -224,6 +224,9 @@ ActiveRecord::Schema.define(:version => 20120424141311) do
   end
 
   add_index "current_aliquots", ["internal_id"], :name => "internal_id_idx", :unique => true
+  add_index "current_aliquots", ["receptacle_internal_id"], :name => "receptacle_internal_id_idx"
+  add_index "current_aliquots", ["sample_internal_id", "receptacle_internal_id"], :name => "sample_internal_id_receptacle_internal_id_idx"
+  add_index "current_aliquots", ["study_internal_id", "receptacle_internal_id"], :name => "study_internal_id_receptacle_internal_id_idx"
   add_index "current_aliquots", ["uuid"], :name => "uuid_idx", :unique => true
 
   create_table "current_asset_audits", :id => false, :force => true do |t|
@@ -267,6 +270,8 @@ ActiveRecord::Schema.define(:version => 20120424141311) do
     t.datetime "current_to"
   end
 
+  add_index "current_asset_links", ["ancestor_internal_id", "descendant_internal_id", "descendant_type"], :name => "ancestor_internal_id_descendant_internal_id_descendant_type_idx"
+  add_index "current_asset_links", ["descendant_internal_id", "ancestor_internal_id", "ancestor_type"], :name => "descendant_internal_id_ancestor_internal_id_ancestor_type_idx"
   add_index "current_asset_links", ["uuid"], :name => "uuid_idx", :unique => true
 
   create_table "current_batch_requests", :id => false, :force => true do |t|
@@ -294,6 +299,8 @@ ActiveRecord::Schema.define(:version => 20120424141311) do
   end
 
   add_index "current_batch_requests", ["internal_id"], :name => "internal_id_idx", :unique => true
+  add_index "current_batch_requests", ["source_asset_internal_id", "request_internal_id"], :name => "source_asset_internal_id_request_internal_id_idx"
+  add_index "current_batch_requests", ["target_asset_internal_id", "batch_uuid"], :name => "target_asset_internal_id_batch_uuid_idx"
   add_index "current_batch_requests", ["uuid"], :name => "uuid_idx", :unique => true
 
   create_table "current_batches", :id => false, :force => true do |t|
@@ -317,7 +324,9 @@ ActiveRecord::Schema.define(:version => 20120424141311) do
     t.datetime "current_to"
   end
 
+  add_index "current_batches", ["created_by"], :name => "created_by_idx"
   add_index "current_batches", ["internal_id"], :name => "internal_id_idx", :unique => true
+  add_index "current_batches", ["state"], :name => "state_idx"
   add_index "current_batches", ["uuid"], :name => "uuid_idx", :unique => true
 
   create_table "current_billing_events", :id => false, :force => true do |t|
@@ -443,6 +452,7 @@ ActiveRecord::Schema.define(:version => 20120424141311) do
   end
 
   add_index "current_library_tubes", ["internal_id"], :name => "internal_id_idx", :unique => true
+  add_index "current_library_tubes", ["name"], :name => "name_idx"
   add_index "current_library_tubes", ["uuid"], :name => "uuid_idx", :unique => true
 
   create_table "current_multiplexed_library_tubes", :id => false, :force => true do |t|
@@ -469,6 +479,7 @@ ActiveRecord::Schema.define(:version => 20120424141311) do
   end
 
   add_index "current_multiplexed_library_tubes", ["internal_id"], :name => "internal_id_idx", :unique => true
+  add_index "current_multiplexed_library_tubes", ["name"], :name => "name_idx"
   add_index "current_multiplexed_library_tubes", ["uuid"], :name => "uuid_idx", :unique => true
 
   create_table "current_orders", :id => false, :force => true do |t|
@@ -517,6 +528,7 @@ ActiveRecord::Schema.define(:version => 20120424141311) do
   end
 
   add_index "current_plate_purposes", ["internal_id"], :name => "internal_id_idx", :unique => true
+  add_index "current_plate_purposes", ["name"], :name => "name_idx"
   add_index "current_plate_purposes", ["uuid"], :name => "uuid_idx", :unique => true
 
   create_table "current_plates", :id => false, :force => true do |t|
@@ -541,6 +553,7 @@ ActiveRecord::Schema.define(:version => 20120424141311) do
     t.datetime "current_to"
   end
 
+  add_index "current_plates", ["inserted_at"], :name => "inserted_at_idx"
   add_index "current_plates", ["internal_id"], :name => "internal_id_idx", :unique => true
   add_index "current_plates", ["uuid"], :name => "uuid_idx", :unique => true
 
@@ -644,6 +657,9 @@ ActiveRecord::Schema.define(:version => 20120424141311) do
   end
 
   add_index "current_requests", ["internal_id"], :name => "internal_id_idx", :unique => true
+  add_index "current_requests", ["study_internal_id"], :name => "study_internal_id_idx"
+  add_index "current_requests", ["target_asset_internal_id", "source_asset_internal_id", "target_asset_type"], :name => "assets_via_internal_id_idx"
+  add_index "current_requests", ["target_asset_uuid", "source_asset_internal_id"], :name => "target_asset_uuid_source_asset_internal_id_idx"
   add_index "current_requests", ["uuid"], :name => "uuid_idx", :unique => true
 
   create_table "current_sample_tubes", :id => false, :force => true do |t|
@@ -710,7 +726,9 @@ ActiveRecord::Schema.define(:version => 20120424141311) do
     t.datetime "current_to"
   end
 
+  add_index "current_samples", ["accession_number"], :name => "accession_number_idx"
   add_index "current_samples", ["internal_id"], :name => "internal_id_idx", :unique => true
+  add_index "current_samples", ["name"], :name => "name_idx"
   add_index "current_samples", ["uuid"], :name => "uuid_idx", :unique => true
 
   create_table "current_studies", :id => false, :force => true do |t|
@@ -749,7 +767,9 @@ ActiveRecord::Schema.define(:version => 20120424141311) do
     t.string   "data_release_delay_reason"
   end
 
+  add_index "current_studies", ["accession_number"], :name => "accession_number_idx"
   add_index "current_studies", ["internal_id"], :name => "internal_id_idx", :unique => true
+  add_index "current_studies", ["name"], :name => "name_idx"
   add_index "current_studies", ["uuid"], :name => "uuid_idx", :unique => true
 
   create_table "current_study_samples", :id => false, :force => true do |t|
@@ -770,6 +790,8 @@ ActiveRecord::Schema.define(:version => 20120424141311) do
   end
 
   add_index "current_study_samples", ["internal_id"], :name => "internal_id_idx", :unique => true
+  add_index "current_study_samples", ["sample_internal_id", "study_internal_id"], :name => "sample_internal_id_study_internal_id_idx"
+  add_index "current_study_samples", ["sample_uuid", "study_internal_id"], :name => "sample_uuid_study_internal_id_idx"
   add_index "current_study_samples", ["uuid"], :name => "uuid_idx", :unique => true
 
   create_table "current_submissions", :id => false, :force => true do |t|
@@ -810,6 +832,7 @@ ActiveRecord::Schema.define(:version => 20120424141311) do
   end
 
   add_index "current_tags", ["internal_id"], :name => "internal_id_idx", :unique => true
+  add_index "current_tags", ["map_id", "internal_id"], :name => "map_id_internal_id_idx"
   add_index "current_tags", ["uuid"], :name => "uuid_idx", :unique => true
 
   create_table "current_wells", :id => false, :force => true do |t|
@@ -845,7 +868,9 @@ ActiveRecord::Schema.define(:version => 20120424141311) do
     t.datetime "current_to"
   end
 
+  add_index "current_wells", ["inserted_at"], :name => "inserted_at_idx"
   add_index "current_wells", ["internal_id"], :name => "internal_id_idx", :unique => true
+  add_index "current_wells", ["plate_barcode", "plate_barcode_prefix", "map"], :name => "plate_barcode_plate_barcode_prefix_map_idx"
   add_index "current_wells", ["uuid"], :name => "uuid_idx", :unique => true
 
   create_table "events", :id => false, :force => true do |t|
