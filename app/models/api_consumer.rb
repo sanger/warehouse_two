@@ -41,6 +41,7 @@ class ApiConsumer
   # Friendly wrapper around the client for retrieving pages.  Do not use directly, instead use
   # ApiConsumer#each or ApiConsumer#each_page
   class Paging
+    include Logging
     include Wrapper
     include Enumerable
 
@@ -51,7 +52,9 @@ class ApiConsumer
     def each(range = InfiniteSequence.new, &block)
       catch(:end_of_results) do
         range.each do |page|
-          yield(ActiveSupport::JSON.decode(get(page)).map(&method(:create)), page)
+          body = get(page)
+          yield(ActiveSupport::JSON.decode(body).map(&method(:create)), page)
+          debug { "Handled body #{body.inspect}" }
         end
       end
     end
@@ -69,6 +72,7 @@ class ApiConsumer
   # Friendly wrapper around the client for retrieving records by UUID.  Do not use directly, instead use
   # ApiConsumer#for_uuid.
   class Singular
+    include Logging
     include Wrapper
     include Enumerable
 
@@ -79,7 +83,9 @@ class ApiConsumer
 
     def each(&block)
       @uuids.each do |uuid|
-        yield(create(ActiveSupport::JSON.decode(get(uuid))))
+        body = get(uuid)
+        yield(create(ActiveSupport::JSON.decode(body)))
+        debug { "Handled body #{body.inspect}" }
       end
     end
 

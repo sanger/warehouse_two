@@ -1,6 +1,8 @@
 require 'amqp'
 
 class AmqpConsumer
+  include Logging
+
   delegate :url, :queue, :prefetch, :requeue, :reconnect_interval, :to => :'WarehouseTwo::Application.config.amqp'
   alias_method(:requeue?, :requeue)
 
@@ -81,15 +83,4 @@ class AmqpConsumer
     end
   end
   private :install_show_stopper_into
-
-  [ :debug, :info, :error ].each do |level|
-    line = __LINE__ + 1
-    class_eval(%Q{
-      def #{level}(&message)
-        Rails.logger.#{level} {
-          "\#{self.class.name}: \#{message.call}".tap { |m| puts m }
-        }
-      end
-    }, __FILE__, line)
-  end
 end

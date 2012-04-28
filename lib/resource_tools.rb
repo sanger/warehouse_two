@@ -20,6 +20,21 @@ module ResourceTools
 
     # Maintain the flow of current_from and current_to.
     sequence_of_dates_over(:current_from, :current_to)
+
+    # Before saving store whether this is a new record.  This allows us to determine whether we have inserted a new
+    # row, which we use in the checks of whether the AmqpConsumer is working: if the ApiConsumer inserts a row then
+    # we're probably not capturing all of the right messages.
+    before_save :remember_if_we_are_a_new_record
+  end
+
+  def remember_if_we_are_a_new_record
+    @inserted_record = new_record?
+    true
+  end
+  private :remember_if_we_are_a_new_record
+
+  def inserted_record?
+    @inserted_record
   end
 
   def related

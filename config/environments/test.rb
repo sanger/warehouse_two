@@ -9,6 +9,7 @@ WarehouseTwo::Application.configure do
   config.action_dispatch.best_standards_support = :builtin
   config.assets.compress = false
   config.assets.debug = true
+  config.log_level = :warn
 
   # Here is some ActiveRecord configuration that is useful
   config.active_record.mass_assignment_sanitizer         = :strict

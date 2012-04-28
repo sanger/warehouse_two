@@ -30,6 +30,7 @@ class Load < Thor
     say "Loading pages for #{model_name} ..."
     client_for(model_name).each_page(rangify(pages)) do |page, index|
       say "Page #{index} with #{page.size} records handled"
+      report_inserted_records(page)
     end
     say "Pages loaded successfully"
   end
@@ -39,6 +40,7 @@ class Load < Thor
     say "Loading individual UUIDs for #{model_name} ..."
     client_for(model_name).for_uuid(uuids).each do |record|
       say "Record for UUID #{record.uuid} loaded"
+      report_inserted_records(record)
     end
     say "All UUIDs loaded"
   end
@@ -55,6 +57,18 @@ class Load < Thor
       values.map(&:to_range).map(&:to_a).flatten
     end
     private :rangify
+
+    # When the AMQP consumer is running the API consumer should never insert records, as they should
+    # be immediately captured by the the message queue.  If there are records inserted by the API consumer
+    # then this is an indication that the ActiveRecord observer needs updating.
+    def report_inserted_records(records)
+      inserted = Array(records).select(&:inserted_record?)
+      return if inserted.empty?
+      debug_log = inserted.map { |record| "#{record.class.name}:#{record.uuid}" }
+      say("WARNING! The following records were inserted: #{debug_log.join(', ')}")
+      say("WARNING! If the AMQP consumer is running then this should not have happened, so check what's being sent")
+    end
+    private :report_inserted_records
   end
 end
 
