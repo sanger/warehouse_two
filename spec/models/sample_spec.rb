@@ -3,6 +3,7 @@ require 'spec_helper'
 describe Sample do
   it_behaves_like 'a resource'
   it_behaves_like 'maps JSON fields', {
+    :id                          => :internal_id,
     :sample_common_name          => :common_name,
     :sample_description          => :description,
     :sample_ebi_accession_number => :accession_number,
@@ -24,7 +25,7 @@ describe Sample do
   let(:json) do
     {
       :uuid                        => "11111111-2222-3333-4444-555555555555",
-      :internal_id                 => 1,
+      :id                          => 1,
       :name                        => "name",
       :reference_genome            => "reference genome",
       :organism                    => "organism",

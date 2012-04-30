@@ -13,6 +13,7 @@ class Sample < ActiveRecord::Base
     )
 
     translate(
+      :id                          => :internal_id,
       :sample_common_name          => :common_name,
       :sample_description          => :description,
       :sample_ebi_accession_number => :accession_number,
