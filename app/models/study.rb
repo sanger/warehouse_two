@@ -1,6 +1,7 @@
 class Study < ActiveRecord::Base
   include ResourceTools
   extend AssociatedWithRoles
+  has_role(:data_access_contact)
 
   json do
     ignore(
@@ -9,8 +10,9 @@ class Study < ActiveRecord::Base
       :samples
     )
     translate(
-      :id          => :internal_id,
-      :sac_sponsor => :faculty_sponsor
+      :id                    => :internal_id,
+      :sac_sponsor           => :faculty_sponsor,
+      :"data access contact" => :data_access_contact
     )
   end
 end

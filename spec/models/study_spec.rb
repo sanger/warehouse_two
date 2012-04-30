@@ -9,7 +9,20 @@ describe Study do
     :samples
   ]
 
-  it_behaves_like 'associated with roles'
+  it_behaves_like 'associated with roles' do
+    context 'additional role' do
+      before(:each) do
+        described_class.create_or_update_from_json(timestamped_json.merge(:'data access contact' => [ user_with_role('data access contact') ]))
+      end
+
+      it 'maintains users' do
+        found = described_class::User.all(:conditions => { :role => 'data_access_contact' }).map do |user|
+          Hash[[:name, :email, :login].map { |a| [a,user[a]] }]
+        end
+        found.should == [ user_with_role('data access contact') ]
+      end
+    end
+  end
 
   let(:json) do
     {
