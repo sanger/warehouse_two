@@ -22,7 +22,7 @@ class AmqpConsumer
     ActiveRecord::Base.transaction do
       payload_name.classify.constantize.create_or_update_from_json(json[payload_name]).tap do |record|
         metadata.ack  # Acknowledge receipt!
-        debug { "#{record.inserted_record? ? 'Created' : 'Updated'} #{record.class.name}(#{record.id})" }
+        debug { "AMQP Consumer (#{metadata.delivery_tag.inspect}:#{metadata.routing_key.inspect}): #{record.inserted_record? ? 'Created' : 'Updated'} #{record.class.name}(#{record.id})" }
       end
     end
   end
@@ -65,8 +65,8 @@ class AmqpConsumer
             raise
           end
         rescue NameError, StandardError => exception
-          debug { "AMQP Consumer (#{metadata.delivery_tag.inspect}): #{exception.message}" }
-          debug { "AMQP Consumer (#{metadata.delivery_tag.inspect}): #{payload}" }
+          debug { "AMQP Consumer (#{metadata.delivery_tag.inspect}:#{metadata.routing_key.inspect}): #{exception.message}" }
+          debug { "AMQP Consumer (#{metadata.delivery_tag.inspect}:#{metadata.routing_key.inspect}): #{payload}" }
         end
       end
     end
