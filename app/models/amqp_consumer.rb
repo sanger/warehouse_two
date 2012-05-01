@@ -22,7 +22,7 @@ class AmqpConsumer
     ActiveRecord::Base.transaction do
       payload_name.classify.constantize.create_or_update_from_json(json[payload_name]).tap do |record|
         metadata.ack  # Acknowledge receipt!
-        debug { "Created #{record.class.name}(#{record.id})" }
+        debug { "#{record.inserted_record? ? 'Created' : 'Updated'} #{record.class.name}(#{record.id})" }
       end
     end
   end
