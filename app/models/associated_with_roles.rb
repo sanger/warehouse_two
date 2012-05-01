@@ -59,7 +59,7 @@ module AssociatedWithRoles
         alias_attribute(:uuid, "#{association_name}_uuid")
         alias_attribute(:internal_id, "#{association_name}_internal_id")
 
-        scope :owned_by, lambda { |record| where("#{association_name}_uuid", record.uuid) }
+        scope :owned_by, lambda { |record| where("#{association_name}_uuid" => record.uuid) }
       end
     end
   end

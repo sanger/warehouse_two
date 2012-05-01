@@ -30,6 +30,7 @@ shared_examples_for 'associated with roles' do
     end
   end
 
+  let(:additional_roles) { [] }
   let(:originally_created_at) { Time.parse('2012-Mar-16 12:06') }
   let(:timestamped_json) { json.merge(:created_at => originally_created_at, :updated_at => originally_created_at) }
 
@@ -55,7 +56,8 @@ shared_examples_for 'associated with roles' do
   end
 
   context 'for new record' do
-    let(:roles) { Hash[[ :manager, :follower, :administrator ].map { |role| [role,[user_with_role(role)]] }] }
+    let(:all_role_names) { [ :manager, :follower, :administrator ].concat(additional_roles) }
+    let(:roles) { Hash[all_role_names.map { |role| [role,[user_with_role(role)]] }] }
 
     before(:each) do
       described_class.create_or_update_from_json(timestamped_json.merge(roles))

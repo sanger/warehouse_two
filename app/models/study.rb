@@ -10,9 +10,8 @@ class Study < ActiveRecord::Base
       :samples
     )
     translate(
-      :id                    => :internal_id,
-      :sac_sponsor           => :faculty_sponsor,
-      :"data access contact" => :data_access_contact
+      :id          => :internal_id,
+      :sac_sponsor => :faculty_sponsor
     )
   end
 end
