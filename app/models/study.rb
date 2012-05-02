@@ -2,6 +2,7 @@ class Study < ActiveRecord::Base
   include ResourceTools
   extend AssociatedWithRoles
   has_role(:data_access_contact)
+  has_role(:slf_manager)
 
   json do
     ignore(

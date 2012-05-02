@@ -63,9 +63,12 @@ module ResourceTools::SequenceOfDates
       scope :ordered_future, order("#{from_field} ASC")
       scope :ordered_history, order("#{from_field} DESC")
 
-      scope :records_after,  lambda { |datetime| where("#{from_field} >= ?", datetime) }
-      scope :current_after,  lambda { |datetime| where("#{from_field} >= ?", datetime).ordered_future }
-      scope :current_before, lambda { |datetime| where("#{to_field}   <  ?", datetime).ordered_history }
+      # The date range for a record is "[current_from,current_to)".  That is, records are current from their
+      # current_from date, all the way to, but not including, their current_to date.  This is because there
+      # could be a record that has yet to be created that is current for now.
+      scope :records_after,  lambda { |datetime| where("#{from_field} >  ?", datetime) }
+      scope :current_after,  lambda { |datetime| where("#{from_field} >  ?", datetime).ordered_future }
+      scope :current_before, lambda { |datetime| where("#{to_field}   <= ?", datetime).ordered_history }
 
       scope :leading_from, lambda { |r|
         not_record(r).where(

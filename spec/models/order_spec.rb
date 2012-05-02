@@ -65,9 +65,9 @@ describe Order do
 
     context 'and changes them' do
       after(:each) do
-        updated_json = json.dup
-        updated_json[:asset_uuids] = @asset_uuids
-        described_class.create_or_update_from_json(updated_json)
+        described_class.create_or_update_from_json(
+          json.dup.merge(:asset_uuids => @asset_uuids, :updated_at => '2012-03-12 09:35:00')
+        )
 
         described_class.count.should == 2
         SubmittedAsset.for_order_uuid('11111111-2222-3333-4444-555555555555').map(&:asset_uuid).sort.should == @asset_uuids.sort

@@ -31,8 +31,8 @@ shared_examples_for 'associated with roles' do
   end
 
   let(:additional_roles) { [] }
-  let(:originally_created_at) { Time.parse('2012-Mar-16 12:06') }
-  let(:timestamped_json) { json.merge(:created_at => originally_created_at, :updated_at => originally_created_at) }
+  let(:originally_created_at) { Time.parse('2012-Mar-16 15:06') }
+  let(:timestamped_json) { json.merge(:created_at => originally_created_at, :updated_at => originally_created_at+1.day) }
 
   context 'for an existing record' do
     let(:roles)         { { :manager => [ user_with_role(:manager, 1), user_with_role(:manager, 2) ] } }
@@ -43,13 +43,13 @@ shared_examples_for 'associated with roles' do
     end
 
     context 'where the update is classed current it does' do
-      let(:updated_at) { originally_created_at + 1.day }
+      let(:updated_at) { originally_created_at + (1.5).day }
       let(:expected_roles) { updated_roles }
       it_behaves_like 'maintains roles correctly'
     end
 
     context 'where the update is legacy does not' do
-      let(:updated_at) { originally_created_at - 1.day }
+      let(:updated_at) { originally_created_at + 6.hours }
       let(:expected_roles) { roles }
       it_behaves_like 'maintains roles correctly'
     end

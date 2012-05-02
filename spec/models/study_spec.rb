@@ -10,7 +10,7 @@ describe Study do
   ]
 
   it_behaves_like 'associated with roles' do
-    let(:additional_roles) { [ :data_access_contact ] }
+    let(:additional_roles) { [ :data_access_contact, :slf_manager ] }
   end
 
   let(:json) do

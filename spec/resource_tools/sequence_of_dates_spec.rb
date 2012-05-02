@@ -69,6 +69,26 @@ describe ResourceTools::SequenceOfDates do
     end
   end
 
+  context 'with identical timestamps' do
+    (2..3).each do |number_of_records|
+      context "with #{number_of_records} records" do
+        before(:each) do
+          (1..number_of_records).each do |_|
+            subject.create!(:grouping => 2, :last_updated => now)
+          end
+        end
+
+        it "has #{number_of_records} rows in the table" do
+          subject.count.should == number_of_records
+        end
+
+        it 'the last record inserted should be current' do
+          subject.last.should == subject.current.first
+        end
+      end
+    end
+  end
+
   # Regardless of the order in which the records are created the result should always be the same
   shared_examples_for 'maintains order' do |number_of_records,last_record_state = :should|
     before(:each) do
