@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120502181204) do
+ActiveRecord::Schema.define(:version => 20120503150049) do
 
   create_table "aliquots", :id => false, :force => true do |t|
     t.binary   "uuid",                     :limit => 16, :null => false
@@ -866,6 +866,7 @@ ActiveRecord::Schema.define(:version => 20120502181204) do
     t.datetime "deleted_at"
     t.datetime "current_from",                                                         :null => false
     t.datetime "current_to"
+    t.string   "display_name",            :limit => 15
   end
 
   add_index "current_wells", ["inserted_at"], :name => "inserted_at_idx"
@@ -1374,6 +1375,7 @@ ActiveRecord::Schema.define(:version => 20120502181204) do
     t.datetime "deleted_at"
     t.datetime "current_from",                                                         :null => false
     t.datetime "current_to"
+    t.string   "display_name",            :limit => 15
   end
 
   add_index "wells", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx", :unique => true
@@ -1412,6 +1414,6 @@ ActiveRecord::Schema.define(:version => 20120502181204) do
   after_trigger("BEGIN\n          IF NEW.current_to IS NULL OR NEW.deleted_at IS NOT NULL THEN BEGIN\n            DELETE FROM current_study_samples WHERE uuid=NEW.uuid;\n          END ; END IF ;\n          IF NEW.current_to IS NULL THEN BEGIN\n            INSERT INTO current_study_samples(`uuid`,`internal_id`,`sample_internal_id`,`sample_uuid`,`study_internal_id`,`study_uuid`,`is_current`,`checked_at`,`last_updated`,`created`,`inserted_at`,`deleted_at`,`current_from`,`current_to`) VALUES(NEW.uuid,NEW.internal_id,NEW.sample_internal_id,NEW.sample_uuid,NEW.study_internal_id,NEW.study_uuid,NEW.is_current,NEW.checked_at,NEW.last_updated,NEW.created,NEW.inserted_at,NEW.deleted_at,NEW.current_from,NEW.current_to);\n          END ; END IF ;\n        END", {:name=>"maintain_current_study_samples_trigger", :event=>:insert, :on=>"study_samples"})
   after_trigger("BEGIN\n          IF NEW.current_to IS NULL OR NEW.deleted_at IS NOT NULL THEN BEGIN\n            DELETE FROM current_submissions WHERE uuid=NEW.uuid;\n          END ; END IF ;\n          IF NEW.current_to IS NULL THEN BEGIN\n            INSERT INTO current_submissions(`uuid`,`internal_id`,`is_current`,`checked_at`,`last_updated`,`created`,`created_by`,`state`,`message`,`inserted_at`,`deleted_at`,`current_from`,`current_to`) VALUES(NEW.uuid,NEW.internal_id,NEW.is_current,NEW.checked_at,NEW.last_updated,NEW.created,NEW.created_by,NEW.state,NEW.message,NEW.inserted_at,NEW.deleted_at,NEW.current_from,NEW.current_to);\n          END ; END IF ;\n        END", {:name=>"maintain_current_submissions_trigger", :event=>:insert, :on=>"submissions"})
   after_trigger("BEGIN\n          IF NEW.current_to IS NULL OR NEW.deleted_at IS NOT NULL THEN BEGIN\n            DELETE FROM current_tags WHERE uuid=NEW.uuid;\n          END ; END IF ;\n          IF NEW.current_to IS NULL THEN BEGIN\n            INSERT INTO current_tags(`uuid`,`internal_id`,`expected_sequence`,`map_id`,`tag_group_name`,`tag_group_uuid`,`tag_group_internal_id`,`is_current`,`checked_at`,`last_updated`,`created`,`inserted_at`,`deleted_at`,`current_from`,`current_to`) VALUES(NEW.uuid,NEW.internal_id,NEW.expected_sequence,NEW.map_id,NEW.tag_group_name,NEW.tag_group_uuid,NEW.tag_group_internal_id,NEW.is_current,NEW.checked_at,NEW.last_updated,NEW.created,NEW.inserted_at,NEW.deleted_at,NEW.current_from,NEW.current_to);\n          END ; END IF ;\n        END", {:name=>"maintain_current_tags_trigger", :event=>:insert, :on=>"tags"})
-  after_trigger("BEGIN\n          IF NEW.current_to IS NULL OR NEW.deleted_at IS NOT NULL THEN BEGIN\n            DELETE FROM current_wells WHERE uuid=NEW.uuid;\n          END ; END IF ;\n          IF NEW.current_to IS NULL THEN BEGIN\n            INSERT INTO current_wells(`uuid`,`internal_id`,`name`,`map`,`plate_barcode`,`plate_barcode_prefix`,`sample_uuid`,`sample_internal_id`,`sample_name`,`gel_pass`,`concentration`,`current_volume`,`buffer_volume`,`requested_volume`,`picked_volume`,`pico_pass`,`is_current`,`checked_at`,`last_updated`,`created`,`plate_uuid`,`measured_volume`,`sequenom_count`,`gender_markers`,`genotyping_status`,`genotyping_snp_plate_id`,`inserted_at`,`deleted_at`,`current_from`,`current_to`) VALUES(NEW.uuid,NEW.internal_id,NEW.name,NEW.map,NEW.plate_barcode,NEW.plate_barcode_prefix,NEW.sample_uuid,NEW.sample_internal_id,NEW.sample_name,NEW.gel_pass,NEW.concentration,NEW.current_volume,NEW.buffer_volume,NEW.requested_volume,NEW.picked_volume,NEW.pico_pass,NEW.is_current,NEW.checked_at,NEW.last_updated,NEW.created,NEW.plate_uuid,NEW.measured_volume,NEW.sequenom_count,NEW.gender_markers,NEW.genotyping_status,NEW.genotyping_snp_plate_id,NEW.inserted_at,NEW.deleted_at,NEW.current_from,NEW.current_to);\n          END ; END IF ;\n        END", {:name=>"maintain_current_wells_trigger", :event=>:insert, :on=>"wells"})
+  after_trigger("BEGIN\n          IF NEW.current_to IS NULL OR NEW.deleted_at IS NOT NULL THEN BEGIN\n            DELETE FROM current_wells WHERE uuid=NEW.uuid;\n          END ; END IF ;\n          IF NEW.current_to IS NULL THEN BEGIN\n            INSERT INTO current_wells(`uuid`,`internal_id`,`name`,`map`,`plate_barcode`,`plate_barcode_prefix`,`sample_uuid`,`sample_internal_id`,`sample_name`,`gel_pass`,`concentration`,`current_volume`,`buffer_volume`,`requested_volume`,`picked_volume`,`pico_pass`,`is_current`,`checked_at`,`last_updated`,`created`,`plate_uuid`,`measured_volume`,`sequenom_count`,`gender_markers`,`genotyping_status`,`genotyping_snp_plate_id`,`inserted_at`,`deleted_at`,`current_from`,`current_to`,`display_name`) VALUES(NEW.uuid,NEW.internal_id,NEW.name,NEW.map,NEW.plate_barcode,NEW.plate_barcode_prefix,NEW.sample_uuid,NEW.sample_internal_id,NEW.sample_name,NEW.gel_pass,NEW.concentration,NEW.current_volume,NEW.buffer_volume,NEW.requested_volume,NEW.picked_volume,NEW.pico_pass,NEW.is_current,NEW.checked_at,NEW.last_updated,NEW.created,NEW.plate_uuid,NEW.measured_volume,NEW.sequenom_count,NEW.gender_markers,NEW.genotyping_status,NEW.genotyping_snp_plate_id,NEW.inserted_at,NEW.deleted_at,NEW.current_from,NEW.current_to,NEW.display_name);\n          END ; END IF ;\n        END", {:name=>"maintain_current_wells_trigger", :event=>:insert, :on=>"wells"})
 
 end

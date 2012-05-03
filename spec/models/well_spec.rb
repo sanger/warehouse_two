@@ -11,6 +11,7 @@ describe Well do
       :map                     => "map",
       :plate_barcode           => "plate barcode",
       :plate_barcode_prefix    => "pb",
+      :display_name            => "pb123456k",
       :sample_uuid             => "22222222-3333-4444-5555-666666666666",
       :sample_internal_id      => 2,
       :sample_name             => "sample name",
