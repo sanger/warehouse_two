@@ -3,7 +3,14 @@ require 'amqp'
 class AmqpConsumer
   include Logging
 
-  delegate :url, :queue, :prefetch, :requeue, :reconnect_interval, :to => :'WarehouseTwo::Application.config.amqp'
+  # Override the logging behaviour so that we have consistent message format
+  def debug(metadata = nil, &message)
+    identifier = metadata.present? ? "AMQP Consumer (#{metadata.delivery_tag.inspect}:#{metadata.routing_key.inspect}): " : ""
+    super() { "#{identifier}#{message.call}" }
+  end
+  private :debug
+
+  delegate :url, :queue, :deadletter, :prefetch, :requeue, :reconnect_interval, :to => :'WarehouseTwo::Application.config.amqp'
   alias_method(:requeue?, :requeue)
 
   def run
@@ -12,7 +19,7 @@ class AmqpConsumer
     AMQP.start(url) do |client, opened_ok|
       install_show_stopper_into(client)
       setup_error_handling(client)
-      build_client(client)
+      build_client(client, prepare_deadlettering(client))
     end
   end
 
@@ -22,7 +29,7 @@ class AmqpConsumer
     ActiveRecord::Base.transaction do
       payload_name.classify.constantize.create_or_update_from_json(json[payload_name]).tap do |record|
         metadata.ack  # Acknowledge receipt!
-        debug { "AMQP Consumer (#{metadata.delivery_tag.inspect}:#{metadata.routing_key.inspect}): #{record.inserted_record? ? 'Created' : 'Updated'} #{record.class.name}(#{record.id})" }
+        debug(metadata) { "#{record.inserted_record? ? 'Created' : 'Updated'} #{record.class.name}(#{record.id})" }
       end
     end
   end
@@ -46,7 +53,23 @@ class AmqpConsumer
   end
   private :setup_error_handling
 
-  def build_client(client)
+  # Returns a callback that can be used to dead letter any messages.
+  def prepare_deadlettering(client)
+    channel  = AMQP::Channel.new(client)
+    exchange = channel.direct(deadletter.exchange, :passive => true)
+    lambda do |metadata, payload, exception|
+      debug { "Dead lettering due to #{exception.message}" }
+
+      exchange.publish({
+        :routing_key => metadata.routing_key,
+        :exception   => { :message => exception.message, :backtrace => exception.backtrace },
+        :message     => payload
+      }, :routing_key => "#{deadletter.routing_key}.#{metadata.routing_key}")
+    end
+  end
+  private :prepare_deadlettering
+
+  def build_client(client, deadletter)
     info { "Connecting to queue #{queue.inspect} ..." }
 
     channel = AMQP::Channel.new(client)
@@ -60,13 +83,21 @@ class AmqpConsumer
           begin
             received(metadata, payload)
           rescue => exception
-            # The system is setup to deadletter rejected messages, so simply reject it here with no re-queueing
-            channel.reject(metadata.delivery_tag, requeue?)
-            raise
+            debug(metadata) { "failed!" }
+
+            # If this is the first time we've seen this message then we requeue.  If it's not to be requeued
+            # then we deadletter it ourselves rather than using RabbitMQ's deadletter queueing which seems
+            # unreliable for some reason.  If the message is not requeued then we need to record the error.
+            requeue_message = requeue? && !metadata.redelivered?
+            channel.reject(metadata.delivery_tag, requeue_message)
+            unless requeue_message
+              deadletter.call(metadata, payload, exception)
+              raise
+            end
           end
         rescue NameError, StandardError => exception
-          debug { "AMQP Consumer (#{metadata.delivery_tag.inspect}:#{metadata.routing_key.inspect}): #{exception.message}" }
-          debug { "AMQP Consumer (#{metadata.delivery_tag.inspect}:#{metadata.routing_key.inspect}): #{payload}" }
+          debug(metadata) { exception.message }
+          debug(metadata) { payload }
         end
       end
     end
