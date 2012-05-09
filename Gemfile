@@ -2,7 +2,6 @@ source :rubygems
 
 gem "rails", "3.2.2"
 gem "mysql2"
-gem "cbrunnkvist-psd_logger"
 gem "amqp", "~> 0.9.2"
 gem "hashie", "~> 1.2.0"
 gem "rest-client"
@@ -25,4 +24,8 @@ group :development do
   gem 'guard-bundler'
   gem 'guard-rspec'
   gem 'growl'
+end
+
+group :deployment do
+  gem "psd_logger", :git => "git+ssh://git@github.com/sanger/psd_logger.git"
 end
