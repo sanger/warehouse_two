@@ -29,6 +29,7 @@ describe Sample do
       :name                        => "name",
       :reference_genome            => "reference genome",
       :organism                    => "organism",
+      :consent_withdrawn           => true,
       :sample_ebi_accession_number => "accession number",
       :sample_common_name          => "common name",
       :sample_description          => "description",
