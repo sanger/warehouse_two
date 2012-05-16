@@ -1,5 +1,5 @@
 module Logging
-  [ :debug, :info, :error ].each do |level|
+  [ :debug, :info, :warn, :error ].each do |level|
     line = __LINE__ + 1
     class_eval(%Q{
       def #{level}(&message)

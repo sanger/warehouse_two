@@ -4,11 +4,16 @@ class AmqpConsumer
   include Logging
 
   # Override the logging behaviour so that we have consistent message format
-  def debug(metadata = nil, &message)
-    identifier = metadata.present? ? "AMQP Consumer (#{metadata.delivery_tag.inspect}:#{metadata.routing_key.inspect}): " : ""
-    super() { "#{identifier}#{message.call}" }
+  [ :debug, :warn, :info, :error ].each do |level|
+    line = __LINE__
+    class_eval(%Q{
+      def #{level}(metadata = nil, &message)
+        identifier = metadata.present? ? "AMQP Consumer (\#{metadata.delivery_tag.inspect}:\#{metadata.routing_key.inspect}): " : ""
+        super() { "\#{identifier}\#{message.call}" }
+      end
+      private :#{level}
+    }, __FILE__, line)
   end
-  private :debug
 
   delegate :url, :queue, :deadletter, :prefetch, :requeue, :reconnect_interval, :to => :'WarehouseTwo::Application.config.amqp'
   alias_method(:requeue?, :requeue)
@@ -38,7 +43,7 @@ class AmqpConsumer
   def setup_error_handling(client)
     client.on_error do |connection, connection_close|
       if connection_close.reply_code == 320
-        info { "Connection has been disconnected, retrying at #{reconnect_interval}s" }
+        warn { "Connection has been disconnected, retrying at #{reconnect_interval}s" }
         connection.periodically_reconnect(reconnect_interval)
       else
         error { "Connection error #{connection_close.reply_code}: #{connection_close.reply_text}" }
@@ -58,7 +63,7 @@ class AmqpConsumer
     channel  = AMQP::Channel.new(client)
     exchange = channel.direct(deadletter.exchange, :passive => true)
     lambda do |metadata, payload, exception|
-      debug { "Dead lettering due to #{exception.message}" }
+      warn(metadata) { "Dead lettering due to #{exception.message}" }
 
       exchange.publish({
         :routing_key => metadata.routing_key,
@@ -96,7 +101,7 @@ class AmqpConsumer
             end
           end
         rescue NameError, StandardError => exception
-          debug(metadata) { exception.message }
+          error(metadata) { exception.message }
           debug(metadata) { payload }
         end
       end
