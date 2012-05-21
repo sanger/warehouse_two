@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120521114527) do
+ActiveRecord::Schema.define(:version => 20120521134823) do
 
   create_table "aliquots", :id => false, :force => true do |t|
     t.binary   "uuid",                     :limit => 16, :null => false
@@ -272,8 +272,8 @@ ActiveRecord::Schema.define(:version => 20120521114527) do
   end
 
   add_index "current_asset_links", ["ancestor_internal_id", "descendant_internal_id", "descendant_type"], :name => "ancestor_internal_id_descendant_internal_id_descendant_type_idx"
-  add_index "current_asset_links", ["ancestor_uuid", "descendant_uuid"], :name => "ancestor_uuid_descendant_uuid_idx"
   add_index "current_asset_links", ["descendant_internal_id", "ancestor_internal_id", "ancestor_type"], :name => "descendant_internal_id_ancestor_internal_id_ancestor_type_idx"
+  add_index "current_asset_links", ["descendant_uuid", "ancestor_uuid"], :name => "descendant_uuid_ancestor_uuid_idx"
   add_index "current_asset_links", ["uuid"], :name => "uuid_idx", :unique => true
 
   create_table "current_batch_requests", :id => false, :force => true do |t|
