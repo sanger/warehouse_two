@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120521085942) do
+ActiveRecord::Schema.define(:version => 20120521090438) do
 
   create_table "aliquots", :id => false, :force => true do |t|
     t.binary   "uuid",                     :limit => 16, :null => false
@@ -659,6 +659,7 @@ ActiveRecord::Schema.define(:version => 20120521085942) do
   end
 
   add_index "current_requests", ["internal_id"], :name => "internal_id_idx", :unique => true
+  add_index "current_requests", ["source_asset_internal_id", "target_asset_internal_id", "source_asset_type"], :name => "assets_via_internal_id_from_source_idx"
   add_index "current_requests", ["study_internal_id"], :name => "study_internal_id_idx"
   add_index "current_requests", ["target_asset_internal_id", "source_asset_internal_id", "target_asset_type"], :name => "assets_via_internal_id_idx"
   add_index "current_requests", ["target_asset_uuid", "source_asset_internal_id"], :name => "target_asset_uuid_source_asset_internal_id_idx"
