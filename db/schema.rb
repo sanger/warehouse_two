@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120516082321) do
+ActiveRecord::Schema.define(:version => 20120521085942) do
 
   create_table "aliquots", :id => false, :force => true do |t|
     t.binary   "uuid",                     :limit => 16, :null => false
@@ -224,6 +224,7 @@ ActiveRecord::Schema.define(:version => 20120516082321) do
   end
 
   add_index "current_aliquots", ["internal_id"], :name => "internal_id_idx", :unique => true
+  add_index "current_aliquots", ["library_internal_id", "study_internal_id"], :name => "library_internal_id_study_internal_id_idx"
   add_index "current_aliquots", ["receptacle_internal_id"], :name => "receptacle_internal_id_idx"
   add_index "current_aliquots", ["sample_internal_id", "receptacle_internal_id"], :name => "sample_internal_id_receptacle_internal_id_idx"
   add_index "current_aliquots", ["study_internal_id", "receptacle_internal_id"], :name => "study_internal_id_receptacle_internal_id_idx"
@@ -553,6 +554,7 @@ ActiveRecord::Schema.define(:version => 20120516082321) do
     t.datetime "current_to"
   end
 
+  add_index "current_plates", ["barcode", "infinium_barcode"], :name => "barcode_and_infinium_barcode_idx"
   add_index "current_plates", ["inserted_at"], :name => "inserted_at_idx"
   add_index "current_plates", ["internal_id"], :name => "internal_id_idx", :unique => true
   add_index "current_plates", ["uuid"], :name => "uuid_idx", :unique => true
