@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120521134823) do
+ActiveRecord::Schema.define(:version => 20120521183046) do
 
   create_table "aliquots", :id => false, :force => true do |t|
     t.binary   "uuid",                     :limit => 16, :null => false
@@ -555,7 +555,8 @@ ActiveRecord::Schema.define(:version => 20120521134823) do
     t.datetime "current_to"
   end
 
-  add_index "current_plates", ["barcode", "infinium_barcode"], :name => "barcode_and_infinium_barcode_idx"
+  add_index "current_plates", ["barcode"], :name => "barcode_idx"
+  add_index "current_plates", ["infinium_barcode", "barcode"], :name => "infinium_barcode_and_barcode_idx"
   add_index "current_plates", ["inserted_at"], :name => "inserted_at_idx"
   add_index "current_plates", ["internal_id"], :name => "internal_id_idx", :unique => true
   add_index "current_plates", ["uuid"], :name => "uuid_idx", :unique => true
