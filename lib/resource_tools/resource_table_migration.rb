@@ -12,14 +12,56 @@ module ResourceTools::ResourceTableMigration
   end
   private :has_column?
 
+  # Ensures that both a normal and a current table are created for the given resource, as well as ensuring
+  # that the triggers remain in step and there are appropriate basic indexes present.
+  def create_resource_table(name, options = {}, &block)
+    manipulate_resource_table(:create, name, options.merge(:id => false)) do |t|
+      t.binary(:uuid, :limit => 16, :null => false)
+      t.integer(:internal_id, :null => false)
+
+      yield(t)
+
+      t.boolean(:is_current, :null => false)
+      t.timestamp(:checked_at, :null => false)
+      t.timestamp(:last_updated)
+      t.timestamp(:created)
+      t.timestamp(:inserted_at)
+      t.timestamp(:deleted_at)
+      t.timestamp(:current_from, :null => false)
+      t.timestamp(:current_to)
+    end
+
+    change_table(name, :bulk => true) do |t|
+      t.index([:uuid, :current_from, :current_to], :name => :uuid_and_current_from_and_current_to_idx, :unique => true)
+    end
+    change_table("current_#{name}", :bulk => true) do |t|
+      t.index([:internal_id], :name => :internal_id_idx, :unique => true)
+      t.index([:uuid], :name => :uuid_idx, :unique => true)
+    end
+  end
+  private :create_resource_table
+
+  # Drops the resource related tables
+  def drop_resource_table(name)
+    drop_table(name)
+    drop_table("current_#{name}")
+  end
+  private :drop_resource_table
+
   # Ensures that changes to the normal tables affect the current ones too, as well as ensuring that the
   # triggers remain in step too.
   def change_resource_table(name, options = {}, &block)
-    change_table(name, options, &block)
-    change_table("current_#{name}", options, &block)
-    maintain_currency_triggers(name)
+    manipulate_resource_table(:change, name, options, &block)
   end
   private :change_resource_table
+
+  def manipulate_resource_table(alteration, name, options, &block)
+    table_alteration_method = "#{alteration}_table"
+    send(table_alteration_method, name, options, &block)
+    send(table_alteration_method, "current_#{name}", options, &block)
+    maintain_currency_triggers(name)
+  end
+  private :manipulate_resource_table
 
   # Ensures that the triggers that maintain the current tables are instep with the table definition.
   #

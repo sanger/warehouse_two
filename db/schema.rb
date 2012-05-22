@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120521183046) do
+ActiveRecord::Schema.define(:version => 20120522092320) do
 
   create_table "aliquots", :id => false, :force => true do |t|
     t.binary   "uuid",                     :limit => 16, :null => false
@@ -514,6 +514,37 @@ ActiveRecord::Schema.define(:version => 20120521183046) do
 
   add_index "current_orders", ["internal_id"], :name => "internal_id_idx", :unique => true
   add_index "current_orders", ["uuid"], :name => "uuid_idx", :unique => true
+
+  create_table "current_pac_bio_library_tubes", :id => false, :force => true do |t|
+    t.binary   "uuid",                    :limit => 16,                               :null => false
+    t.integer  "internal_id",                                                         :null => false
+    t.string   "name"
+    t.string   "barcode_prefix",          :limit => 2
+    t.string   "barcode"
+    t.boolean  "closed"
+    t.string   "state",                   :limit => 50
+    t.string   "two_dimensional_barcode"
+    t.decimal  "volume",                                :precision => 5, :scale => 2
+    t.decimal  "concentration",                         :precision => 5, :scale => 2
+    t.date     "scanned_in_date"
+    t.string   "public_name"
+    t.string   "prep_kit_barcode"
+    t.string   "binding_kit_barcode"
+    t.string   "smrt_cells_available"
+    t.string   "movie_length"
+    t.string   "protocol"
+    t.boolean  "is_current",                                                          :null => false
+    t.datetime "checked_at",                                                          :null => false
+    t.datetime "last_updated"
+    t.datetime "created"
+    t.datetime "inserted_at"
+    t.datetime "deleted_at"
+    t.datetime "current_from",                                                        :null => false
+    t.datetime "current_to"
+  end
+
+  add_index "current_pac_bio_library_tubes", ["internal_id"], :name => "internal_id_idx", :unique => true
+  add_index "current_pac_bio_library_tubes", ["uuid"], :name => "uuid_idx", :unique => true
 
   create_table "current_plate_purposes", :id => false, :force => true do |t|
     t.binary   "uuid",         :limit => 16, :null => false
@@ -1025,6 +1056,36 @@ ActiveRecord::Schema.define(:version => 20120521183046) do
 
   add_index "orders", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx", :unique => true
 
+  create_table "pac_bio_library_tubes", :id => false, :force => true do |t|
+    t.binary   "uuid",                    :limit => 16,                               :null => false
+    t.integer  "internal_id",                                                         :null => false
+    t.string   "name"
+    t.string   "barcode_prefix",          :limit => 2
+    t.string   "barcode"
+    t.boolean  "closed"
+    t.string   "state",                   :limit => 50
+    t.string   "two_dimensional_barcode"
+    t.decimal  "volume",                                :precision => 5, :scale => 2
+    t.decimal  "concentration",                         :precision => 5, :scale => 2
+    t.date     "scanned_in_date"
+    t.string   "public_name"
+    t.string   "prep_kit_barcode"
+    t.string   "binding_kit_barcode"
+    t.string   "smrt_cells_available"
+    t.string   "movie_length"
+    t.string   "protocol"
+    t.boolean  "is_current",                                                          :null => false
+    t.datetime "checked_at",                                                          :null => false
+    t.datetime "last_updated"
+    t.datetime "created"
+    t.datetime "inserted_at"
+    t.datetime "deleted_at"
+    t.datetime "current_from",                                                        :null => false
+    t.datetime "current_to"
+  end
+
+  add_index "pac_bio_library_tubes", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx", :unique => true
+
   create_table "plate_purposes", :id => false, :force => true do |t|
     t.binary   "uuid",         :limit => 16, :null => false
     t.integer  "internal_id",                :null => false
@@ -1410,6 +1471,7 @@ ActiveRecord::Schema.define(:version => 20120521183046) do
   after_trigger("BEGIN\n          IF NEW.current_to IS NULL OR NEW.deleted_at IS NOT NULL THEN BEGIN\n            DELETE FROM current_library_tubes WHERE uuid=NEW.uuid;\n          END ; END IF ;\n          IF NEW.current_to IS NULL THEN BEGIN\n            INSERT INTO current_library_tubes(`uuid`,`internal_id`,`name`,`barcode`,`barcode_prefix`,`closed`,`state`,`two_dimensional_barcode`,`sample_uuid`,`sample_internal_id`,`volume`,`concentration`,`tag_uuid`,`tag_internal_id`,`expected_sequence`,`tag_map_id`,`tag_group_name`,`tag_group_uuid`,`tag_group_internal_id`,`source_request_internal_id`,`source_request_uuid`,`library_type`,`fragment_size_required_from`,`fragment_size_required_to`,`sample_name`,`is_current`,`scanned_in_date`,`checked_at`,`last_updated`,`created`,`public_name`,`inserted_at`,`deleted_at`,`current_from`,`current_to`) VALUES(NEW.uuid,NEW.internal_id,NEW.name,NEW.barcode,NEW.barcode_prefix,NEW.closed,NEW.state,NEW.two_dimensional_barcode,NEW.sample_uuid,NEW.sample_internal_id,NEW.volume,NEW.concentration,NEW.tag_uuid,NEW.tag_internal_id,NEW.expected_sequence,NEW.tag_map_id,NEW.tag_group_name,NEW.tag_group_uuid,NEW.tag_group_internal_id,NEW.source_request_internal_id,NEW.source_request_uuid,NEW.library_type,NEW.fragment_size_required_from,NEW.fragment_size_required_to,NEW.sample_name,NEW.is_current,NEW.scanned_in_date,NEW.checked_at,NEW.last_updated,NEW.created,NEW.public_name,NEW.inserted_at,NEW.deleted_at,NEW.current_from,NEW.current_to);\n          END ; END IF ;\n        END", {:name=>"maintain_current_library_tubes_trigger", :event=>:insert, :on=>"library_tubes"})
   after_trigger("BEGIN\n          IF NEW.current_to IS NULL OR NEW.deleted_at IS NOT NULL THEN BEGIN\n            DELETE FROM current_multiplexed_library_tubes WHERE uuid=NEW.uuid;\n          END ; END IF ;\n          IF NEW.current_to IS NULL THEN BEGIN\n            INSERT INTO current_multiplexed_library_tubes(`uuid`,`internal_id`,`name`,`barcode`,`barcode_prefix`,`closed`,`state`,`two_dimensional_barcode`,`volume`,`concentration`,`is_current`,`scanned_in_date`,`checked_at`,`last_updated`,`created`,`public_name`,`inserted_at`,`deleted_at`,`current_from`,`current_to`) VALUES(NEW.uuid,NEW.internal_id,NEW.name,NEW.barcode,NEW.barcode_prefix,NEW.closed,NEW.state,NEW.two_dimensional_barcode,NEW.volume,NEW.concentration,NEW.is_current,NEW.scanned_in_date,NEW.checked_at,NEW.last_updated,NEW.created,NEW.public_name,NEW.inserted_at,NEW.deleted_at,NEW.current_from,NEW.current_to);\n          END ; END IF ;\n        END", {:name=>"maintain_current_multiplexed_library_tubes_trigger", :event=>:insert, :on=>"multiplexed_library_tubes"})
   after_trigger("BEGIN\n          IF NEW.current_to IS NULL OR NEW.deleted_at IS NOT NULL THEN BEGIN\n            DELETE FROM current_orders WHERE uuid=NEW.uuid;\n          END ; END IF ;\n          IF NEW.current_to IS NULL THEN BEGIN\n            INSERT INTO current_orders(`uuid`,`internal_id`,`is_current`,`checked_at`,`last_updated`,`created`,`created_by`,`template_name`,`study_name`,`study_uuid`,`project_name`,`project_uuid`,`comments`,`inserted_at`,`read_length`,`fragment_size_required_from`,`fragment_size_required_to`,`library_type`,`sequencing_type`,`insert_size`,`number_of_lanes`,`submission_uuid`,`deleted_at`,`current_from`,`current_to`) VALUES(NEW.uuid,NEW.internal_id,NEW.is_current,NEW.checked_at,NEW.last_updated,NEW.created,NEW.created_by,NEW.template_name,NEW.study_name,NEW.study_uuid,NEW.project_name,NEW.project_uuid,NEW.comments,NEW.inserted_at,NEW.read_length,NEW.fragment_size_required_from,NEW.fragment_size_required_to,NEW.library_type,NEW.sequencing_type,NEW.insert_size,NEW.number_of_lanes,NEW.submission_uuid,NEW.deleted_at,NEW.current_from,NEW.current_to);\n          END ; END IF ;\n        END", {:name=>"maintain_current_orders_trigger", :event=>:insert, :on=>"orders"})
+  after_trigger("BEGIN\n          IF NEW.current_to IS NULL OR NEW.deleted_at IS NOT NULL THEN BEGIN\n            DELETE FROM current_pac_bio_library_tubes WHERE uuid=NEW.uuid;\n          END ; END IF ;\n          IF NEW.current_to IS NULL THEN BEGIN\n            INSERT INTO current_pac_bio_library_tubes(`uuid`,`internal_id`,`name`,`barcode_prefix`,`barcode`,`closed`,`state`,`two_dimensional_barcode`,`volume`,`concentration`,`scanned_in_date`,`public_name`,`prep_kit_barcode`,`binding_kit_barcode`,`smrt_cells_available`,`movie_length`,`protocol`,`is_current`,`checked_at`,`last_updated`,`created`,`inserted_at`,`deleted_at`,`current_from`,`current_to`) VALUES(NEW.uuid,NEW.internal_id,NEW.name,NEW.barcode_prefix,NEW.barcode,NEW.closed,NEW.state,NEW.two_dimensional_barcode,NEW.volume,NEW.concentration,NEW.scanned_in_date,NEW.public_name,NEW.prep_kit_barcode,NEW.binding_kit_barcode,NEW.smrt_cells_available,NEW.movie_length,NEW.protocol,NEW.is_current,NEW.checked_at,NEW.last_updated,NEW.created,NEW.inserted_at,NEW.deleted_at,NEW.current_from,NEW.current_to);\n          END ; END IF ;\n        END", {:name=>"maintain_current_pac_bio_library_tubes_trigger", :event=>:insert, :on=>"pac_bio_library_tubes"})
   after_trigger("BEGIN\n          IF NEW.current_to IS NULL OR NEW.deleted_at IS NOT NULL THEN BEGIN\n            DELETE FROM current_plate_purposes WHERE uuid=NEW.uuid;\n          END ; END IF ;\n          IF NEW.current_to IS NULL THEN BEGIN\n            INSERT INTO current_plate_purposes(`uuid`,`internal_id`,`name`,`is_current`,`checked_at`,`last_updated`,`created`,`inserted_at`,`deleted_at`,`current_from`,`current_to`) VALUES(NEW.uuid,NEW.internal_id,NEW.name,NEW.is_current,NEW.checked_at,NEW.last_updated,NEW.created,NEW.inserted_at,NEW.deleted_at,NEW.current_from,NEW.current_to);\n          END ; END IF ;\n        END", {:name=>"maintain_current_plate_purposes_trigger", :event=>:insert, :on=>"plate_purposes"})
   after_trigger("BEGIN\n          IF NEW.current_to IS NULL OR NEW.deleted_at IS NOT NULL THEN BEGIN\n            DELETE FROM current_plates WHERE uuid=NEW.uuid;\n          END ; END IF ;\n          IF NEW.current_to IS NULL THEN BEGIN\n            INSERT INTO current_plates(`uuid`,`internal_id`,`name`,`barcode`,`barcode_prefix`,`plate_size`,`is_current`,`checked_at`,`last_updated`,`created`,`plate_purpose_name`,`plate_purpose_internal_id`,`plate_purpose_uuid`,`infinium_barcode`,`location`,`inserted_at`,`deleted_at`,`current_from`,`current_to`) VALUES(NEW.uuid,NEW.internal_id,NEW.name,NEW.barcode,NEW.barcode_prefix,NEW.plate_size,NEW.is_current,NEW.checked_at,NEW.last_updated,NEW.created,NEW.plate_purpose_name,NEW.plate_purpose_internal_id,NEW.plate_purpose_uuid,NEW.infinium_barcode,NEW.location,NEW.inserted_at,NEW.deleted_at,NEW.current_from,NEW.current_to);\n          END ; END IF ;\n        END", {:name=>"maintain_current_plates_trigger", :event=>:insert, :on=>"plates"})
   after_trigger("BEGIN\n          IF NEW.current_to IS NULL OR NEW.deleted_at IS NOT NULL THEN BEGIN\n            DELETE FROM current_projects WHERE uuid=NEW.uuid;\n          END ; END IF ;\n          IF NEW.current_to IS NULL THEN BEGIN\n            INSERT INTO current_projects(`uuid`,`internal_id`,`name`,`collaborators`,`funding_comments`,`cost_code`,`funding_model`,`approved`,`budget_division`,`external_funding_source`,`project_manager`,`budget_cost_centre`,`state`,`is_current`,`checked_at`,`last_updated`,`created`,`inserted_at`,`deleted_at`,`current_from`,`current_to`) VALUES(NEW.uuid,NEW.internal_id,NEW.name,NEW.collaborators,NEW.funding_comments,NEW.cost_code,NEW.funding_model,NEW.approved,NEW.budget_division,NEW.external_funding_source,NEW.project_manager,NEW.budget_cost_centre,NEW.state,NEW.is_current,NEW.checked_at,NEW.last_updated,NEW.created,NEW.inserted_at,NEW.deleted_at,NEW.current_from,NEW.current_to);\n          END ; END IF ;\n        END", {:name=>"maintain_current_projects_trigger", :event=>:insert, :on=>"projects"})

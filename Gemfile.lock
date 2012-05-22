@@ -17,7 +17,7 @@ GIT
 
 GIT
   remote: git+ssh://git@github.com/sanger/activerecord-triggers.git
-  revision: 83e21ed4e0a3e9050dcfbced1745c5cb3c098cbc
+  revision: 81a97667e849f0c4047b2ebce942015d3b7b5b31
   specs:
     activerecord-triggers (0.0.1)
       activerecord (~> 3.2.0)
@@ -99,7 +99,7 @@ GEM
     mocktra (1.0.2)
       sinatra (~> 1.3)
       webmock (~> 1.8)
-    multi_json (1.3.4)
+    multi_json (1.3.5)
     mysql2 (0.3.11)
     polyglot (0.3.3)
     rack (1.4.1)
