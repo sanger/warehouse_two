@@ -8,12 +8,9 @@ module ResourceTools
   include ResourceTools::Timestamps
 
   included do
-    # Our primary keys are composite based on the UUID of the record and it's currency.  Because of this we have
-    # to write a specialised 'not_record' scope that deals with that.
+    # Our primary keys are composite based on the UUID of the record and it's currency.
     self.primary_keys = [ :uuid, :current_to ]
-    scope :not_record, lambda { |record|
-      where('uuid != ?', record.uuid.to_uuid).where(*(record.current_to.nil? ? ['current_to IS NULL'] : ['current_to=?', record.current_to]))
-    }
+    scope :updating, lambda { |r| where(:uuid => r.uuid).current }
 
     # The original data information is stored here
     attr_accessor :data

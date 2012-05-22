@@ -38,8 +38,12 @@ module ResourceTools::SequenceOfDates
   # Ensures that this record ends its currency when the specified record starts.  Effectively we're saying
   # "I *run into* that record".
   def runs_into(record)
+    # NOTE: We cannot use the normal ActiveRecord saving here because we are changing a value concerned with
+    # the primary key that identifies this record.  Hence we have to do the update ourselves using good
+    # old SQL!
+    #
     # TODO: Remove the 'is_current=>false' once the is_current column has been removed from third party queries
-    update_attributes!(date_sequence_to_attribute => record.date_sequence_from, :is_current => false)
+    self.class.updating(self).update_all("`#{date_sequence_to_attribute}`=#{record.date_sequence_from.to_s.inspect}, `is_current`=false")
   end
 
   # Ensures that this record starts its currency when the specified record finishes.  Effectively we're
@@ -71,13 +75,13 @@ module ResourceTools::SequenceOfDates
       scope :current_before, lambda { |datetime| where("#{to_field}   <= ?", datetime).ordered_history }
 
       scope :leading_from, lambda { |r|
-        not_record(r).where(
+        where(
           "? <= #{from_field} AND #{from_field} < ?",
           r.date_sequence_from, r.date_sequence_to
         ).ordered_future
       }
       scope :leading_to, lambda { |r|
-        not_record(r).where(
+        where(
           "#{from_field} <= ? AND ((#{to_field} IS NOT NULL AND ? < #{to_field}) OR (#{to_field} IS NULL))",
           r.date_sequence_from, r.date_sequence_from
         ).ordered_history
@@ -85,10 +89,10 @@ module ResourceTools::SequenceOfDates
 
       # Ensure that on creation the currentness of the records are maintained.
       before_create(:maintain_our_currentness)
-      after_create(:if => lambda { |r| r.deleted? or not r.current? }) do
+      before_create(:if => lambda { |r| r.deleted? or not r.current? }) do
         related.leading_from(self).first.runs_out_of(self)
       end
-      after_create do |record|
+      before_create do |record|
         related.leading_to(self).first.runs_into(self)
       end
     end

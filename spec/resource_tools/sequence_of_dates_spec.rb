@@ -4,7 +4,7 @@ describe ResourceTools::SequenceOfDates do
   class SequencedRecord < ActiveRecord::Base
     self.table_name = 'sequenced_records'
 
-    scope :not_record, lambda { |record| where('id != ?', record.id) }
+    scope :updating, lambda { |record| where(:id => record.id) }
 
     include ResourceTools::SequenceOfDates
     sequence_of_dates_over(:from, :to)
