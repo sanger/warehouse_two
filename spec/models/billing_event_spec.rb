@@ -26,6 +26,7 @@ describe BillingEvent do
       :quantity            => "quantity",
       :kind                => "kind",
       :description         => "description",
+      :bait_library_type   => "bait library type",
       :entry_date          => "2012-03-11 10:28:28",
       :updated_at          => "2012-03-11 10:28:28",
       :created_at          => "2012-03-11 10:28:28"
