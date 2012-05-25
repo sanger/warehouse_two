@@ -67,6 +67,8 @@ class Load < Thor
       debug_log = inserted.map { |record| "#{record.class.name}:#{record.uuid}" }
       say("WARNING! The following records were inserted: #{debug_log.join(', ')}")
       say("WARNING! If the AMQP consumer is running then this should not have happened, so check what's being sent")
+
+      warn("Records inserted: #{debug_log.join(', ')}")
     end
     private :report_inserted_records
   end
