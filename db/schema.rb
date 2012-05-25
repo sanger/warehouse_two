@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120524084122) do
+ActiveRecord::Schema.define(:version => 20120525122139) do
 
   create_table "aliquots", :id => false, :force => true do |t|
     t.binary   "uuid",                     :limit => 16, :null => false
@@ -226,6 +226,7 @@ ActiveRecord::Schema.define(:version => 20120524084122) do
 
   add_index "current_aliquots", ["internal_id"], :name => "internal_id_idx", :unique => true
   add_index "current_aliquots", ["library_internal_id", "study_internal_id"], :name => "library_internal_id_study_internal_id_idx"
+  add_index "current_aliquots", ["library_uuid", "receptacle_type"], :name => "library_uuid_and_receptacle_type_idx"
   add_index "current_aliquots", ["receptacle_internal_id"], :name => "receptacle_internal_id_idx"
   add_index "current_aliquots", ["sample_internal_id", "receptacle_internal_id"], :name => "sample_internal_id_receptacle_internal_id_idx"
   add_index "current_aliquots", ["study_internal_id", "receptacle_internal_id"], :name => "study_internal_id_receptacle_internal_id_idx"
