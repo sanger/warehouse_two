@@ -28,7 +28,7 @@ WarehouseTwo::Application.configure do
 
   # Configure the deadletter AMQP consumer
   config.amqp.deadletter.url                    = 'amqp://localhost:5672/'
-  config.amqp.deadletter.queue                  = 'queue'
+  config.amqp.deadletter.queue                  = 'deadletters'
   config.amqp.deadletter.prefetch               = 50
   config.amqp.deadletter.requeue                = true
   config.amqp.deadletter.reconnect_interval     = 10

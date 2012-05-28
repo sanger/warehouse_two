@@ -23,7 +23,6 @@ module WarehouseTwo
     config.amqp.main                  = ActiveSupport::Configurable::Configuration.new
     config.amqp.main.deadletter       = ActiveSupport::Configurable::Configuration.new
     config.amqp.deadletter            = ActiveSupport::Configurable::Configuration.new
-    config.amqp.deadletter.deadletter = ActiveSupport::Configurable::Configuration.new
     config.api                        = ActiveSupport::Configurable::Configuration.new
   end
 end

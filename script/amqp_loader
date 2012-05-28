@@ -13,11 +13,19 @@ class Load < Thor
   desc "deadletter", "Starts an AMQP consumer on the dead letter queue"
   def deadletter
     consumer(:deadletter) do
+      # Messages from the dead letter queue are in a different format.
+      def received(metadata, payload)
+        insert_record(metadata, ActiveSupport::JSON.decode(payload)[:message])
+      end
+      private :received
+
+      # Dead lettering of dead letters make no sense, so just log the information for later.
       def prepare_deadlettering(_)
         lambda do |metadata, payload, exception|
           error(metadata) { "Cannot process message due to #{exception.message}: #{payload.inspect}" }
         end
       end
+      private :prepare_deadlettering
     end
   end
 

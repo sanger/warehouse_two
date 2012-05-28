@@ -33,7 +33,11 @@ class AmqpConsumer
   end
 
   def received(metadata, payload)
-    json         = ActiveSupport::JSON.decode(payload)
+    insert_record(metadata, ActiveSupport::JSON.decode(payload))
+  end
+  private :received
+
+  def insert_record(metadata, json)
     payload_name = json.keys.first
     ActiveRecord::Base.transaction do
       payload_name.classify.constantize.create_or_update_from_json(json[payload_name]).tap do |record|
@@ -42,7 +46,7 @@ class AmqpConsumer
       end
     end
   end
-  private :received
+  private :insert_record
 
   def setup_error_handling(client)
     client.on_error do |connection, connection_close|
