@@ -19,8 +19,11 @@ module WarehouseTwo
     config.assets.version     = '1.0'
 
     # We're going to need a specialised configuration for our AMQP consumer
-    config.amqp            = ActiveSupport::Configurable::Configuration.new
-    config.amqp.deadletter = ActiveSupport::Configurable::Configuration.new
-    config.api             = ActiveSupport::Configurable::Configuration.new
+    config.amqp                       = ActiveSupport::Configurable::Configuration.new
+    config.amqp.main                  = ActiveSupport::Configurable::Configuration.new
+    config.amqp.main.deadletter       = ActiveSupport::Configurable::Configuration.new
+    config.amqp.deadletter            = ActiveSupport::Configurable::Configuration.new
+    config.amqp.deadletter.deadletter = ActiveSupport::Configurable::Configuration.new
+    config.api                        = ActiveSupport::Configurable::Configuration.new
   end
 end

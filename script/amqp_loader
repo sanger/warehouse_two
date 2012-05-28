@@ -1,0 +1,34 @@
+#!/usr/bin/env ruby
+require 'thor'
+require File.expand_path('../../config/environment', __FILE__)
+
+class Load < Thor
+  include Thor::Actions
+
+  desc "main", "Starts an AMQP consumer on the main queue"
+  def main
+    consumer(:main)
+  end
+
+  desc "deadletter", "Starts an AMQP consumer on the dead letter queue"
+  def deadletter
+    consumer(:deadletter) do
+      def prepare_deadlettering(_)
+        lambda do |metadata, payload, exception|
+          error(metadata) { "Cannot process message due to #{exception.message}: #{payload.inspect}" }
+        end
+      end
+    end
+  end
+
+  no_tasks do
+    def consumer(queue_configuration, &block)
+      AmqpConsumer.new(WarehouseTwo::Application.config.amqp.send(queue_configuration)).tap do |consumer|
+        consumer.instance_eval(&block) if block_given?
+      end.run
+    end
+    private :consumer
+  end
+end
+
+Load.start

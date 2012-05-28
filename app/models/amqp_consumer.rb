@@ -3,6 +3,10 @@ require 'amqp'
 class AmqpConsumer
   include Logging
 
+  def initialize(config)
+    @config = config
+  end
+
   # Override the logging behaviour so that we have consistent message format
   [ :debug, :warn, :info, :error ].each do |level|
     line = __LINE__
@@ -15,7 +19,7 @@ class AmqpConsumer
     }, __FILE__, line)
   end
 
-  delegate :url, :queue, :deadletter, :prefetch, :requeue, :reconnect_interval, :to => :'WarehouseTwo::Application.config.amqp'
+  delegate :url, :queue, :deadletter, :prefetch, :requeue, :reconnect_interval, :to => :@config
   alias_method(:requeue?, :requeue)
 
   def run

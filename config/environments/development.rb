@@ -17,16 +17,23 @@ WarehouseTwo::Application.configure do
   # Configure the numeric tolerance
   config.numeric_tolerance = 0.05
 
-  # Configure the AMQP consumer
-  config.amqp.url                    = 'amqp://localhost:5672/'
-  config.amqp.queue                  = 'queue'
-  config.amqp.prefetch               = 50
-  config.amqp.requeue                = true
-  config.amqp.reconnect_interval     = 10
+  # Configure the main AMQP consumer
+  config.amqp.main.url                    = 'amqp://localhost:5672/'
+  config.amqp.main.queue                  = 'queue'
+  config.amqp.main.prefetch               = 50
+  config.amqp.main.requeue                = true
+  config.amqp.main.reconnect_interval     = 10
+  config.amqp.main.deadletter.exchange    = 'deadletters'
+  config.amqp.main.deadletter.routing_key = 'test.deadletter'
 
-  # Dead lettering in AMQP
-  config.amqp.deadletter.exchange    = 'deadletters'
-  config.amqp.deadletter.routing_key = 'test.deadletter'
+  # Configure the deadletter AMQP consumer
+  config.amqp.deadletter.url                    = 'amqp://localhost:5672/'
+  config.amqp.deadletter.queue                  = 'queue'
+  config.amqp.deadletter.prefetch               = 50
+  config.amqp.deadletter.requeue                = true
+  config.amqp.deadletter.reconnect_interval     = 10
+  config.amqp.deadletter.deadletter.exchange    = 'deadletters'
+  config.amqp.deadletter.deadletter.routing_key = 'test.deadletter'
 
   # Configure the API interface
   config.api.root = 'http://localhost:3000/0_5/'
