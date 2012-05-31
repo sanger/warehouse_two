@@ -32,8 +32,6 @@ WarehouseTwo::Application.configure do
   config.amqp.deadletter.prefetch               = 50
   config.amqp.deadletter.requeue                = true
   config.amqp.deadletter.reconnect_interval     = 10
-  config.amqp.deadletter.deadletter.exchange    = 'deadletters'
-  config.amqp.deadletter.deadletter.routing_key = 'test.deadletter'
 
   # Configure the API interface
   config.api.root = 'http://localhost:3000/0_5/'

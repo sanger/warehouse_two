@@ -77,7 +77,7 @@ class AmqpConsumer
         :routing_key => metadata.routing_key,
         :exception   => { :message => exception.message, :backtrace => exception.backtrace },
         :message     => payload
-      }, :routing_key => "#{deadletter.routing_key}.#{metadata.routing_key}")
+      }.to_json, :routing_key => "#{deadletter.routing_key}.#{metadata.routing_key}")
     end
   end
   private :prepare_deadlettering
