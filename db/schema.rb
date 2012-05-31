@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120525122139) do
+ActiveRecord::Schema.define(:version => 20120531143309) do
 
   create_table "aliquots", :id => false, :force => true do |t|
     t.binary   "uuid",                     :limit => 16, :null => false
@@ -392,6 +392,7 @@ ActiveRecord::Schema.define(:version => 20120525122139) do
   end
 
   add_index "current_events", ["internal_id"], :name => "internal_id_idx", :unique => true
+  add_index "current_events", ["source_uuid", "state"], :name => "source_uuid_and_state_idx"
   add_index "current_events", ["uuid"], :name => "uuid_idx", :unique => true
 
   create_table "current_lanes", :id => false, :force => true do |t|
@@ -696,6 +697,7 @@ ActiveRecord::Schema.define(:version => 20120525122139) do
 
   add_index "current_requests", ["internal_id"], :name => "internal_id_idx", :unique => true
   add_index "current_requests", ["source_asset_internal_id", "target_asset_internal_id", "source_asset_type"], :name => "assets_via_internal_id_from_source_idx"
+  add_index "current_requests", ["source_asset_uuid", "request_type"], :name => "source_asset_uuid_and_request_type_idx"
   add_index "current_requests", ["study_internal_id"], :name => "study_internal_id_idx"
   add_index "current_requests", ["target_asset_internal_id", "source_asset_internal_id", "target_asset_type"], :name => "assets_via_internal_id_idx"
   add_index "current_requests", ["target_asset_uuid", "source_asset_internal_id"], :name => "target_asset_uuid_source_asset_internal_id_idx"
