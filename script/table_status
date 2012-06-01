@@ -16,10 +16,11 @@ module ActiveRecord::TableStatus
     paired, unpaired = (tables-ignore).group_by { |name| name.sub(/^current_/, '') }.partition { |_, names| names.size > 1 }
     paired.each do |name, _|
       current, total = rows_in("current_#{name}").to_i, rows_in(name).to_i
-      yield(name, current, total, total-current)
+      non_current    = total-current
+      yield(name, current, total, non_current, ("%03.2f" % non_current.to_f/total.to_f))
     end
     unpaired.each do |name, _|
-      yield(name, rows_in(name), '-', '-')
+      yield(name, rows_in(name), '-', '-', '-')
     end
   end
 end
@@ -30,7 +31,7 @@ end
 
 IGNOREABLE = [ 'uuid_objects' ]
 
-puts "Table,Historic,Current,Non-Current"
-ActiveRecord::Base.connection.each_table(IGNOREABLE) do |name, current_rows, total_rows, non_current|
-  puts "#{name},#{total_rows},#{current_rows},#{non_current}"
+puts "Table,Historic,Current,Non-Current,Ratio"
+ActiveRecord::Base.connection.each_table(IGNOREABLE) do |name, current_rows, total_rows, non_current, ratio|
+  puts "#{name},#{total_rows},#{current_rows},#{non_current},#{ratio}"
 end
