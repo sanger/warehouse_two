@@ -17,7 +17,7 @@ module ActiveRecord::TableStatus
     paired.each do |name, _|
       current, total = rows_in("current_#{name}").to_i, rows_in(name).to_i
       non_current    = total-current
-      yield(name, current, total, non_current, ("%03.2f" % (non_current.to_f/total.to_f)))
+      yield(name, current, total, non_current, ("%03.6f" % (non_current.to_f/total.to_f)))
     end
     unpaired.each do |name, _|
       yield(name, rows_in(name), '-', '-', '-')
