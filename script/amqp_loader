@@ -15,7 +15,7 @@ class Load < Thor
     consumer(:deadletter) do
       # Messages from the dead letter queue are in a different format.
       def received(metadata, payload)
-        insert_record(metadata, ActiveSupport::JSON.decode(eval(payload)[:message]))
+        insert_record(metadata, ActiveSupport::JSON.decode(ActiveSupport::JSON.decode(payload)['message']))
       end
       private :received
 

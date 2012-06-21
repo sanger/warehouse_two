@@ -1,0 +1,3 @@
+class StockMultiplexedLibraryTube < IgnoreableResource
+
+end
