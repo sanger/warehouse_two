@@ -95,7 +95,7 @@ class AmqpConsumer
     channel.queue(queue, :passive => true) do |queue, queue_declared|
       info { "Waiting for messages ..." }
 
-      EventMachine.periodic_timer(empty_queue_disconnect_interval) do
+      EventMachine.add_periodic_timer(empty_queue_disconnect_interval) do
         queue.status do |messages_in_queue, _|
           if messages_in_queue.zero?
             info { "Queue has no messages, quitting ..." }
