@@ -23,7 +23,7 @@ class AmqpConsumer
   alias_method(:requeue?, :requeue)
 
   def empty_queue_disconnect_interval
-    @config.respond_to?(:empty_queue_disconnect_interval) ? @config.empty_queue_disconnect_interval : 0
+    @config.empty_queue_disconnect_interval || 0
   end
   private :empty_queue_disconnect_interval
 
