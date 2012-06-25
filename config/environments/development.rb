@@ -27,11 +27,12 @@ WarehouseTwo::Application.configure do
   config.amqp.main.deadletter.routing_key = 'test.deadletter'
 
   # Configure the deadletter AMQP consumer
-  config.amqp.deadletter.url                    = 'amqp://localhost:5672/'
-  config.amqp.deadletter.queue                  = 'deadletters'
-  config.amqp.deadletter.prefetch               = 50
-  config.amqp.deadletter.requeue                = true
-  config.amqp.deadletter.reconnect_interval     = 10
+  config.amqp.deadletter.url                             = 'amqp://localhost:5672/'
+  config.amqp.deadletter.queue                           = 'deadletters'
+  config.amqp.deadletter.prefetch                        = 50
+  config.amqp.deadletter.requeue                         = true
+  config.amqp.deadletter.reconnect_interval              = 10
+  config.amqp.deadletter.empty_queue_disconnect_interval = 30
 
   # Configure the API interface
   config.api.root = 'http://localhost:3000/0_5/'

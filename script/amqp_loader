@@ -17,7 +17,6 @@ class Load < Thor
       def received(metadata, payload)
         insert_record(metadata, ActiveSupport::JSON.decode(ActiveSupport::JSON.decode(payload)['message']))
       end
-      private :received
 
       # Dead lettering of dead letters make no sense, so just log the information for later.
       def prepare_deadlettering(_)
@@ -25,7 +24,6 @@ class Load < Thor
           error(metadata) { "Cannot process message due to #{exception.message}: #{payload.inspect}" }
         end
       end
-      private :prepare_deadlettering
     end
   end
 

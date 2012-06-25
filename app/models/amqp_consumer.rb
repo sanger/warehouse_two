@@ -22,6 +22,11 @@ class AmqpConsumer
   delegate :url, :queue, :deadletter, :prefetch, :requeue, :reconnect_interval, :to => :@config
   alias_method(:requeue?, :requeue)
 
+  def empty_queue_disconnect_interval
+    @config.empty_queue_disconnect_interval if @config.respond_to?(:empty_queue_disconnect_interval)
+  end
+  private :empty_queue_disconnect_interval
+
   def run
     info { "Starting AMQP consumer ..." }
 
@@ -89,6 +94,15 @@ class AmqpConsumer
     channel.prefetch(prefetch)
     channel.queue(queue, :passive => true) do |queue, queue_declared|
       info { "Waiting for messages ..." }
+
+      EventMachine.periodic_timer(empty_queue_disconnect_interval) do
+        queue.status do |messages_in_queue, _|
+          if messages_in_queue.zero?
+            info { "Queue has no messages, quitting ..." }
+            channel.close { EventMachine.stop }
+          end
+        end
+      end unless empty_queue_disconnect_interval.zero?
 
       queue.subscribe(:ack => true) do |metadata, payload|
         begin
