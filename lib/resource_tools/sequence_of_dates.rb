@@ -43,7 +43,7 @@ module ResourceTools::SequenceOfDates
     # old SQL!
     #
     # TODO: Remove the 'is_current=>false' once the is_current column has been removed from third party queries
-    self.class.updating(self).update_all("`#{date_sequence_to_attribute}`=#{record.date_sequence_from.to_s.inspect}, `is_current`=false")
+    self.class.updating(self).update_all("`#{date_sequence_to_attribute}`=#{record.date_sequence_from.to_s(:db).inspect}, `is_current`=false")
   end
 
   # Ensures that this record starts its currency when the specified record finishes.  Effectively we're
