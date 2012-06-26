@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120606135930) do
+ActiveRecord::Schema.define(:version => 20120626112000) do
 
   create_table "aliquots", :id => false, :force => true do |t|
     t.binary   "uuid",                     :limit => 16, :null => false
@@ -909,7 +909,7 @@ ActiveRecord::Schema.define(:version => 20120606135930) do
     t.datetime "deleted_at"
     t.datetime "current_from",                                                         :null => false
     t.datetime "current_to"
-    t.string   "display_name",            :limit => 15
+    t.string   "display_name",            :limit => 20
   end
 
   add_index "current_wells", ["inserted_at"], :name => "inserted_at_idx"
@@ -1449,7 +1449,7 @@ ActiveRecord::Schema.define(:version => 20120606135930) do
     t.datetime "deleted_at"
     t.datetime "current_from",                                                         :null => false
     t.datetime "current_to"
-    t.string   "display_name",            :limit => 15
+    t.string   "display_name",            :limit => 20
   end
 
   add_index "wells", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx", :unique => true
