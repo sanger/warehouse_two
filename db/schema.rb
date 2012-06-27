@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120626112000) do
+ActiveRecord::Schema.define(:version => 20120627144031) do
 
   create_table "aliquots", :id => false, :force => true do |t|
     t.binary   "uuid",                     :limit => 16, :null => false
@@ -430,8 +430,8 @@ ActiveRecord::Schema.define(:version => 20120626112000) do
     t.string   "two_dimensional_barcode"
     t.binary   "sample_uuid",                 :limit => 16
     t.integer  "sample_internal_id"
-    t.decimal  "volume",                                    :precision => 5,  :scale => 2
-    t.decimal  "concentration",                             :precision => 10, :scale => 2
+    t.decimal  "volume",                                    :precision => 10, :scale => 2
+    t.decimal  "concentration",                             :precision => 18, :scale => 2
     t.binary   "tag_uuid",                    :limit => 16
     t.integer  "tag_internal_id"
     t.string   "expected_sequence"
@@ -978,8 +978,8 @@ ActiveRecord::Schema.define(:version => 20120626112000) do
     t.string   "two_dimensional_barcode"
     t.binary   "sample_uuid",                 :limit => 16
     t.integer  "sample_internal_id"
-    t.decimal  "volume",                                    :precision => 5,  :scale => 2
-    t.decimal  "concentration",                             :precision => 10, :scale => 2
+    t.decimal  "volume",                                    :precision => 10, :scale => 2
+    t.decimal  "concentration",                             :precision => 18, :scale => 2
     t.binary   "tag_uuid",                    :limit => 16
     t.integer  "tag_internal_id"
     t.string   "expected_sequence"
