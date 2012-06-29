@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120627144031) do
+ActiveRecord::Schema.define(:version => 20120629082016) do
 
   create_table "aliquots", :id => false, :force => true do |t|
     t.binary   "uuid",                     :limit => 16, :null => false
@@ -501,7 +501,7 @@ ActiveRecord::Schema.define(:version => 20120627144031) do
     t.binary   "study_uuid",                  :limit => 16
     t.string   "project_name"
     t.binary   "project_uuid",                :limit => 16
-    t.string   "comments"
+    t.text     "comments"
     t.datetime "inserted_at"
     t.integer  "read_length"
     t.string   "fragment_size_required_from"
@@ -1045,7 +1045,7 @@ ActiveRecord::Schema.define(:version => 20120627144031) do
     t.binary   "study_uuid",                  :limit => 16
     t.string   "project_name"
     t.binary   "project_uuid",                :limit => 16
-    t.string   "comments"
+    t.text     "comments"
     t.datetime "inserted_at"
     t.integer  "read_length"
     t.string   "fragment_size_required_from"
