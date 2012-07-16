@@ -1,0 +1,37 @@
+#!/usr/bin/env ruby
+#
+# Generates a very simple report of the state of the tables in the warehouse.  It pairs the results of normal and
+# current tables, and separates those from tables that don't have this information.  Because this is run as a cron
+# job, the output will be emailed.
+
+require File.expand_path('../../config/environment', __FILE__)
+
+module ActiveRecord::TableStatus
+  def rows_in(name)
+    select_one("SELECT count(*) AS total FROM #{quote_table_name(name)}")['total']
+  end
+  private :rows_in
+
+  def each_table(ignore = [], &block)
+    paired, unpaired = (tables-ignore).group_by { |name| name.sub(/^current_/, '') }.partition { |_, names| names.size > 1 }
+    paired.each do |name, _|
+      current, total = rows_in("current_#{name}").to_i, rows_in(name).to_i
+      non_current    = total-current
+      yield(name, current, total, non_current, ("%03.6f" % (non_current.to_f/total.to_f)))
+    end
+    unpaired.each do |name, _|
+      yield(name, rows_in(name), '-', '-', '-')
+    end
+  end
+end
+
+class << ActiveRecord::Base.connection
+  include ActiveRecord::TableStatus
+end
+
+IGNOREABLE = [ 'uuid_objects' ]
+
+puts "Table,Historic,Current,Non-Current,Ratio"
+ActiveRecord::Base.connection.each_table(IGNOREABLE) do |name, current_rows, total_rows, non_current, ratio|
+  puts "#{name},#{total_rows},#{current_rows},#{non_current},#{ratio}"
+end
