@@ -1,0 +1,160 @@
+#!/usr/bin/env ruby
+require 'thor'
+require File.expand_path('../../config/environment', __FILE__)
+
+class NilClass
+  def pretty_dump_to(io)
+    io.write('null')
+  end
+end
+
+class Float
+  def pretty_dump_to(io)
+    io.write(self)
+  end
+end
+
+class Fixnum
+  def pretty_dump_to(io)
+    io.write(self)
+  end
+end
+
+class TrueClass
+  def to_boolean_from_arguments
+    self
+  end
+
+  def pretty_dump_to(io)
+    io.write('true')
+  end
+end
+
+class FalseClass
+  def to_boolean_from_arguments
+    self
+  end
+
+  def pretty_dump_to(io)
+    io.write('false')
+  end
+end
+
+class String
+  def to_boolean_from_arguments
+    case
+    when ['true', 'yes'].include?(self.downcase) then true
+    when ['false', 'no'].include?(self.downcase) then false
+    else raise "Cannot convert #{self.inspect} to a boolean safely!"
+    end
+  end
+
+  def pretty_dump_to(io)
+    io.write(self.inspect)
+  end
+end
+
+class Dir
+  def self.in_dump_directory(&block)
+    dump_directory = File.join('tmp', 'dumps', Time.now.strftime('%Y-%M-%d-%H%M%S'))
+    FileUtils.mkdir_p(dump_directory)
+    yield(dump_directory)
+  end
+end
+
+class Array
+  def pretty_dump_to(io)
+    io.indent('[', ']') do |io|
+      map { |v| v.pretty_dump_to(io) ; io.eol }
+    end
+  end
+end
+
+class Hash
+  def pretty_dump_to(io)
+    io.indent('{', '}') do |io|
+      each do |key, value|
+        key.pretty_dump_to(io)
+        io.write(': ')
+        value.pretty_dump_to(io)
+        io.eol
+      end
+    end
+  end
+end
+
+class IndentWriter
+  def initialize(io)
+    @io, @indent, @current_indent = io, 0, 0
+  end
+
+  attr_reader :io
+
+  def indent(start, finish, &block)
+    puts(start)
+    begin
+      @current_indent = (@indent += 1)
+      yield(self)
+    ensure
+      @current_indent = (@indent -= 1)
+    end
+    puts(finish)
+  end
+
+  def eol
+    @current_indent = @indent
+    io.puts("")
+  end
+
+  def puts(*args)
+    output_indent
+    io.puts(*args)
+  ensure
+    @current_indent = @indent
+  end
+
+  def write(*args)
+    output_indent
+    io.write(*args)
+  ensure
+    @current_indent = 0
+  end
+
+  def output_indent
+    io.write('  ' * @current_indent)
+  end
+  private :output_indent
+end
+
+class DeadLetterDumper < Thor
+  include Thor::Actions
+
+  desc 'dump', 'Dumps all messages from the deadletter queue into a directory'
+  def dump(requeue = true)
+    client = RestClient::Resource.new(
+      'http://psd2c.internal.sanger.ac.uk:55672/api/queues/production/psd.deadletters',
+      :user => 'psdp', :password => 'psdp'
+    )
+    total_messages = ActiveSupport::JSON.decode(client.get)['messages']
+    raise "Dead letter queue currently appears to be empty" if total_messages.nil? or total_messages.zero?
+
+    Dir.in_dump_directory do |dump_directory|
+      ActiveSupport::JSON.decode(
+        client['get'].post(
+          { count: total_messages, requeue: requeue.to_boolean_from_arguments, encoding: "auto" }.to_json,
+          :content_type => 'application/json',
+          :accept       => '*/*'
+        )
+      ).map do |amqp_message|
+        ActiveSupport::JSON.decode(amqp_message['payload'])
+      end.each_with_index do |message, index|
+        puts "Message #{index} (#{message['routing_key']}): #{message['exception']['message']}"
+        File.open(File.join(dump_directory, "#{index.to_s.rjust(6, '0')}.json"), 'w') do |file|
+          ActiveSupport::JSON.decode(message['message']).pretty_dump_to(IndentWriter.new(file))
+        end
+      end
+    end
+  end
+end
+
+DeadLetterDumper.start

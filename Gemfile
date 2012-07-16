@@ -1,36 +1,31 @@
-source :gemcutter
+source :rubygems
 
-gem "rails", "2.3.11"
-gem "ar-extensions"
-gem "configatron"
-gem "mysql"
-gem "cbrunnkvist-psd_logger"
-gem "alter_table", :git => "git+ssh://git@github.com/sanger/alter_table.git"
-gem "delayed_job", '~>2.0.4'
+gem "rails", "3.2.2"
+gem "mysql2"
+gem "amqp", "~> 0.9.2"
+gem "hashie", "~> 1.2.0"
+gem "rest-client"
 
-group :test do
-  # bundler requires these gems while running tests
-  gem "ci_reporter"
+# We have to use composite primary keys because of the table partitioning
+gem "composite_primary_keys", "~> 5.0.4"
+gem "activerecord-partitioning", :git => "git+ssh://git@github.com/sanger/activerecord-partitioning.git"
+gem "activerecord-triggers", :git => "git+ssh://git@github.com/sanger/activerecord-triggers.git"
 
-  gem "rcov", :require => false
-  #gem "rcov_rails" # gem only for Rails 3, plugin for Rails 2.3 :-/
-  # ./script/plugin install http://svn.codahale.com/rails_rcov
+# Need a branched verion of the rails_sql_views gem to support MySQL2 and ActiveRecord 3.
+gem "rails_sql_views", :git => "git+ssh://git@github.com/anathematic/rails_sql_views.git"
 
-  gem "timecop"
-  gem "flog"
-  gem "flay"
-  gem "roodi"
-  gem "shoulda", "~>2.10.0"
-  gem "test-unit", :require => "test/unit"
-  gem "mocha"
-  gem "nokogiri"
-  gem "cucumber-rails", "~>0.3.2"
-  gem "database_cleaner"
-  gem "webrat"
-  gem "factory_girl", '~>1.3.1'
-  gem "treetop", "~>1.2.5"
-  gem "webrat-rspec-rails"
-  gem "ruby-debug"
+group :test, :development do
+  gem 'rspec-rails', '~> 2.8.0'
+  gem 'mocktra', '~> 1.0.2'
+end
 
-  gem 'launchy'
+group :development do
+  gem 'guard'
+  gem 'guard-bundler'
+  gem 'guard-rspec'
+  gem 'growl'
+end
+
+group :deployment do
+  gem "psd_logger", :git => "git+ssh://git@github.com/sanger/psd_logger.git"
 end
