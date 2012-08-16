@@ -41,7 +41,8 @@ describe Study do
       :study_visibility => "study visibility",
       :ega_dac_accession_number => "ega dac accession number",
       :array_express_accession_number => "array express accession number",
-      :ega_policy_accession_number => "ega policy accession number"
+      :ega_policy_accession_number => "ega policy accession number",
+      :remove_x_and_autosomes => true
     }
   end
 end
