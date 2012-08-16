@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120816123346) do
+ActiveRecord::Schema.define(:version => 20120816150645) do
 
   create_table "aliquots", :id => false, :force => true do |t|
     t.binary   "uuid",                     :limit => 16, :null => false
@@ -46,12 +46,6 @@ ActiveRecord::Schema.define(:version => 20120816123346) do
     t.string   "bait_supplier_name"
   end
 
-  add_index "aliquots", ["library_internal_id"], :name => "index_aliquots_on_library_internal_id"
-  add_index "aliquots", ["library_uuid"], :name => "index_aliquots_on_library_uuid"
-  add_index "aliquots", ["receptacle_internal_id"], :name => "index_aliquots_on_receptacle_internal_id"
-  add_index "aliquots", ["receptacle_uuid"], :name => "index_aliquots_on_receptacle_uuid"
-  add_index "aliquots", ["sample_internal_id"], :name => "index_aliquots_on_sample_internal_id"
-  add_index "aliquots", ["sample_uuid"], :name => "index_aliquots_on_sample_uuid"
   add_index "aliquots", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx", :unique => true
 
   create_table "asset_audits", :id => false, :force => true do |t|
