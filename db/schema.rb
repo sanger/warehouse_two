@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120816150645) do
+ActiveRecord::Schema.define(:version => 20121023144447) do
 
   create_table "aliquots", :id => false, :force => true do |t|
     t.binary   "uuid",                     :limit => 16, :null => false
@@ -93,10 +93,10 @@ ActiveRecord::Schema.define(:version => 20120816150645) do
   create_table "asset_links", :id => false, :force => true do |t|
     t.binary   "uuid",                   :limit => 16, :null => false
     t.binary   "ancestor_uuid",          :limit => 16
-    t.integer  "ancestor_internal_id"
+    t.integer  "ancestor_internal_id",                 :null => false
     t.string   "ancestor_type"
     t.binary   "descendant_uuid",        :limit => 16
-    t.integer  "descendant_internal_id"
+    t.integer  "descendant_internal_id",               :null => false
     t.string   "descendant_type"
     t.boolean  "is_current"
     t.datetime "checked_at"
@@ -258,10 +258,10 @@ ActiveRecord::Schema.define(:version => 20120816150645) do
   create_table "current_asset_links", :id => false, :force => true do |t|
     t.binary   "uuid",                   :limit => 16, :null => false
     t.binary   "ancestor_uuid",          :limit => 16
-    t.integer  "ancestor_internal_id"
+    t.integer  "ancestor_internal_id",                 :null => false
     t.string   "ancestor_type"
     t.binary   "descendant_uuid",        :limit => 16
-    t.integer  "descendant_internal_id"
+    t.integer  "descendant_internal_id",               :null => false
     t.string   "descendant_type"
     t.boolean  "is_current"
     t.datetime "checked_at"
