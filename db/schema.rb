@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121023144448) do
+ActiveRecord::Schema.define(:version => 20121120102902) do
 
   create_table "aliquots", :id => false, :force => true do |t|
     t.binary   "uuid",                     :limit => 16, :null => false
@@ -771,6 +771,7 @@ ActiveRecord::Schema.define(:version => 20121023144448) do
   add_index "current_samples", ["accession_number"], :name => "accession_number_idx"
   add_index "current_samples", ["internal_id"], :name => "internal_id_idx", :unique => true
   add_index "current_samples", ["name"], :name => "name_idx"
+  add_index "current_samples", ["sanger_sample_id"], :name => "sanger_sample_id_idx"
   add_index "current_samples", ["uuid"], :name => "uuid_idx", :unique => true
 
   create_table "current_studies", :id => false, :force => true do |t|
