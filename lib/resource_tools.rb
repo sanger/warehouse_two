@@ -43,6 +43,15 @@ module ResourceTools
     deleted_at.present?
   end
 
+  # Delete the record
+  def delete!
+    dup.tap do |record|
+      record.uuid, record.deleted_at = self.uuid, Time.now
+      record.checked_at = record.last_updated = record.current_from = record.current_to = record.deleted_at
+      record.save!
+    end
+  end
+
   IGNOREABLE_ATTRIBUTES = [ 'dont_use_id', 'is_current', 'inserted_at', 'checked_at', 'current_from', 'current_to' ]
 
   def updated_values?(object)
