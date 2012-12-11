@@ -7,11 +7,9 @@ function worker_start() {
   cd `pwd`
   if [ ! -f ../../shared/worker.${1}.pid ]
   then
-    bundle exec ./script/amqp_loader main &
+    echo "Starting Amqp worker"
+    nohup bundle exec ./script/amqp_loader main &
     echo $! > ../../shared/worker.${1}.pid
-    wait $!
-    # Remove the pid file if we die
-    if [ -f ../../shared/worker.${1}.pid ]; then rm ../../shared/worker.${1}.pid; fi
   else
     echo "Worker already running with pid:"
     echo `cat ../../shared/worker.${1}.pid`
