@@ -23,6 +23,7 @@ WarehouseTwo::Application.configure do
   config.amqp.main.prefetch               = 50
   config.amqp.main.requeue                = true
   config.amqp.main.reconnect_interval     = 10
+  config.amqp.main.deadletter.deactivated = true
   config.amqp.main.deadletter.exchange    = 'deadletters'
   config.amqp.main.deadletter.routing_key = 'test.deadletter'
 
