@@ -1,6 +1,6 @@
 source :rubygems
 
-gem "rails", "3.2.2"
+gem "rails", "3.2.11"
 gem "mysql2"
 gem "amqp", "~> 0.9.2"
 gem "hashie", "~> 1.2.0"
