@@ -7,7 +7,7 @@ gem "hashie", "~> 1.2.0"
 gem "rest-client"
 
 # We have to use composite primary keys because of the table partitioning
-gem "composite_primary_keys", "~> 5.0.4"
+gem "composite_primary_keys", "~> 5.0.10"
 gem "activerecord-partitioning", :git => "git+ssh://git@github.com/sanger/activerecord-partitioning.git"
 gem "activerecord-triggers", :git => "git+ssh://git@github.com/sanger/activerecord-triggers.git"
 
