@@ -156,8 +156,6 @@ class AmqpConsumer
       false
     end
 
-    end
-
   end
   private :longterm_issue
 
