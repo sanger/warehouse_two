@@ -151,11 +151,11 @@ class AmqpConsumer
     if exception.is_a? ActiveRecord::StatementInvalid
       # Example exceptions, we may need to add more in future:
       #<ActiveRecord::StatementInvalid: Mysql2::Error: closed MySQL connection: SELECT sleep(10) FROM studies;> Mysql2::Error: closed MySQL connection: SELECT sleep(10) FROM studies; Connection closed.
-      /Mysql2::Error: closed MySQL connection:/.match(exception.message).present?
-    else
-      false
+      [/Mysql2::Error: closed MySQL connection:/,/Mysql2::Error: MySQL server has gone away/].each do |regex|
+        return true if regex.match(exception.message).present?
+      end
     end
-
+    false
   end
   private :longterm_issue
 
