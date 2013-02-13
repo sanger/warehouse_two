@@ -125,7 +125,7 @@ class AmqpConsumer
               # It is our second attempt, and the issue is longterm
               channel.reject(metadata.delivery_tag, true)
               error(metadata) { "Closing message client following: #{exception.message}" }
-              WorkerDeath.failure(exception)
+              WorkerDeath.failure(exception).deliver
               client.close { EventMachine.stop }
             else
 
