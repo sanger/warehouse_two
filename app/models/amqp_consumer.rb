@@ -117,11 +117,24 @@ class AmqpConsumer
             # If this is the first time we've seen this message then we requeue.  If it's not to be requeued
             # then we deadletter it ourselves rather than using RabbitMQ's deadletter queueing which seems
             # unreliable for some reason.  If the message is not requeued then we need to record the error.
+
+
             requeue_message = requeue? && !metadata.redelivered?
-            channel.reject(metadata.delivery_tag, requeue_message)
-            unless requeue_message
-              deadletter.call(metadata, payload, exception)
-              raise
+
+            if !requeue_message && longterm_issue(exception)
+              # It is our second attempt, and the issue is longterm
+              channel.reject(metadata.delivery_tag, true)
+              error(metadata) { "Closing message client following: #{exception.message}" }
+              WorkerDeath.failure(exception).deliver
+              client.close { EventMachine.stop }
+            else
+
+              channel.reject(metadata.delivery_tag, requeue_message)
+              unless requeue_message
+                deadletter.call(metadata, payload, exception)
+                raise
+              end
+
             end
           end
         rescue NameError, StandardError => exception
@@ -132,6 +145,19 @@ class AmqpConsumer
     end
   end
   private :build_client
+
+  def longterm_issue(exception)
+    # We can't just use the exception class, as many Rails MySQL exceptions share the same class
+    if exception.is_a? ActiveRecord::StatementInvalid
+      # Example exceptions, we may need to add more in future:
+      #<ActiveRecord::StatementInvalid: Mysql2::Error: closed MySQL connection: SELECT sleep(10) FROM studies;> Mysql2::Error: closed MySQL connection: SELECT sleep(10) FROM studies; Connection closed.
+      [/Mysql2::Error: closed MySQL connection:/,/Mysql2::Error: MySQL server has gone away/].each do |regex|
+        return true if regex.match(exception.message).present?
+      end
+    end
+    false
+  end
+  private :longterm_issue
 
   # Deals with the signals that should stop the show!
   def install_show_stopper_into(client)
