@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121120102902) do
+ActiveRecord::Schema.define(:version => 20130306141053) do
 
   create_table "aliquots", :id => false, :force => true do |t|
     t.binary   "uuid",                     :limit => 16, :null => false
@@ -644,6 +644,23 @@ ActiveRecord::Schema.define(:version => 20121120102902) do
   add_index "current_quotas", ["internal_id"], :name => "internal_id_idx", :unique => true
   add_index "current_quotas", ["uuid"], :name => "uuid_idx", :unique => true
 
+  create_table "current_reference_genomes", :id => false, :force => true do |t|
+    t.binary   "uuid",         :limit => 16, :null => false
+    t.integer  "internal_id",                :null => false
+    t.string   "name"
+    t.boolean  "is_current",                 :null => false
+    t.datetime "checked_at",                 :null => false
+    t.datetime "last_updated"
+    t.datetime "created"
+    t.datetime "inserted_at"
+    t.datetime "deleted_at"
+    t.datetime "current_from",               :null => false
+    t.datetime "current_to"
+  end
+
+  add_index "current_reference_genomes", ["internal_id"], :name => "internal_id_idx", :unique => true
+  add_index "current_reference_genomes", ["uuid"], :name => "uuid_idx", :unique => true
+
   create_table "current_requests", :id => false, :force => true do |t|
     t.binary   "uuid",                                 :limit => 16, :null => false
     t.integer  "internal_id",                                        :null => false
@@ -1189,6 +1206,22 @@ ActiveRecord::Schema.define(:version => 20121120102902) do
 
   add_index "quotas", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx", :unique => true
 
+  create_table "reference_genomes", :id => false, :force => true do |t|
+    t.binary   "uuid",         :limit => 16, :null => false
+    t.integer  "internal_id",                :null => false
+    t.string   "name"
+    t.boolean  "is_current",                 :null => false
+    t.datetime "checked_at",                 :null => false
+    t.datetime "last_updated"
+    t.datetime "created"
+    t.datetime "inserted_at"
+    t.datetime "deleted_at"
+    t.datetime "current_from",               :null => false
+    t.datetime "current_to"
+  end
+
+  add_index "reference_genomes", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx", :unique => true
+
   create_table "requests", :id => false, :force => true do |t|
     t.binary   "uuid",                                 :limit => 16, :null => false
     t.integer  "internal_id",                                        :null => false
@@ -1485,6 +1518,7 @@ ActiveRecord::Schema.define(:version => 20121120102902) do
   after_trigger("BEGIN\n          IF NEW.current_to IS NULL OR NEW.deleted_at IS NOT NULL THEN BEGIN\n            DELETE FROM current_plates WHERE uuid=NEW.uuid;\n          END ; END IF ;\n          IF NEW.current_to IS NULL THEN BEGIN\n            INSERT INTO current_plates(`uuid`,`internal_id`,`name`,`barcode`,`barcode_prefix`,`plate_size`,`is_current`,`checked_at`,`last_updated`,`created`,`plate_purpose_name`,`plate_purpose_internal_id`,`plate_purpose_uuid`,`infinium_barcode`,`location`,`inserted_at`,`deleted_at`,`current_from`,`current_to`) VALUES(NEW.uuid,NEW.internal_id,NEW.name,NEW.barcode,NEW.barcode_prefix,NEW.plate_size,NEW.is_current,NEW.checked_at,NEW.last_updated,NEW.created,NEW.plate_purpose_name,NEW.plate_purpose_internal_id,NEW.plate_purpose_uuid,NEW.infinium_barcode,NEW.location,NEW.inserted_at,NEW.deleted_at,NEW.current_from,NEW.current_to);\n          END ; END IF ;\n        END", {:name=>"maintain_current_plates_trigger", :event=>:insert, :on=>"plates"})
   after_trigger("BEGIN\n          IF NEW.current_to IS NULL OR NEW.deleted_at IS NOT NULL THEN BEGIN\n            DELETE FROM current_projects WHERE uuid=NEW.uuid;\n          END ; END IF ;\n          IF NEW.current_to IS NULL THEN BEGIN\n            INSERT INTO current_projects(`uuid`,`internal_id`,`name`,`collaborators`,`funding_comments`,`cost_code`,`funding_model`,`approved`,`budget_division`,`external_funding_source`,`project_manager`,`budget_cost_centre`,`state`,`is_current`,`checked_at`,`last_updated`,`created`,`inserted_at`,`deleted_at`,`current_from`,`current_to`) VALUES(NEW.uuid,NEW.internal_id,NEW.name,NEW.collaborators,NEW.funding_comments,NEW.cost_code,NEW.funding_model,NEW.approved,NEW.budget_division,NEW.external_funding_source,NEW.project_manager,NEW.budget_cost_centre,NEW.state,NEW.is_current,NEW.checked_at,NEW.last_updated,NEW.created,NEW.inserted_at,NEW.deleted_at,NEW.current_from,NEW.current_to);\n          END ; END IF ;\n        END", {:name=>"maintain_current_projects_trigger", :event=>:insert, :on=>"projects"})
   after_trigger("BEGIN\n          IF NEW.current_to IS NULL OR NEW.deleted_at IS NOT NULL THEN BEGIN\n            DELETE FROM current_quotas WHERE uuid=NEW.uuid;\n          END ; END IF ;\n          IF NEW.current_to IS NULL THEN BEGIN\n            INSERT INTO current_quotas(`uuid`,`internal_id`,`quota_limit`,`request_type`,`project_internal_id`,`project_uuid`,`project_name`,`is_current`,`checked_at`,`last_updated`,`created`,`inserted_at`,`deleted_at`,`current_from`,`current_to`) VALUES(NEW.uuid,NEW.internal_id,NEW.quota_limit,NEW.request_type,NEW.project_internal_id,NEW.project_uuid,NEW.project_name,NEW.is_current,NEW.checked_at,NEW.last_updated,NEW.created,NEW.inserted_at,NEW.deleted_at,NEW.current_from,NEW.current_to);\n          END ; END IF ;\n        END", {:name=>"maintain_current_quotas_trigger", :event=>:insert, :on=>"quotas"})
+  after_trigger("BEGIN\n          IF NEW.current_to IS NULL OR NEW.deleted_at IS NOT NULL THEN BEGIN\n            DELETE FROM current_reference_genomes WHERE uuid=NEW.uuid;\n          END ; END IF ;\n          IF NEW.current_to IS NULL THEN BEGIN\n            INSERT INTO current_reference_genomes(`uuid`,`internal_id`,`name`,`is_current`,`checked_at`,`last_updated`,`created`,`inserted_at`,`deleted_at`,`current_from`,`current_to`) VALUES(NEW.uuid,NEW.internal_id,NEW.name,NEW.is_current,NEW.checked_at,NEW.last_updated,NEW.created,NEW.inserted_at,NEW.deleted_at,NEW.current_from,NEW.current_to);\n          END ; END IF ;\n        END", {:name=>"maintain_current_reference_genomes_trigger", :event=>:insert, :on=>"reference_genomes"})
   after_trigger("BEGIN\n          IF NEW.current_to IS NULL OR NEW.deleted_at IS NOT NULL THEN BEGIN\n            DELETE FROM current_requests WHERE uuid=NEW.uuid;\n          END ; END IF ;\n          IF NEW.current_to IS NULL THEN BEGIN\n            INSERT INTO current_requests(`uuid`,`internal_id`,`request_type`,`fragment_size_from`,`fragment_size_to`,`read_length`,`library_type`,`study_uuid`,`study_internal_id`,`study_name`,`project_uuid`,`project_internal_id`,`project_name`,`source_asset_uuid`,`source_asset_internal_id`,`source_asset_type`,`source_asset_name`,`source_asset_barcode`,`source_asset_barcode_prefix`,`source_asset_state`,`source_asset_closed`,`source_asset_two_dimensional_barcode`,`source_asset_sample_uuid`,`source_asset_sample_internal_id`,`target_asset_uuid`,`target_asset_internal_id`,`target_asset_type`,`target_asset_name`,`target_asset_barcode`,`target_asset_barcode_prefix`,`target_asset_state`,`target_asset_closed`,`target_asset_two_dimensional_barcode`,`target_asset_sample_uuid`,`target_asset_sample_internal_id`,`is_current`,`checked_at`,`last_updated`,`created`,`state`,`priority`,`user`,`inserted_at`,`deleted_at`,`submission_uuid`,`submission_internal_id`,`current_from`,`current_to`) VALUES(NEW.uuid,NEW.internal_id,NEW.request_type,NEW.fragment_size_from,NEW.fragment_size_to,NEW.read_length,NEW.library_type,NEW.study_uuid,NEW.study_internal_id,NEW.study_name,NEW.project_uuid,NEW.project_internal_id,NEW.project_name,NEW.source_asset_uuid,NEW.source_asset_internal_id,NEW.source_asset_type,NEW.source_asset_name,NEW.source_asset_barcode,NEW.source_asset_barcode_prefix,NEW.source_asset_state,NEW.source_asset_closed,NEW.source_asset_two_dimensional_barcode,NEW.source_asset_sample_uuid,NEW.source_asset_sample_internal_id,NEW.target_asset_uuid,NEW.target_asset_internal_id,NEW.target_asset_type,NEW.target_asset_name,NEW.target_asset_barcode,NEW.target_asset_barcode_prefix,NEW.target_asset_state,NEW.target_asset_closed,NEW.target_asset_two_dimensional_barcode,NEW.target_asset_sample_uuid,NEW.target_asset_sample_internal_id,NEW.is_current,NEW.checked_at,NEW.last_updated,NEW.created,NEW.state,NEW.priority,NEW.user,NEW.inserted_at,NEW.deleted_at,NEW.submission_uuid,NEW.submission_internal_id,NEW.current_from,NEW.current_to);\n          END ; END IF ;\n        END", {:name=>"maintain_current_requests_trigger", :event=>:insert, :on=>"requests"})
   after_trigger("BEGIN\n          IF NEW.current_to IS NULL OR NEW.deleted_at IS NOT NULL THEN BEGIN\n            DELETE FROM current_sample_tubes WHERE uuid=NEW.uuid;\n          END ; END IF ;\n          IF NEW.current_to IS NULL THEN BEGIN\n            INSERT INTO current_sample_tubes(`uuid`,`internal_id`,`name`,`barcode`,`closed`,`state`,`two_dimensional_barcode`,`sample_uuid`,`sample_internal_id`,`sample_name`,`scanned_in_date`,`volume`,`concentration`,`is_current`,`checked_at`,`last_updated`,`created`,`barcode_prefix`,`inserted_at`,`deleted_at`,`current_from`,`current_to`) VALUES(NEW.uuid,NEW.internal_id,NEW.name,NEW.barcode,NEW.closed,NEW.state,NEW.two_dimensional_barcode,NEW.sample_uuid,NEW.sample_internal_id,NEW.sample_name,NEW.scanned_in_date,NEW.volume,NEW.concentration,NEW.is_current,NEW.checked_at,NEW.last_updated,NEW.created,NEW.barcode_prefix,NEW.inserted_at,NEW.deleted_at,NEW.current_from,NEW.current_to);\n          END ; END IF ;\n        END", {:name=>"maintain_current_sample_tubes_trigger", :event=>:insert, :on=>"sample_tubes"})
   after_trigger("BEGIN\n          IF NEW.current_to IS NULL OR NEW.deleted_at IS NOT NULL THEN BEGIN\n            DELETE FROM current_samples WHERE uuid=NEW.uuid;\n          END ; END IF ;\n          IF NEW.current_to IS NULL THEN BEGIN\n            INSERT INTO current_samples(`uuid`,`internal_id`,`name`,`reference_genome`,`organism`,`accession_number`,`common_name`,`description`,`taxon_id`,`father`,`mother`,`replicate`,`ethnicity`,`gender`,`cohort`,`country_of_origin`,`geographical_region`,`is_current`,`checked_at`,`last_updated`,`created`,`sanger_sample_id`,`control`,`empty_supplier_sample_name`,`supplier_name`,`public_name`,`sample_visibility`,`strain`,`updated_by_manifest`,`inserted_at`,`deleted_at`,`current_from`,`current_to`,`consent_withdrawn`) VALUES(NEW.uuid,NEW.internal_id,NEW.name,NEW.reference_genome,NEW.organism,NEW.accession_number,NEW.common_name,NEW.description,NEW.taxon_id,NEW.father,NEW.mother,NEW.replicate,NEW.ethnicity,NEW.gender,NEW.cohort,NEW.country_of_origin,NEW.geographical_region,NEW.is_current,NEW.checked_at,NEW.last_updated,NEW.created,NEW.sanger_sample_id,NEW.control,NEW.empty_supplier_sample_name,NEW.supplier_name,NEW.public_name,NEW.sample_visibility,NEW.strain,NEW.updated_by_manifest,NEW.inserted_at,NEW.deleted_at,NEW.current_from,NEW.current_to,NEW.consent_withdrawn);\n          END ; END IF ;\n        END", {:name=>"maintain_current_samples_trigger", :event=>:insert, :on=>"samples"})
