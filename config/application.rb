@@ -18,6 +18,11 @@ module WarehouseTwo
     config.assets.enabled     = false
     config.assets.version     = '1.0'
 
+    # Configure the worker death messages
+    config.worker_death_from    = 'Projects Exception Notifier <example@example.com>'
+    config.worker_death_to      = 'example@example.com'
+    config.worker_death_restart = %Q{Please restart the worker.}
+
     # We're going to need a specialised configuration for our AMQP consumer
     config.amqp                       = ActiveSupport::Configurable::Configuration.new
     config.amqp.main                  = ActiveSupport::Configurable::Configuration.new
