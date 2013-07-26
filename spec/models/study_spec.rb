@@ -43,7 +43,7 @@ describe Study do
       :array_express_accession_number => "array express accession number",
       :ega_policy_accession_number => "ega policy accession number",
       :remove_x_and_autosomes => true,
-      :seperate_y_chromosome_data => true,
+      :separate_y_chromosome_data => true,
       :alignments_in_bam => true
     }
   end
