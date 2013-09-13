@@ -36,6 +36,7 @@ describe Study do
       :data_release_timing => "data release timing",
       :data_release_delay_period => "data release delay period",
       :data_release_delay_reason => "data release delay reason",
+      :data_access_group => "data access group",
       :ena_project_id => "ena project id",
       :study_title => "study title",
       :study_visibility => "study visibility",
