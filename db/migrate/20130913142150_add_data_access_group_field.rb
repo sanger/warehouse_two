@@ -3,7 +3,7 @@ class AddDataAccessGroupField < ActiveRecord::Migration
 
   def change
     change_resource_table(:studies) do |t|
-      t.boolean(:data_access_group, :null => false, :default => false)
+      t.string(:data_access_group, :null => true, :default => nil)
     end
   end
 end

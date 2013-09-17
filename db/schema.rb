@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130913142150) do
+ActiveRecord::Schema.define(:version => 20130917143445) do
 
   create_table "aliquots", :id => false, :force => true do |t|
     t.binary   "uuid",                     :limit => 16, :null => false
@@ -828,7 +828,7 @@ ActiveRecord::Schema.define(:version => 20130913142150) do
     t.boolean  "remove_x_and_autosomes",                       :default => false, :null => false
     t.boolean  "alignments_in_bam",                            :default => true,  :null => false
     t.boolean  "separate_y_chromosome_data",                   :default => false, :null => false
-    t.boolean  "data_access_group",                            :default => false, :null => false
+    t.string   "data_access_group"
   end
 
   add_index "current_studies", ["accession_number"], :name => "accession_number_idx"
@@ -1381,7 +1381,7 @@ ActiveRecord::Schema.define(:version => 20130913142150) do
     t.boolean  "remove_x_and_autosomes",                       :default => false, :null => false
     t.boolean  "alignments_in_bam",                            :default => true,  :null => false
     t.boolean  "separate_y_chromosome_data",                   :default => false, :null => false
-    t.boolean  "data_access_group",                            :default => false, :null => false
+    t.string   "data_access_group"
   end
 
   add_index "studies", ["uuid", "current_from", "current_to"], :name => "uuid_and_current_from_and_current_to_idx", :unique => true
