@@ -51,7 +51,8 @@ describe Sample do
       :sample_public_name          => "public name",
       :sample_sra_hold             => "sample visibility",
       :sample_strain_att           => "strain",
-      :updated_by_manifest         => true
+      :updated_by_manifest         => true,
+      :donor_id                    => '11111111-2222-3333-4444-555555555556'
     }
   end
 end
