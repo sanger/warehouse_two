@@ -3,7 +3,7 @@ class AddFluidgmBarcodeToWarehouse < ActiveRecord::Migration
 
   def change
     change_resource_table(:plates) do |t|
-      t.string(:fluidgm_barcode, :null => true, :default => nil)
+      t.string(:fluidigm_barcode, :null => true, :default => nil)
     end
   end
 end
