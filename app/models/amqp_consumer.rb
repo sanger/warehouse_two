@@ -43,7 +43,7 @@ class AmqpConsumer
   private :received
 
   def insert_record(metadata, json)
-    payload_name = json.keys.first
+    payload_name = json.keys.detect {|key| key != 'lims' }
     ActiveRecord::Base.transaction do
       payload_name.classify.constantize.create_or_update_from_json(json[payload_name]).tap do |record|
         metadata.ack  # Acknowledge receipt!
