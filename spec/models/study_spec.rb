@@ -40,6 +40,7 @@ describe Study do
       :ena_project_id => "ena project id",
       :study_title => "study title",
       :study_visibility => "study visibility",
+      :prelim_id => "S1234",
       :ega_dac_accession_number => "ega dac accession number",
       :array_express_accession_number => "array express accession number",
       :ega_policy_accession_number => "ega policy accession number",
