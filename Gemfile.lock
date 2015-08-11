@@ -1,13 +1,4 @@
 GIT
-  remote: git+ssh://git@github.com/anathematic/rails_sql_views.git
-  revision: 0486fff084032367b4c08bf0a51b151ef86a08f1
-  specs:
-    rails_sql_views (0.8.0.2.laripk)
-      activerecord
-      rails (~> 3.1.rc1)
-      rake (~> 0.9)
-
-GIT
   remote: git+ssh://git@github.com/sanger/activerecord-partitioning.git
   revision: 043e66ddbdd5d78299c4c99af9a31c4a33811709
   specs:
@@ -180,6 +171,8 @@ DEPENDENCIES
   mysql2
   psd_logger!
   rails (= 3.2.11)
-  rails_sql_views!
   rest-client
   rspec-rails (~> 2.8.0)
+
+BUNDLED WITH
+   1.10.6
