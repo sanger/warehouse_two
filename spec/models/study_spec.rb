@@ -45,7 +45,8 @@ describe Study do
       :ega_policy_accession_number => "ega policy accession number",
       :remove_x_and_autosomes => true,
       :separate_y_chromosome_data => true,
-      :alignments_in_bam => true
+      :alignments_in_bam => true,
+      :prelim_id => "A1234"
     }
   end
 end
