@@ -46,7 +46,8 @@ describe Study do
       :remove_x_and_autosomes => true,
       :separate_y_chromosome_data => true,
       :alignments_in_bam => true,
-      :prelim_id => "A1234"
+      :prelim_id => "A1234",
+      :hmdmc_number => "H12345; H67890; And a comment"
     }
   end
 end
