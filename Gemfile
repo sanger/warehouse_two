@@ -1,14 +1,13 @@
-source :rubygems
+source 'https://www.rubygems.org'
 
-gem "rails", "3.2.11"
-gem "mysql2"
+gem "rails", "3.2.22.2"
+gem "mysql2","~> 0.3.10"
 gem "amqp", "~> 0.9.2"
 gem "hashie", "~> 1.2.0"
 gem "rest-client"
 
 # We have to use composite primary keys because of the table partitioning
 gem "composite_primary_keys", "~> 5.0.10"
-gem "activerecord-partitioning", :git => "git+ssh://git@github.com/sanger/activerecord-partitioning.git"
 gem "activerecord-triggers", :git => "git+ssh://git@github.com/sanger/activerecord-triggers.git"
 
 # Need a branched verion of the rails_sql_views gem to support MySQL2 and ActiveRecord 3.
