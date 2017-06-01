@@ -10,9 +10,6 @@ gem "rest-client"
 gem "composite_primary_keys", "~> 5.0.10"
 gem "activerecord-triggers", :git => "git+ssh://git@github.com/sanger/activerecord-triggers.git"
 
-# Need a branched verion of the rails_sql_views gem to support MySQL2 and ActiveRecord 3.
-gem "rails_sql_views", :git => "git+ssh://git@github.com/anathematic/rails_sql_views.git"
-
 group :test, :development do
   gem 'rspec-rails', '~> 2.8.0'
   gem 'mocktra', '~> 1.0.2'
