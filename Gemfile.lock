@@ -1,4 +1,13 @@
 GIT
+  remote: git+ssh://git@github.com/anathematic/rails_sql_views.git
+  revision: 0486fff084032367b4c08bf0a51b151ef86a08f1
+  specs:
+    rails_sql_views (0.8.0.2.laripk)
+      activerecord
+      rails (~> 3.1.rc1)
+      rake (~> 0.9)
+
+GIT
   remote: git+ssh://git@github.com/sanger/activerecord-triggers.git
   revision: 81a97667e849f0c4047b2ebce942015d3b7b5b31
   specs:
@@ -161,8 +170,6 @@ DEPENDENCIES
   mysql2 (~> 0.3.10)
   psd_logger!
   rails (= 3.2.22.2)
+  rails_sql_views!
   rest-client
   rspec-rails (~> 2.8.0)
-
-BUNDLED WITH
-   1.15.0
