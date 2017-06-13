@@ -47,9 +47,7 @@ describe Study do
       :separate_y_chromosome_data => true,
       :alignments_in_bam => true,
       :prelim_id => "A1234",
-      :hmdmc_number => "H12345; H67890; And a comment",
-      :s3_email_list => "aa1@sanger.ac.uk;aa2@sanger.ac.uk",
-      :data_deletion_period => "3 months"
+      :hmdmc_number => "H12345; H67890; And a comment"
     }
   end
 end
