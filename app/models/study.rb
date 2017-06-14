@@ -9,7 +9,9 @@ class Study < ActiveRecord::Base
     ignore(
       :projects,
       :commercially_available,
-      :samples
+      :samples,
+      :s3_email_list,
+      :data_deletion_period
     )
     translate(
       :id          => :internal_id,
