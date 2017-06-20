@@ -15,9 +15,6 @@ module Labware
       base.class_eval do
         include Labware
 
-        json do
-          ignore(:lanes, :requests)
-        end
       end
     end
   end
@@ -27,9 +24,6 @@ module Labware
       base.class_eval do
         include Labware
 
-        json do
-          ignore(:library_tubes, :requests)
-        end
       end
     end
   end
@@ -39,9 +33,6 @@ module Labware
       base.class_eval do
         include Labware
 
-        json do
-          ignore(:requests)
-        end
       end
     end
   end

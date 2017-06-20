@@ -2,15 +2,7 @@ class Sample < ActiveRecord::Base
   include ResourceTools
 
   json do
-    ignore(
-      :new_name_format,
-      :gc_content,
-      :sample_manifest_id,
-      :supplier_plate_id,
-      :dna_source,
-      :sample_tubes,
-      :volume
-    )
+    whitelist(*Sample.attribute_names)
 
     translate(
       :id                          => :internal_id,

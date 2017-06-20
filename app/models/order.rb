@@ -1,14 +1,6 @@
 class Order < ActiveRecord::Base
   include ResourceTools
 
-  json do
-    ignore(
-      :submission_internal_id,
-      :project_internal_id,
-      :study_internal_id
-    )
-  end
-
   REMAPPING_OPTIONS = {
     :read_length                     => :read_length,
     [:fragment_size_required, :from] => :fragment_size_required_from,
@@ -18,6 +10,11 @@ class Order < ActiveRecord::Base
     :insert_size                     => :insert_size,
     :number_of_lanes                 => :number_of_lanes
   }
+
+   json do
+    whitelist(*Order.attribute_names)
+    whitelist("request_options", "asset_uuids")
+  end
 
   def request_options=(values)
     REMAPPING_OPTIONS.each do |methods, attribute|
