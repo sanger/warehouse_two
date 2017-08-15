@@ -2,7 +2,8 @@ class StudySample < ActiveRecord::Base
   include ResourceTools
 
   json do
-    ignore(:studies, :samples)
+    whitelist(*StudySample.attribute_names)
+
     translate(:id => :internal_id)
   end
 end

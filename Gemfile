@@ -15,6 +15,8 @@ group :test, :development do
   gem 'mocktra', '~> 1.0.2'
 end
 
+gem 'pry'
+
 group :development do
   gem 'guard'
   gem 'guard-bundler'

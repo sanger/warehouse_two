@@ -6,13 +6,7 @@ class Study < ActiveRecord::Base
   has_role(:lab_manager)
 
   json do
-    ignore(
-      :projects,
-      :commercially_available,
-      :samples,
-      :s3_email_list,
-      :data_deletion_period
-    )
+    whitelist(*(Study.attribute_names + Study.roles))
     translate(
       :id          => :internal_id,
       :sac_sponsor => :faculty_sponsor
