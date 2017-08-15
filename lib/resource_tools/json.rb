@@ -17,8 +17,8 @@ module ResourceTools::Json
     class_attribute :translations
     self.translations = {}
 
-    class_attribute :ignoreable
-    self.ignoreable = []
+    class_attribute :whitelisted
+    self.whitelisted = []
 
     class << self
       # Hashes in subkeys might as well be normal Hashie::Mash instances as we don't want to bleed
@@ -27,8 +27,8 @@ module ResourceTools::Json
         Hashie::Mash
       end
 
-      def ignore(*attributes)
-        self.ignoreable += attributes.map(&:to_s)
+      def whitelist(*attributes)
+        self.whitelisted += attributes.map(&:to_s)
       end
 
       # JSON attributes can be translated into the attributes on the way in.
@@ -42,9 +42,13 @@ module ResourceTools::Json
       private :convert_key
     end
 
+    def blacklisted?(k)
+      !self.whitelisted.include?(k) && !self.translations.keys.include?(k)
+    end
+
     def initialize(*args, &block)
       super
-      delete_if { |k,_| ignoreable.include?(k) }
+      delete_if { |k,_| blacklisted?(k) }
     end
 
     delegate :convert_key, :to => 'self.class'

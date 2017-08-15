@@ -2,11 +2,7 @@ class Request < ActiveRecord::Base
   include ResourceTools
 
   json do
-    ignore(
-      :project_url,
-      :study_url,
-      :submission_url
-    )
+    whitelist(*Request.attribute_names)
 
     translate(
       :id                          => :internal_id,

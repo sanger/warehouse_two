@@ -3,6 +3,9 @@ module AssociatedWithRoles
     base.class_eval do
       include InstanceMethods
 
+      class_attribute :roles
+      self.roles = []
+
       has_role(:manager)
       has_role(:follower)
       has_role(:owner)
@@ -12,10 +15,12 @@ module AssociatedWithRoles
       user_model.associated_with(base)
       const_set(:User, user_model)
       after_create :maintain_users, :if => :current?
+      
     end
   end
 
   def has_role(name)
+    roles << name.to_s
     define_method("#{name}=") { |users| add_users(name, users) }
   end
 
@@ -26,6 +31,7 @@ module AssociatedWithRoles
     private :users_to_maintain
 
     def add_users(role, user_details)
+      # self.roles << role
       users_to_maintain[role.to_s].concat(user_details)
     end
     private :add_users
